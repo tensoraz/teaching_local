@@ -1,1 +1,48 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Offline Classroom</title><link rel="stylesheet" href="/style.css"></head><body><section id="joinView" class="card join"><h1>Offline Classroom</h1><p>Enter your name to join the class.</p><input id="studentName" placeholder="Your name" autocomplete="name"><button id="joinBtn">Join Class</button><div id="joinMsg" class="msg"></div></section><section id="classView" hidden><header><strong id="lessonTitle"></strong><span id="studentCount"></span></header><main id="lessonContent" class="card"></main><section id="pollBox"></section></section><script src="/app.js" defer></script></body></html>
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial; background: #f0f2f5; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; }
+        .header { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; }
+        .section-btn { padding: 10px 20px; margin: 5px; border: none; border-radius: 6px; cursor: pointer; }
+        .section-btn.active { background: #4CAF50; color: white; }
+        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 18px; }
+        button { padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div id="joinView" style="max-width:500px;margin:100px auto;">
+        <div class="card" style="text-align:center;">
+            <h1>🎓 Classroom</h1>
+            <input id="studentName" placeholder="Your name">
+            <button onclick="joinClass()">Join</button>
+            <div id="joinMsg" style="color:red;margin-top:10px;"></div>
+        </div>
+    </div>
+    
+    <div id="classView" style="display:none;">
+        <div class="container">
+            <div class="header">
+                <h2 id="currentTopicTitle">Loading...</h2>
+                <span id="studentCount">0 students</span>
+            </div>
+            
+            <div class="card">
+                <button class="section-btn active" onclick="studentSwitchSection('content')">📖 Content</button>
+                <button class="section-btn" onclick="studentSwitchSection('quiz')">📝 Quiz</button>
+                <button class="section-btn" onclick="studentSwitchSection('assignment')">📚 Assignment</button>
+            </div>
+            
+            <div id="studentContent" class="card"></div>
+        </div>
+    </div>
+    
+    <script src="/app.js"></script>
+</body>
+</html>

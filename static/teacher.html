@@ -1,1 +1,117 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Teacher - Offline Classroom</title><link rel="stylesheet" href="/style.css"></head><body><section class="teacher"><h1>Teacher Control Panel</h1><header><strong id="teacherTitle"></strong><span id="teacherCount"></span></header><main id="teacherContent" class="card"></main><div class="controls"><button id="prevBtn">← Previous</button><button id="nextBtn">Next →</button><button id="pollBtn">Start Poll</button><button id="resetBtn">Reset Class</button></div><section class="card"><h2>Live Responses</h2><div id="results">No poll active.</div></section></section><script src="/app.js" defer></script></body></html>
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teacher Panel</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial; background: #f0f2f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { padding: 12px 24px; background: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .tab.active { background: #4CAF50; color: white; }
+        .card { background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; }
+        textarea { min-height: 200px; font-family: monospace; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin: 5px; font-size: 14px; }
+        .btn-green { background: #4CAF50; color: white; }
+        .btn-blue { background: #2196F3; color: white; }
+        .btn-red { background: #f44336; color: white; }
+        .btn-orange { background: #ff9800; color: white; }
+        .section-btn { padding: 10px 20px; margin: 5px; border: none; border-radius: 6px; cursor: pointer; }
+        .section-btn.active { background: #4CAF50; color: white; }
+        .edit-box { background: #fff8e1; padding: 20px; border-radius: 8px; border: 2px solid #ff9800; margin-top: 15px; }
+        .option-row { display: flex; gap: 10px; margin: 10px 0; align-items: center; }
+        .option-row input[type="text"] { flex: 1; }
+        .option-row input[type="radio"] { width: 20px; height: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>👨‍🏫 Teacher Panel</h2>
+            <span id="studentCount">0 students</span>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('teach')">📖 Teach</button>
+            <button class="tab" onclick="switchTab('topics')">📚 Topics</button>
+            <button class="tab" onclick="switchTab('add')">➕ Add Topic</button>
+            <button class="tab" onclick="switchTab('students')">👥 Students</button>
+            <button class="tab" onclick="switchTab('announce')">📢 Announce</button>
+        </div>
+        
+        <div id="teachTab">
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+                    <div>
+                        <h3 id="currentTopicTitle">No topic selected</h3>
+                        <p id="currentTopicDesc" style="color:#666;"></p>
+                    </div>
+                    <div>
+                        <button class="btn btn-orange" onclick="navigateTopic(-1)">← Prev</button>
+                        <button class="btn btn-orange" onclick="navigateTopic(1)">Next →</button>
+                    </div>
+                </div>
+                
+                <div style="margin:15px 0;border-bottom:2px solid #f0f0f0;padding-bottom:10px;">
+                    <button class="section-btn active" onclick="switchSection('content')">📖 Content</button>
+                    <button class="section-btn" onclick="switchSection('quiz')">📝 Quiz</button>
+                    <button class="section-btn" onclick="switchSection('assignment')">📚 Assignment</button>
+                </div>
+                
+                <!-- View Mode -->
+                <div id="viewMode">
+                    <div id="teachContent"></div>
+                    <div style="text-align:center;margin-top:15px;">
+                        <button class="btn btn-blue" onclick="showEditMode()">✏️ Edit This Section</button>
+                    </div>
+                </div>
+                
+                <!-- Edit Mode -->
+                <div id="editMode" style="display:none;">
+                    <div id="editArea"></div>
+                    <div style="text-align:center;margin-top:15px;">
+                        <button class="btn btn-green" onclick="saveSection()">💾 Save</button>
+                        <button class="btn btn-red" onclick="cancelEdit()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="topicsTab" style="display:none;">
+            <div class="card">
+                <h3>📚 All Topics</h3>
+                <div id="topicsList"></div>
+            </div>
+        </div>
+        
+        <div id="addTab" style="display:none;">
+            <div class="card">
+                <h3>➕ Add New Topic</h3>
+                <input id="newTopicTitle" placeholder="Topic Title (e.g., Arrays in C)">
+                <input id="newTopicDesc" placeholder="Topic Description">
+                <button class="btn btn-green" onclick="addTopic()">Add Topic</button>
+            </div>
+        </div>
+        
+        <div id="studentsTab" style="display:none;">
+            <div class="card">
+                <h3>👥 Students</h3>
+                <div id="studentsList"></div>
+            </div>
+        </div>
+        
+        <div id="announceTab" style="display:none;">
+            <div class="card">
+                <h3>📢 Announce</h3>
+                <textarea id="announcementText" style="min-height:100px;" placeholder="Type message..."></textarea>
+                <button class="btn btn-green" onclick="sendAnnouncement()">Send</button>
+            </div>
+        </div>
+    </div>
+    <script src="/app.js"></script>
+</body>
+</html>
