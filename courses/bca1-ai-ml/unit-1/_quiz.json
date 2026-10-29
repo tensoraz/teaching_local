@@ -1,0 +1,524 @@
+{
+ "title": "Unit 1 Quiz · Problems, Algorithms and Problem Solving",
+ "minutes": 30,
+ "shuffle_questions": true,
+ "instructions": [
+  "33 questions, 39 marks. You have 30 minutes; the quiz submits itself when time runs out.",
+  "Questions and options are shuffled, so your neighbour's screen will not match yours.",
+  "Multi-select questions need ALL correct options for the marks. Ordering questions give part marks for each item in the right place.",
+  "After submitting you will see your score and an explanation for every question."
+ ],
+ "questions": [
+  {
+   "id": "q01",
+   "topic": "Problems & instances",
+   "type": "mcq",
+   "q": "Which of these is a problem INSTANCE rather than a problem?",
+   "options": [
+    "Find the largest of 12, 47 and 33",
+    "Find the largest of any n numbers",
+    "Decide whether a whole number n ≥ 2 is prime",
+    "Sort any list of names alphabetically"
+   ],
+   "answer": 0,
+   "explain": "An instance has actual input values filled in (12, 47, 33). The other three describe every possible input, so they are problems."
+  },
+  {
+   "id": "q02",
+   "topic": "Problems & instances",
+   "type": "mcq",
+   "q": "Why must a program be tested on more than the one example given in the question?",
+   "options": [
+    "A program solves the whole problem, so it must work for every valid instance",
+    "Because the compiler needs at least two runs",
+    "Because one example always gives a wrong answer",
+    "It does not need to; one correct example proves it works"
+   ],
+   "answer": 0,
+   "explain": "A problem has infinitely many instances. One correct example shows nothing about the others, especially special cases."
+  },
+  {
+   "id": "q03",
+   "topic": "Problems & instances",
+   "type": "mcq",
+   "q": "Using 1 + 2 + … + n = n(n + 1) / 2, what is 1 + 2 + … + 60?",
+   "options": [
+    "1800",
+    "1830",
+    "1860",
+    "3660"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "60 × 61 / 2 = 3660 / 2 = 1830. (3660 is what you get if you forget to divide by 2.)"
+  },
+  {
+   "id": "q04",
+   "topic": "Problems & instances",
+   "type": "multi",
+   "q": "For the average-marks program, select ALL the inputs that are special cases worth testing.",
+   "options": [
+    "n = 0 (no students)",
+    "n = 1 (only one student)",
+    "A mark of 105",
+    "Marks 72, 85, 64 (a normal class)"
+   ],
+   "answer": [
+    0,
+    1,
+    2
+   ],
+   "marks": 2,
+   "explain": "n = 0 would divide by zero, n = 1 is the smallest valid input, 105 is out of range. A normal class is a typical case, not a special one."
+  },
+  {
+   "id": "q05",
+   "topic": "Types & classification",
+   "type": "mcq",
+   "q": "“Is 2028 a leap year?” is which type of problem?",
+   "options": [
+    "Decision",
+    "Search",
+    "Counting",
+    "Optimization"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "The answer is yes or no, so it is a decision problem."
+  },
+  {
+   "id": "q06",
+   "topic": "Types & classification",
+   "type": "mcq",
+   "q": "“Find the shortest route that starts at college, visits 6 shops and returns” is which type of problem?",
+   "options": [
+    "Decision",
+    "Search",
+    "Counting",
+    "Optimization"
+   ],
+   "answer": 3,
+   "fixed": true,
+   "explain": "Many routes are valid; we want the best (shortest) one. That is an optimization problem."
+  },
+  {
+   "id": "q07",
+   "topic": "Types & classification",
+   "type": "mcq",
+   "q": "The halting problem (deciding, for every program, whether it will ever stop) is an example of:",
+   "options": [
+    "An unsolvable problem: no algorithm can solve it for all inputs",
+    "A counting problem with a very large answer",
+    "A problem that only needs a faster computer",
+    "A greedy problem"
+   ],
+   "answer": 0,
+   "explain": "Alan Turing proved in 1936 that no algorithm can decide halting for every program. More speed does not help."
+  },
+  {
+   "id": "q08",
+   "topic": "Types & classification",
+   "type": "mcq",
+   "q": "Checking every round trip through n cities needs (n − 1)! / 2 routes. How many routes for 6 cities?",
+   "options": [
+    "30",
+    "60",
+    "120",
+    "720"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "(6 − 1)! / 2 = 5! / 2 = 120 / 2 = 60. The count grows so fast that this problem is called intractable for large n."
+  },
+  {
+   "id": "q09",
+   "topic": "Types & classification",
+   "type": "mcq",
+   "q": "Which of these is an ILL-DEFINED problem?",
+   "options": [
+    "Make the college website better",
+    "Sort 60 marks in decreasing order",
+    "Convert 25 °C to °F",
+    "Count the students with attendance below 75%"
+   ],
+   "answer": 0,
+   "explain": "“Better” has no clear input, output or measure. It must be turned into precise questions before a computer can help."
+  },
+  {
+   "id": "q10",
+   "topic": "Analysis & steps",
+   "type": "mcq",
+   "q": "Request: “Write a program to calculate the electricity bill.” Which question is LEAST useful to ask?",
+   "options": [
+    "What is the rate per unit, and does it change after a certain number of units?",
+    "Is there a fixed monthly charge?",
+    "Can units consumed be a decimal number?",
+    "What brand of meter is used?"
+   ],
+   "answer": 3,
+   "explain": "A good question is one whose answer changes the program. The meter brand does not affect the calculation."
+  },
+  {
+   "id": "q11",
+   "topic": "Analysis & steps",
+   "type": "order",
+   "q": "Arrange Pólya’s problem-solving steps in the correct order.",
+   "options": [
+    "Understand the problem",
+    "Plan (devise a solution)",
+    "Execute (carry out the plan)",
+    "Review (look back)"
+   ],
+   "answer": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "marks": 2,
+   "explain": "Understand → Plan → Execute → Review. Review often sends you back to understand the problem better."
+  },
+  {
+   "id": "q12",
+   "topic": "Analysis & steps",
+   "type": "mcq",
+   "q": "Before coding, you work out by hand that marks 72, 85, 64 should give 73.67. This belongs mainly to which step?",
+   "options": [
+    "Understand the problem",
+    "Plan",
+    "Execute",
+    "Review"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Solving a small instance by hand is how you make sure you understand what is asked. The result is reused later to check the program in Review."
+  },
+  {
+   "id": "q13",
+   "topic": "Analysis & steps",
+   "type": "mcq",
+   "q": "Splitting “print a report card” into read marks, validate, calculate and print is called:",
+   "options": [
+    "Top-down decomposition (breaking into subproblems)",
+    "Brute force",
+    "A greedy approach",
+    "Input validation"
+   ],
+   "answer": 0,
+   "explain": "Breaking a big problem into smaller subproblems, then refining each, is top-down decomposition (stepwise refinement)."
+  },
+  {
+   "id": "q14",
+   "topic": "Specification",
+   "type": "mcq",
+   "q": "A complete specification of the input “marks” should state:",
+   "options": [
+    "Its name, type, valid range and unit (e.g. integer 0–100, out of 100)",
+    "Only the variable name",
+    "Only the C data type",
+    "Only how the output will look"
+   ],
+   "answer": 0,
+   "explain": "Name, type, range and unit together remove doubt. Without the range, nobody knows if 105 or −5 is acceptable."
+  },
+  {
+   "id": "q15",
+   "topic": "Specification",
+   "type": "mcq",
+   "q": "Attendance is entered as 112%. Which validation check rejects it?",
+   "options": [
+    "Type check",
+    "Range check",
+    "Presence check",
+    "Format check"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "112 is a number (type is fine) but it is outside 0–100. That is a range check."
+  },
+  {
+   "id": "q16",
+   "topic": "Specification",
+   "type": "multi",
+   "q": "Select ALL of the following that are kinds of input validation.",
+   "options": [
+    "Type check",
+    "Range check",
+    "Presence check",
+    "Compilation check"
+   ],
+   "answer": [
+    0,
+    1,
+    2
+   ],
+   "marks": 2,
+   "explain": "Type, range and presence checks examine the user’s input. Compiling checks the program’s code, not the input."
+  },
+  {
+   "id": "q17",
+   "topic": "Specification",
+   "type": "mcq",
+   "q": "What is the pre-condition of binary search?",
+   "options": [
+    "The list must be sorted",
+    "The list must have an even number of items",
+    "The key must be in the list",
+    "The list must have fewer than 1000 items"
+   ],
+   "answer": 0,
+   "explain": "Binary search throws away half the list based on order. On an unsorted list it can miss the key. The key does not have to be present: then it reports “not found”."
+  },
+  {
+   "id": "q18",
+   "topic": "Specification",
+   "type": "mcq",
+   "q": "For an algorithm that computes the square root r of x, which is the PRE-condition?",
+   "options": [
+    "x ≥ 0",
+    "r ≥ 0",
+    "r × r ≈ x",
+    "r is printed with 2 decimals"
+   ],
+   "answer": 0,
+   "explain": "The pre-condition is about the input before the algorithm runs: x ≥ 0. The others describe the result, so they are post-conditions."
+  },
+  {
+   "id": "q19",
+   "topic": "Algorithms & approaches",
+   "type": "mcq",
+   "q": "A recipe step says “add salt to taste”. Which property of an algorithm does it violate?",
+   "options": [
+    "Finiteness",
+    "Definiteness",
+    "Input",
+    "Output"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "Definiteness means every step is exact and unambiguous. “To taste” means different things to different people."
+  },
+  {
+   "id": "q20",
+   "topic": "Algorithms & approaches",
+   "type": "multi",
+   "q": "Select ALL the properties that every algorithm must have.",
+   "options": [
+    "Finiteness: it stops after a finite number of steps",
+    "Definiteness: every step is exact",
+    "Effectiveness: every step is basic enough to do by hand",
+    "At least one output",
+    "It must be written in C"
+   ],
+   "answer": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "marks": 2,
+   "explain": "Knuth’s properties are finiteness, definiteness, input (zero or more), output (at least one) and effectiveness. An algorithm is independent of any programming language."
+  },
+  {
+   "id": "q21",
+   "topic": "Algorithms & approaches",
+   "type": "mcq",
+   "q": "You pay ₹289 greedily (largest first) with notes/coins of 200, 50, 20, 10, 5, 2 and 1. How many pieces do you use?",
+   "options": [
+    "5",
+    "6",
+    "7",
+    "8"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "200 (89 left) → 50 (39) → 20 (19) → 10 (9) → 5 (4) → 2 (2) → 2 (0): 7 pieces."
+  },
+  {
+   "id": "q22",
+   "topic": "Algorithms & approaches",
+   "type": "mcq",
+   "q": "Binary search is an example of which solution approach?",
+   "options": [
+    "Divide and conquer",
+    "Brute force",
+    "Greedy",
+    "Incremental"
+   ],
+   "answer": 0,
+   "explain": "Each comparison splits the remaining list in half and continues with one half: divide and conquer."
+  },
+  {
+   "id": "q23",
+   "topic": "Efficiency",
+   "type": "mcq",
+   "q": "Linear search on a list of 1,000 items: how many comparisons in the WORST case?",
+   "options": [
+    "1",
+    "10",
+    "500",
+    "1,000"
+   ],
+   "answer": 3,
+   "fixed": true,
+   "explain": "Worst case: the key is last or not present, so all 1,000 items are checked. Best case is 1; average about (n + 1) / 2 ≈ 500."
+  },
+  {
+   "id": "q24",
+   "topic": "Efficiency",
+   "type": "mcq",
+   "q": "Binary search on a sorted list of 10,00,000 roll numbers needs AT MOST about how many comparisons?",
+   "options": [
+    "20",
+    "1,000",
+    "5,00,000",
+    "10,00,000"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Each comparison halves the range. 2²⁰ = 10,48,576 ≥ 10,00,000, so about 20 comparisons (log₂ n)."
+  },
+  {
+   "id": "q25",
+   "topic": "Efficiency",
+   "type": "order",
+   "q": "Arrange these growth rates from SLOWEST-growing to FASTEST-growing.",
+   "options": [
+    "1 (constant)",
+    "log n",
+    "n",
+    "n log n",
+    "n²",
+    "2ⁿ"
+   ],
+   "answer": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "marks": 3,
+   "explain": "1 < log n < n < n log n < n² < 2ⁿ for large n. At n = 10⁶ these are about 1, 20, 10⁶, 2 × 10⁷ and 10¹² steps; 2ⁿ is astronomically larger."
+  },
+  {
+   "id": "q26",
+   "topic": "Efficiency",
+   "type": "mcq",
+   "q": "To check whether 10,007 (a prime) is prime, you try divisors only from 2 up to √n. About how many divisions is that?",
+   "options": [
+    "About 100",
+    "About 5,000",
+    "About 10,000",
+    "Exactly 1"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "√10,007 ≈ 100, so divisors 2 … 100: 99 divisions. Trying all of 2 … n − 1 would need 10,005."
+  },
+  {
+   "id": "q27",
+   "topic": "Efficiency",
+   "type": "mcq",
+   "q": "How many times does the statement sum = sum + i run when n = 50?",
+   "code": "sum = 0;\nfor (i = 1; i <= n; i++)\n    sum = sum + i;",
+   "options": [
+    "1",
+    "49",
+    "50",
+    "1275"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "The loop runs once for each i from 1 to 50: 50 additions. (1275 is the final value of sum, not the number of steps.)"
+  },
+  {
+   "id": "q28",
+   "topic": "Correctness & testing",
+   "type": "mcq",
+   "q": "An algorithm is TOTALLY correct when:",
+   "options": [
+    "It always stops, and when it stops the answer is right",
+    "It gives the right answer for the example in the question",
+    "It compiles without errors",
+    "It runs in less than one second"
+   ],
+   "answer": 0,
+   "explain": "Total correctness = partial correctness (right answer if it stops) + termination (it always stops)."
+  },
+  {
+   "id": "q29",
+   "topic": "Correctness & testing",
+   "type": "mcq",
+   "q": "For the loop below, which statement is true after every pass i (a loop invariant)?",
+   "code": "sum = 0;\nfor (i = 1; i <= n; i++)\n    sum = sum + i;",
+   "options": [
+    "sum = 1 + 2 + … + i",
+    "sum = n(n + 1) / 2",
+    "sum = i",
+    "sum > n"
+   ],
+   "answer": 0,
+   "explain": "After pass i the loop has added 1 to i, so sum = 1 + … + i. When the loop ends (i = n) this becomes the post-condition sum = n(n + 1)/2."
+  },
+  {
+   "id": "q30",
+   "topic": "Correctness & testing",
+   "type": "mcq",
+   "q": "Grades: 80–100 A, 60–79 B, … , valid marks 0–100. Which set of inputs best tests the BOUNDARIES of grade A?",
+   "options": [
+    "79, 80, 100, 101",
+    "85, 90, 95",
+    "0, 50, 100",
+    "−5, 150"
+   ],
+   "answer": 0,
+   "explain": "Boundary-value testing checks both sides of each edge of grade A: 79/80 and 100/101."
+  },
+  {
+   "id": "q31",
+   "topic": "Correctness & testing",
+   "type": "mcq",
+   "q": "This code should give A for 80–100. Which input exposes the bug?",
+   "code": "if (marks > 80)       grade = 'A';\nelse if (marks >= 60) grade = 'B';",
+   "options": [
+    "80",
+    "90",
+    "100",
+    "79"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "The condition should be marks >= 80. With > 80, the boundary value 80 wrongly gets B. 79 gets B correctly."
+  },
+  {
+   "id": "q32",
+   "topic": "Data structures",
+   "type": "mcq",
+   "q": "Which of these can NOT be computed with just a running total and a count, and needs every mark stored (e.g. in an array)?",
+   "options": [
+    "Median",
+    "Average",
+    "Total",
+    "Number of students"
+   ],
+   "answer": 0,
+   "explain": "The median is the middle value after sorting, so all marks must be kept. Average, total and count only need a few variables."
+  },
+  {
+   "id": "q33",
+   "topic": "Data structures",
+   "type": "mcq",
+   "q": "Print requests are served first come, first served. Which data structure fits best?",
+   "options": [
+    "Queue",
+    "Stack",
+    "Tree",
+    "Graph"
+   ],
+   "answer": 0,
+   "explain": "First in, first out is a queue. A stack is last in, first out (like Undo)."
+  }
+ ]
+}

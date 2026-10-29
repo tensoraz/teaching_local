@@ -1,0 +1,970 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 Study Guide</title>
+<meta name="description" content="Introduction to Data Science: definition, lifecycle, roles, DS vs AI vs ML, applications, CRISP-DM and data-driven decisions, with a hands-on retail dataset.">
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<script src="/courses/shared/diagrams.js"></script>
+<style>
+  .pace { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 18px 0 4px; }
+  .pace a { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; color: var(--ink); font-size: 14px; }
+  .pace a:hover { border-color: var(--brand); text-decoration: none; }
+  .pace b { display: block; font-size: 12px; color: var(--accent); }
+  .diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .step-head { display: flex; gap: 12px; align-items: center; margin: 28px 0 8px; }
+  .step-head .n { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--brand); color: #fff; font-size: 15px; }
+  .step-head h3 { margin: 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .app { display: flex; flex-direction: column; gap: 6px; }
+  .app h3 { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
+  .app h3 span { font-size: 26px; }
+  .app dl { margin: 0; font-size: 14.5px; display: grid; grid-template-columns: 80px 1fr; gap: 4px 10px; }
+  .app dt { color: var(--ink-3); font-weight: 600; }
+  .app dd { margin: 0; color: var(--ink-2); }
+  .day { position: relative; margin: 18px 0; padding-left: 26px; }
+  .day::before { content: ""; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+  .day div { position: relative; margin-bottom: 12px; font-size: 15.5px; }
+  .day div::before { content: ""; position: absolute; left: -24px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--surface); }
+  .day b { display: inline-block; min-width: 64px; color: var(--ink-3); }
+  .phase { border-left: 4px solid var(--brand); background: var(--surface); border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 12px 0; border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .phase h4 { margin: 0 0 6px; font-size: 17px; }
+  .phase p, .phase ul { margin: 0 0 6px; font-size: 15.5px; }
+  .phase ul { padding-left: 20px; }
+  .chev { display: flex; gap: 4px; margin: 18px 0; flex-wrap: wrap; }
+  .chev div { flex: 1 1 140px; padding: 14px 14px 14px 22px; background: var(--brand-soft); color: var(--brand-ink); font-weight: 700;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 14px 50%); font-size: 15px; }
+  .chev div:first-child { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%); }
+  .chev small { display: block; font-weight: 500; color: var(--ink-2); font-size: 13px; }
+  .calc { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .calc label { font-size: 13px; color: var(--ink-3); font-weight: 600; }
+  .verdict { margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-weight: 600; }
+  .bar-wrap { display: flex; height: 34px; border-radius: 10px; overflow: hidden; margin: 12px 0 4px; font-size: 12.5px; font-weight: 700; }
+  .bar-wrap div { display: grid; place-items: center; color: #fff; white-space: nowrap; overflow: hidden; }
+  .order-pool button, .order-done button { margin: 4px; }
+  .order-done { min-height: 52px; border: 1px dashed var(--line); border-radius: 10px; padding: 6px; margin: 10px 0; }
+  .lab-ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: end; }
+  .lab-ctrl label { font-size: 13px; font-weight: 600; color: var(--ink-3); display: block; margin-bottom: 4px; }
+  .toggle { display: flex; gap: 8px; align-items: center; font-weight: 600; cursor: pointer; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  .toggle input { width: 18px; height: 18px; }
+  #labChart svg { width: 100%; height: auto; }
+  .task { display: grid; grid-template-columns: 28px 1fr; gap: 8px; margin: 10px 0; font-size: 15.5px; }
+  .task input { width: 18px; height: 18px; margin-top: 4px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  .matrix td, .matrix th { text-align: center; }
+  .matrix td:first-child, .matrix th:first-child { text-align: left; }
+  .dot { color: var(--brand); font-size: 18px; } .ring { color: var(--ink-3); font-size: 16px; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Data Science</a> › <a href="./">Unit 1</a> › <b>Study guide</b></div>
+  <a class="icon-btn" href="quiz.html">Quiz →</a>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+  <div class="progress"></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 1 · Study guide · 35 minutes</span>
+    <h1>Introduction to Data Science</h1>
+    <p class="lead">You already heard the theory on the board. Now you will see every idea working on a real dataset: <b>1,208 orders</b> from <b>KiranaMart</b>, a retail chain in six Indian cities. By the end you will have taken a small project through all six phases of CRISP-DM.</p>
+    <div class="pace">
+      <a href="#what"><b>0–6 min</b>What and why</a>
+      <a href="#lifecycle"><b>6–12 min</b>Lifecycle in action</a>
+      <a href="#roles"><b>12–17 min</b>Roles · DS vs AI vs ML</a>
+      <a href="#apps"><b>17–20 min</b>Applications</a>
+      <a href="#crisp"><b>20–27 min</b>CRISP-DM case study</a>
+      <a href="#ddd"><b>27–31 min</b>Data-driven decisions</a>
+      <a href="#lab"><b>31–35 min</b>Hands-on lab</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc">
+      <div class="t">On this page</div>
+      <a href="#what">1. What is data science?</a>
+      <a href="#why">2. Why it matters</a>
+      <a href="#lifecycle">3. The lifecycle</a>
+      <a href="#roles">4. Roles in a data team</a>
+      <a href="#vs">5. DS vs AI vs ML</a>
+      <a href="#apps">6. Real-life applications</a>
+      <a href="#crisp">7. CRISP-DM</a>
+      <a href="#ddd">8. Data-driven decisions</a>
+      <a href="#lab">9. Hands-on lab</a>
+      <a href="#summary">10. Summary and revision</a>
+    </nav>
+
+    <main>
+<!-- ================================================================ 1 -->
+<section class="block" id="what">
+  <div class="sec-no">Section 1</div>
+  <h2>What is data science?</h2>
+
+  <div class="definition">
+    Data science is the field that combines <b>statistics</b>, <b>programming</b> and <b>domain knowledge</b> to extract useful knowledge from data, structured or unstructured, and turn it into <b>decisions</b> or <b>data products</b>.
+    <small>Data products are things like a recommendation engine, a fraud alert or a sales forecast that run automatically.</small>
+  </div>
+
+  <p>Read the definition again and notice what it is <em>not</em> saying. It is not "making charts" and it is not "training AI models". Those are tools. The goal is always the same: <b>a better decision than you could make without the data.</b></p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Key word</th><th>What it means</th><th>KiranaMart example</th></tr>
+    <tr><td><b>Data</b></td><td>Raw recorded facts: numbers, text, images, clicks</td><td>Order KM10287: 2025-01-01, Mumbai, Beauty, ₹1,520, UPI</td></tr>
+    <tr><td><b>Statistics</b></td><td>Summarising and reasoning under uncertainty</td><td>Average rating is 3.84 ★; is a drop to 3.7 real or just noise?</td></tr>
+    <tr><td><b>Programming</b></td><td>Handling data at scale with code</td><td>Python + pandas reads 1,208 rows in a fraction of a second</td></tr>
+    <tr><td><b>Domain knowledge</b></td><td>Understanding the business or field</td><td>Knowing that Diwali changes buying behaviour in Oct–Nov</td></tr>
+    <tr><td><b>Insight</b></td><td>A non-obvious, useful finding</td><td>Electronics is 13% of orders but 49% of revenue</td></tr>
+    <tr><td><b>Decision</b></td><td>An action taken because of the insight</td><td>Stock extra electronics before October</td></tr>
+  </table></div>
+
+  <h3>From data to wisdom: the DIKW pyramid</h3>
+  <p>Data science moves you <b>up</b> this pyramid. Each level adds context and meaning to the one below.</p>
+  <figure class="diagram">
+    <svg viewBox="0 0 820 360" role="img" aria-label="DIKW pyramid: data, information, knowledge, wisdom">
+      <polygon points="40,340 400,340 340,265 100,265" style="fill:var(--brand-soft);stroke:var(--brand)"/>
+      <polygon points="100,258 340,258 285,185 155,185" style="fill:var(--teal-soft);stroke:var(--teal)"/>
+      <polygon points="155,178 285,178 240,108 200,108" style="fill:var(--violet-soft);stroke:var(--violet)"/>
+      <polygon points="200,101 240,101 220,30" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+      <text x="220" y="308" text-anchor="middle" style="font-size:19px;font-weight:800;fill:var(--brand-ink)">DATA</text>
+      <text x="220" y="228" text-anchor="middle" style="font-size:17px;font-weight:800;fill:var(--teal)">INFORMATION</text>
+      <text x="220" y="163" text-anchor="middle" style="font-size:13.5px;font-weight:800;fill:var(--violet)">KNOWLEDGE</text>
+      <text x="268" y="70" style="font-size:15px;font-weight:800;fill:var(--accent)">WISDOM</text>
+      <g style="font-size:14px;fill:var(--ink-2)">
+        <text x="430" y="296">“KM10287, Mumbai, Beauty, ₹1,520, UPI, ★4”</text>
+        <text x="430" y="316" style="fill:var(--ink-3);font-size:12.5px">raw facts, no meaning yet</text>
+        <text x="430" y="216">“November revenue was ₹5.5 lakh, the year’s highest”</text>
+        <text x="430" y="236" style="fill:var(--ink-3);font-size:12.5px">organised, summarised, answers who / what / when</text>
+        <text x="430" y="136">“Festive discounts drive the Oct–Nov spike;</text>
+        <text x="430" y="154">  slow delivery pulls ratings down”</text>
+        <text x="430" y="172" style="fill:var(--ink-3);font-size:12.5px">patterns and causes, answers how / why</text>
+        <text x="430" y="56">“Stock electronics and hire delivery staff</text>
+        <text x="430" y="74">  from September”</text>
+        <text x="430" y="92" style="fill:var(--ink-3);font-size:12.5px">the right action, answers what should we do</text>
+      </g>
+    </svg>
+    <figcaption>DIKW pyramid with real findings from today’s dataset</figcaption>
+  </figure>
+
+  <h3>The three skills: Drew Conway’s Venn diagram</h3>
+  <div class="two">
+    <figure class="diagram">
+      <svg viewBox="0 0 420 380" role="img" aria-label="Venn diagram of hacking skills, maths and statistics, and domain expertise">
+        <circle cx="150" cy="140" r="105" style="fill:var(--brand);fill-opacity:.16;stroke:var(--brand)"/>
+        <circle cx="270" cy="140" r="105" style="fill:var(--accent);fill-opacity:.16;stroke:var(--accent)"/>
+        <circle cx="210" cy="240" r="105" style="fill:var(--good);fill-opacity:.16;stroke:var(--good)"/>
+        <text x="105" y="105" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--brand-ink)">Programming</text>
+        <text x="315" y="105" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--accent)">Maths &amp; Stats</text>
+        <text x="210" y="315" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--good)">Domain knowledge</text>
+        <text x="210" y="112" text-anchor="middle" style="font-size:12px;fill:var(--ink-2)">Machine</text>
+        <text x="210" y="126" text-anchor="middle" style="font-size:12px;fill:var(--ink-2)">learning</text>
+        <text x="145" y="222" text-anchor="middle" style="font-size:12px;fill:var(--bad)">Danger</text>
+        <text x="145" y="236" text-anchor="middle" style="font-size:12px;fill:var(--bad)">zone!</text>
+        <text x="278" y="222" text-anchor="middle" style="font-size:12px;fill:var(--ink-2)">Traditional</text>
+        <text x="278" y="236" text-anchor="middle" style="font-size:12px;fill:var(--ink-2)">research</text>
+        <text x="210" y="178" text-anchor="middle" style="font-size:15px;font-weight:800;fill:var(--ink)">DATA</text>
+        <text x="210" y="196" text-anchor="middle" style="font-size:15px;font-weight:800;fill:var(--ink)">SCIENCE</text>
+      </svg>
+      <figcaption>Adapted from Drew Conway (2010)</figcaption>
+    </figure>
+    <div>
+      <p><b>Programming + Stats</b> without domain knowledge gives you machine learning that may optimise the wrong thing.</p>
+      <p><b>Programming + Domain</b> without stats is the <span style="color:var(--bad);font-weight:700">danger zone</span>: you can produce convincing-looking analysis that is statistically wrong.</p>
+      <p><b>Stats + Domain</b> without programming is traditional research: correct, but slow and hard to scale.</p>
+      <div class="callout idea"><b>The insight</b>A data scientist does not need to be the best at all three. They need enough of each to ask good questions, check the maths and write the code, and they work in a <a href="#roles">team</a> that covers the gaps.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ 2 -->
+<section class="block" id="why">
+  <div class="sec-no">Section 2</div>
+  <h2>Why data science matters now</h2>
+  <p>Three things changed together: we create far more data, storage and computing became cheap, and good open-source tools (Python, pandas, scikit-learn) made analysis possible for anyone.</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v">~2 ZB</div><div class="l">data created worldwide, 2010</div></div>
+    <div class="kpi"><div class="v">~64 ZB</div><div class="l">data created worldwide, 2020</div></div>
+    <div class="kpi"><div class="v">~180 ZB</div><div class="l">projected for 2025</div></div>
+    <div class="kpi"><div class="v">~2.3 yrs</div><div class="l">time for the yearly volume to double</div></div>
+  </div>
+  <p class="muted" style="font-size:13px;margin-top:-6px">Approximate figures based on IDC Global DataSphere estimates. 1 zettabyte (ZB) = 10<sup>21</sup> bytes = one billion terabytes.</p>
+
+  <div class="callout warn"><b>Do the maths: how fast is data growing?</b>
+    From 2 ZB (2010) to 180 ZB (2025) is 15 years. The compound annual growth rate is<br>
+    <code>CAGR = (180 / 2)^(1/15) − 1 = 90^0.0667 − 1 ≈ 0.35</code>, so about <b>35% more data every year</b>.<br>
+    Doubling time <code>= ln 2 / ln 1.35 ≈ 0.693 / 0.300 ≈ 2.3 years</code>. Every 2.3 years the world produces twice as much data as before.
+  </div>
+
+  <h3>The 5 V’s of big data</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>V</th><th>Meaning</th><th>Indian example</th><th>Challenge it creates</th></tr>
+    <tr><td><b>Volume</b></td><td>How much data</td><td>UPI handles well over 10 billion payments a month</td><td>Cannot fit on one machine; needs distributed storage</td></tr>
+    <tr><td><b>Velocity</b></td><td>How fast it arrives</td><td>Every UPI payment must pass a fraud check in milliseconds</td><td>Real-time (streaming) processing</td></tr>
+    <tr><td><b>Variety</b></td><td>How many forms</td><td>Food app: orders (tables), reviews (text), dish photos (images), GPS (location)</td><td>Different tools for each type</td></tr>
+    <tr><td><b>Veracity</b></td><td>How trustworthy</td><td>Our data has “delhi ” and “Delhi”, duplicates, quantity −1</td><td>Cleaning and validation</td></tr>
+    <tr><td><b>Value</b></td><td>How useful</td><td>Knowing slow delivery causes bad ratings is worth acting on</td><td>Choosing the right question</td></tr>
+  </table></div>
+
+  <h3>Where the value comes from</h3>
+  <div class="grid g3">
+    <div class="card"><b>🎯 Better decisions</b><p class="muted" style="margin:6px 0 0;font-size:15px">Replace guesswork with evidence: which product, which price, which city.</p></div>
+    <div class="card"><b>🧑‍🤝‍🧑 Personalisation</b><p class="muted" style="margin:6px 0 0;font-size:15px">Each user sees the products, songs or videos most relevant to them.</p></div>
+    <div class="card"><b>⚙️ Efficiency</b><p class="muted" style="margin:6px 0 0;font-size:15px">Forecast demand so you neither run out of stock nor waste it.</p></div>
+    <div class="card"><b>🛡️ Risk reduction</b><p class="muted" style="margin:6px 0 0;font-size:15px">Detect fraud, defaults and machine failures before they happen.</p></div>
+    <div class="card"><b>💡 New products</b><p class="muted" style="margin:6px 0 0;font-size:15px">Maps ETAs, credit scores, voice assistants are all data products.</p></div>
+    <div class="card"><b>🏥 Social good</b><p class="muted" style="margin:6px 0 0;font-size:15px">Disease surveillance, crop advisories, disaster early warning.</p></div>
+  </div>
+</section>
+
+<!-- ================================================================ 3 -->
+<section class="block" id="lifecycle">
+  <div class="sec-no">Section 3</div>
+  <h2>The data science lifecycle</h2>
+  <p>Every data project, small or huge, moves through the same stages. It is a <b>cycle</b>, not a straight line: results from one round raise new questions for the next.</p>
+
+  <figure class="diagram">
+    <svg id="lifeSvg" viewBox="0 0 800 440" role="img" aria-label="Seven stage data science lifecycle"></svg>
+    <figcaption>The 7-stage lifecycle. Arrows show the normal flow; in practice you often loop back.</figcaption>
+  </figure>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>#</th><th>Stage</th><th>Key question</th><th>KiranaMart example</th><th>Typical tools</th></tr>
+    <tr><td>1</td><td><b>Problem definition</b></td><td>What decision are we trying to improve?</td><td>“Why are ratings falling, and what should we fix?”</td><td>Meetings, KPIs</td></tr>
+    <tr><td>2</td><td><b>Data collection</b></td><td>What data exists and how do we get it?</td><td>Export orders from the billing database to CSV</td><td>SQL, APIs, scraping</td></tr>
+    <tr><td>3</td><td><b>Data cleaning</b></td><td>Is the data correct and consistent?</td><td>Remove 8 duplicates, fix “delhi ”, drop qty −1</td><td>pandas</td></tr>
+    <tr><td>4</td><td><b>Exploratory analysis</b></td><td>What patterns and surprises are there?</td><td>Revenue by month, category, city</td><td>pandas, Matplotlib</td></tr>
+    <tr><td>5</td><td><b>Modeling</b></td><td>Can we describe or predict it with a model?</td><td>rating ≈ −0.29 × delivery_days + 4.66</td><td>NumPy, scikit-learn</td></tr>
+    <tr><td>6</td><td><b>Evaluation</b></td><td>Is the model good enough to trust?</td><td>Average error 0.58 stars; pattern is clear</td><td>Metrics, validation</td></tr>
+    <tr><td>7</td><td><b>Deployment and monitoring</b></td><td>How do people use it, and does it keep working?</td><td>Weekly dashboard; alert if delivery &gt; 3 days</td><td>Dashboards, APIs</td></tr>
+  </table></div>
+
+  <h3>Where does the time actually go?</h3>
+  <div class="bar-wrap" aria-label="Indicative time split">
+    <div style="flex:5;background:#7b8597">5%</div>
+    <div style="flex:15;background:#149c9c">Collect 15%</div>
+    <div style="flex:40;background:#e8833a">Cleaning and preparation 40%</div>
+    <div style="flex:15;background:#7a5af5">EDA 15%</div>
+    <div style="flex:10;background:#2a6fdb">Model 10%</div>
+    <div style="flex:5;background:#1b4fa8">5%</div>
+    <div style="flex:10;background:#1f9d6b">Deploy 10%</div>
+  </div>
+  <p class="muted" style="font-size:13px">Indicative split. Practitioners regularly report that preparing data takes more time than modeling it.</p>
+
+  <h3>Walk-through: the lifecycle on real data</h3>
+  <p>Below is real Python run on our dataset. Every output is exactly what the code prints. You will run the same code in the <a href="#lab">lab</a>.</p>
+
+  <div class="step-head"><div class="n">2</div><h3>Collect: load the data and look at it</h3></div>
+<pre class="code" data-lang="py">import pandas as pd
+
+df = pd.read_csv("kiranamart_sales_2025.csv")
+print(df.shape)                 # (rows, columns)
+print(df.isna().sum()[df.isna().sum() &gt; 0])
+print("Duplicate rows:", df.duplicated().sum())
+print("Rows with quantity &lt;= 0:", (df["quantity"] &lt;= 0).sum())
+print(sorted(df["city"].unique()))</pre>
+<pre class="out">(1208, 12)
+customer_age    31
+rating          64
+Duplicate rows: 8
+Rows with quantity &lt;= 0: 3
+['Bengaluru', 'Chandigarh', 'Delhi', 'Hyderabad', 'Mumbai', 'Pune', 'delhi ']</pre>
+  <div class="two">
+    <figure class="shot"><img src="img/missing_values.png" alt="Bar chart of missing values: rating 64, customer_age 31" loading="lazy"><figcaption>Raw data is never perfect.</figcaption></figure>
+    <div class="callout warn" style="margin-top:18px"><b>Spot the problems</b>
+      <ul style="margin:6px 0 0;padding-left:20px">
+        <li><b>64</b> orders without a rating, <b>31</b> without an age</li>
+        <li><b>8</b> exact duplicate rows (an order counted twice)</li>
+        <li><b>3</b> orders with quantity −1 (impossible)</li>
+        <li><b>“delhi ”</b> with a space and lower-case d: a 7th “city” that does not exist</li>
+      </ul></div>
+  </div>
+
+  <div class="step-head"><div class="n">3</div><h3>Clean: fix what is wrong, keep what is useful</h3></div>
+<pre class="code" data-lang="py">clean = df.drop_duplicates().copy()                       # remove the 8 duplicates
+clean = clean[clean["quantity"] &gt; 0]                      # drop impossible quantities
+clean["city"] = clean["city"].str.strip().str.title()     # "delhi " -&gt; "Delhi"
+clean["order_date"] = pd.to_datetime(clean["order_date"])
+clean["revenue"] = clean["quantity"] * clean["unit_price"] * (1 - clean["discount_pct"] / 100)
+print("Rows before:", len(df), " after cleaning:", len(clean))</pre>
+<pre class="out">Rows before: 1208  after cleaning: 1197</pre>
+  <div class="callout tip"><b>Why not delete rows with a missing rating?</b> Those 64 orders still have valid revenue. Deleting them would make sales look smaller than they were. We keep them and ignore the blank only when we study ratings. Cleaning means <i>thinking</i>, not just deleting.</div>
+
+  <div class="step-head"><div class="n">4</div><h3>Explore: ask questions, draw pictures</h3></div>
+<pre class="code" data-lang="py">by_cat = clean.groupby("category").agg(orders=("order_id", "count"), revenue=("revenue", "sum"))
+by_cat["share_of_orders_%"]  = (100 * by_cat["orders"]  / by_cat["orders"].sum()).round(1)
+by_cat["share_of_revenue_%"] = (100 * by_cat["revenue"] / by_cat["revenue"].sum()).round(1)
+print(by_cat.sort_values("revenue", ascending=False).drop(columns="revenue"))</pre>
+<pre class="out">             orders  share_of_orders_%  share_of_revenue_%
+category
+Electronics     160               13.4                49.0
+Fashion         266               22.2                22.3
+Home            151               12.6                10.9
+Grocery         465               38.8                10.8
+Beauty          155               12.9                 7.0</pre>
+  <div class="two">
+    <figure class="shot"><img src="img/revenue_by_category.png" alt="Revenue by category: Electronics 15.8 lakh far ahead" loading="lazy"><figcaption>Electronics alone earns almost half the money.</figcaption></figure>
+    <figure class="shot"><img src="img/monthly_revenue.png" alt="Monthly revenue peaking in November" loading="lazy"><figcaption>Oct–Nov festive season is the clear peak.</figcaption></figure>
+  </div>
+  <div class="callout idea"><b>Insight</b>Grocery has the <b>most orders</b> (39%) but only 11% of revenue. Electronics has few orders but half the revenue. If you looked only at order counts, you would protect the wrong category. <b>The metric you choose changes the answer.</b></div>
+  <figure class="shot" style="max-width:560px"><img src="img/payment_mode.png" alt="UPI is 53% of orders" loading="lazy"><figcaption>More than half of all orders are paid with UPI.</figcaption></figure>
+
+  <div class="step-head"><div class="n">5</div><h3>Model: describe the pattern with an equation</h3></div>
+<pre class="code" data-lang="py">import numpy as np
+rated = clean.dropna(subset=["rating"])
+a, b = np.polyfit(rated["delivery_days"], rated["rating"], deg=1)   # best straight line
+r = np.corrcoef(rated["delivery_days"], rated["rating"])[0, 1]
+print(f"rating = {a:.2f} x delivery_days + {b:.2f}   (r = {r:.2f})")</pre>
+<pre class="out">rating = -0.29 x delivery_days + 4.66   (r = -0.47)</pre>
+  <div class="two">
+    <figure class="shot"><img src="img/delivery_vs_rating.png" alt="Average rating falls from 4.35 at 1 day to 2.0 at 7 days" loading="lazy"><figcaption>Each extra day of delivery costs about 0.3 stars.</figcaption></figure>
+    <div>
+      <p>The model says: start at 4.66 ★, then lose <b>0.29 ★ for every day</b> of delivery.</p>
+      <p>The correlation <code>r = −0.47</code> is negative (one goes up, the other goes down) and moderate (other things affect ratings too).</p>
+      <div class="step-head" style="margin-top:6px"><div class="n">6</div><h3>Evaluate</h3></div>
+<pre class="code" data-lang="py">pred = a * rated["delivery_days"] + b
+print(round((rated["rating"] - pred).abs().mean(), 2))</pre>
+<pre class="out">0.58</pre>
+      <p>On average the prediction is off by 0.58 stars. That is not good enough to predict one customer’s exact rating, but it is <b>good enough for the business question</b>: delivery speed clearly matters.</p>
+    </div>
+  </div>
+
+  <div class="step-head"><div class="n">7</div><h3>Deploy and monitor</h3></div>
+  <p>For KiranaMart, “deployment” is a one-page weekly dashboard plus an alert when any city’s average delivery goes above 3 days. Monitoring means checking every month that the pattern still holds. Customer behaviour changes; a model that was right last year can drift.</p>
+
+  <div class="activity" id="orderGame">
+    <span class="tag">Try it · 1 min</span>
+    <h3 style="margin:0 0 6px">Put the lifecycle in order</h3>
+    <p class="muted" style="font-size:15px;margin-bottom:6px">Click the stages in the correct order.</p>
+    <div class="order-pool"></div>
+    <div class="order-done"></div>
+    <div class="feedback"></div>
+    <button class="btn ghost" style="margin-top:6px" onclick="orderGame.reset()">Reset</button>
+  </div>
+</section>
+
+<!-- ================================================================ 4 -->
+<section class="block" id="roles">
+  <div class="sec-no">Section 4</div>
+  <h2>Key roles and responsibilities</h2>
+  <p>Real projects are done by teams. Think of a restaurant:</p>
+  <div class="callout story"><b>🍽️ The restaurant analogy</b>
+    The <b>data engineer</b> builds the supply chain that brings clean ingredients to the kitchen. The <b>data analyst</b> reports what sold yesterday and why. The <b>data scientist</b> is the chef who invents new recipes. The <b>ML engineer</b> turns a recipe into a production line that serves thousands a day. The <b>business analyst</b> talks to customers and tells the kitchen what they actually want.
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Role</th><th>Main question</th><th>Responsibilities</th><th>Key tools</th><th>Typical output</th></tr>
+    <tr><td><b>Data Analyst</b></td><td>What happened, and why?</td><td>Query data, build reports and dashboards, explain trends</td><td>SQL, Excel, Power BI / Tableau, pandas</td><td>Weekly sales dashboard</td></tr>
+    <tr><td><b>Data Scientist</b></td><td>What will happen? What should we do?</td><td>Frame problems, explore data, build and evaluate models, communicate findings</td><td>Python, pandas, scikit-learn, statistics</td><td>Churn prediction model + recommendations</td></tr>
+    <tr><td><b>Data Engineer</b></td><td>Is the right data available, reliable and fast?</td><td>Build pipelines (ETL), databases, data warehouses; keep data flowing</td><td>SQL, Spark, Airflow, cloud storage</td><td>Nightly pipeline that loads all orders</td></tr>
+    <tr><td><b>ML Engineer</b></td><td>How do we run the model in production?</td><td>Package models as services, scale them, make them fast</td><td>Python, Docker, APIs, cloud ML platforms</td><td>Recommendation API serving every page</td></tr>
+    <tr><td><b>Business Analyst</b></td><td>What does the business really need?</td><td>Gather requirements, define KPIs, translate between business and tech</td><td>Excel, documentation, BI tools</td><td>Problem statement with success metrics</td></tr>
+    <tr><td><b>Data Architect</b></td><td>How should all our data be organised?</td><td>Design data models, storage, security and governance</td><td>Database design, cloud architecture</td><td>Company-wide data blueprint</td></tr>
+    <tr><td><b>MLOps Engineer</b></td><td>Is the model still working well?</td><td>Automate retraining, monitor drift, version models and data</td><td>MLflow, CI/CD, monitoring tools</td><td>Alert: “model accuracy fell 8% this month”</td></tr>
+    <tr><td><b>DS Manager / Product Owner</b></td><td>Are we working on the most valuable problems?</td><td>Prioritise projects, manage the team, measure business impact</td><td>Roadmaps, KPIs</td><td>Quarterly plan tied to revenue goals</td></tr>
+  </table></div>
+
+  <h3>Who leads which stage?</h3>
+  <div class="tbl-wrap"><table class="matrix">
+    <tr><th>Role</th><th>Problem</th><th>Collect</th><th>Clean</th><th>EDA</th><th>Model</th><th>Evaluate</th><th>Deploy</th></tr>
+    <tr><td>Business Analyst</td><td class="dot">●</td><td></td><td></td><td class="ring">○</td><td></td><td class="ring">○</td><td></td></tr>
+    <tr><td>Data Engineer</td><td></td><td class="dot">●</td><td class="dot">●</td><td></td><td></td><td></td><td class="ring">○</td></tr>
+    <tr><td>Data Analyst</td><td class="ring">○</td><td class="ring">○</td><td class="dot">●</td><td class="dot">●</td><td></td><td></td><td class="ring">○</td></tr>
+    <tr><td>Data Scientist</td><td class="ring">○</td><td></td><td class="ring">○</td><td class="dot">●</td><td class="dot">●</td><td class="dot">●</td><td></td></tr>
+    <tr><td>ML / MLOps Engineer</td><td></td><td></td><td></td><td></td><td class="ring">○</td><td class="ring">○</td><td class="dot">●</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:13px">● leads · ○ supports. In a small company one person may play three of these roles.</p>
+
+  <div class="activity" id="roleGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">Who should take this task?</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 5 -->
+<section class="block" id="vs">
+  <div class="sec-no">Section 5</div>
+  <h2>Data science vs AI vs machine learning</h2>
+  <p>These words are often used as if they mean the same thing. They do not. AI, ML and DL are <b>nested</b>; data science <b>overlaps</b> with them but also includes a lot that is not AI at all.</p>
+
+  <div class="two">
+    <figure class="diagram">
+      <svg viewBox="0 0 470 360" role="img" aria-label="AI contains ML which contains DL; data science overlaps all of them">
+        <ellipse cx="200" cy="180" rx="185" ry="165" style="fill:var(--brand);fill-opacity:.10;stroke:var(--brand);stroke-width:2"/>
+        <ellipse cx="215" cy="205" rx="130" ry="120" style="fill:var(--violet);fill-opacity:.12;stroke:var(--violet);stroke-width:2"/>
+        <ellipse cx="225" cy="235" rx="72" ry="66" style="fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:2"/>
+        <ellipse cx="350" cy="190" rx="110" ry="125" style="fill:var(--good);fill-opacity:.12;stroke:var(--good);stroke-width:2;stroke-dasharray:7 5"/>
+        <text x="110" y="70" style="font-size:16px;font-weight:800;fill:var(--brand-ink)">Artificial Intelligence</text>
+        <text x="130" y="122" style="font-size:15px;font-weight:800;fill:var(--violet)">Machine Learning</text>
+        <text x="225" y="232" text-anchor="middle" style="font-size:14px;font-weight:800;fill:var(--accent)">Deep</text>
+        <text x="225" y="250" text-anchor="middle" style="font-size:14px;font-weight:800;fill:var(--accent)">Learning</text>
+        <text x="400" y="110" text-anchor="middle" style="font-size:15px;font-weight:800;fill:var(--good)">Data</text>
+        <text x="400" y="128" text-anchor="middle" style="font-size:15px;font-weight:800;fill:var(--good)">Science</text>
+        <text x="410" y="230" text-anchor="middle" style="font-size:11.5px;fill:var(--ink-2)">statistics,</text>
+        <text x="410" y="244" text-anchor="middle" style="font-size:11.5px;fill:var(--ink-2)">EDA, dashboards,</text>
+        <text x="410" y="258" text-anchor="middle" style="font-size:11.5px;fill:var(--ink-2)">A/B tests</text>
+        <text x="60" y="190" style="font-size:11.5px;fill:var(--ink-2)">rule-based</text>
+        <text x="60" y="204" style="font-size:11.5px;fill:var(--ink-2)">expert systems,</text>
+        <text x="60" y="218" style="font-size:11.5px;fill:var(--ink-2)">search, planning</text>
+      </svg>
+      <figcaption>AI ⊃ ML ⊃ DL. Data science overlaps, but is not inside AI.</figcaption>
+    </figure>
+    <div class="grid" style="gap:10px">
+      <div class="card" style="padding:14px 16px"><b style="color:var(--brand-ink)">Artificial Intelligence</b><br><span style="font-size:15px">Making machines do tasks that need human-like intelligence: reasoning, understanding language, seeing, planning. Can be rule-based or learned.</span></div>
+      <div class="card" style="padding:14px 16px"><b style="color:var(--violet)">Machine Learning</b><br><span style="font-size:15px">A part of AI where the machine <b>learns rules from data</b> instead of being given them by a programmer.</span></div>
+      <div class="card" style="padding:14px 16px"><b style="color:var(--accent)">Deep Learning</b><br><span style="font-size:15px">A part of ML that uses many-layered neural networks. Best for images, speech and text. Needs lots of data and computing.</span></div>
+      <div class="card" style="padding:14px 16px"><b style="color:var(--good)">Data Science</b><br><span style="font-size:15px">The end-to-end process of getting <b>insight and decisions</b> from data. Uses ML when useful, but also statistics, visualisation and plain good thinking.</span></div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Data Science</th><th>Artificial Intelligence</th><th>Machine Learning</th></tr>
+    <tr><td><b>Main goal</b></td><td>Insight and better decisions</td><td>Intelligent behaviour</td><td>Learn patterns to predict</td></tr>
+    <tr><td><b>Question</b></td><td>“What is happening and what should we do?”</td><td>“Can a machine act intelligently here?”</td><td>“Given past examples, what is the answer for a new one?”</td></tr>
+    <tr><td><b>Typical output</b></td><td>Report, dashboard, recommendation, model</td><td>Chatbot, robot, game player, assistant</td><td>Trained model (predictor)</td></tr>
+    <tr><td><b>Methods</b></td><td>Statistics, EDA, visualisation, ML</td><td>Rules, search, logic, ML, DL</td><td>Regression, decision trees, clustering, neural nets</td></tr>
+    <tr><td><b>KiranaMart example</b></td><td>“Ratings fall with delivery time; fix delivery in slow cities.”</td><td>A chatbot that answers “Where is my order?”</td><td>Predict whether a new order will get a bad rating</td></tr>
+    <tr><td><b>Always needs ML?</b></td><td>No</td><td>No</td><td>Yes, by definition</td></tr>
+  </table></div>
+
+  <h3>Traditional programming vs machine learning</h3>
+  <figure class="diagram">
+    <svg viewBox="0 0 800 220" role="img" aria-label="Traditional programming takes rules and data to give answers; machine learning takes data and answers to give rules">
+      <defs><marker id="vsArw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--ink-3)"/></marker></defs>
+      <text x="20" y="34" style="font-size:15px;font-weight:800;fill:var(--ink)">Traditional programming</text>
+      <rect x="20" y="48" width="110" height="34" rx="8" style="fill:var(--surface-2);stroke:var(--line)"/><text x="75" y="70" text-anchor="middle" style="font-size:14px;fill:var(--ink)">Rules</text>
+      <rect x="20" y="88" width="110" height="34" rx="8" style="fill:var(--surface-2);stroke:var(--line)"/><text x="75" y="110" text-anchor="middle" style="font-size:14px;fill:var(--ink)">Data</text>
+      <line x1="135" y1="85" x2="200" y2="85" style="stroke:var(--ink-3);stroke-width:2" marker-end="url(#vsArw)"/>
+      <rect x="205" y="60" width="130" height="50" rx="10" style="fill:var(--brand-soft);stroke:var(--brand)"/><text x="270" y="90" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--brand-ink)">Program</text>
+      <line x1="340" y1="85" x2="400" y2="85" style="stroke:var(--ink-3);stroke-width:2" marker-end="url(#vsArw)"/>
+      <rect x="405" y="68" width="110" height="34" rx="8" style="fill:var(--good-soft);stroke:var(--good)"/><text x="460" y="90" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--good)">Answers</text>
+
+      <text x="20" y="152" style="font-size:15px;font-weight:800;fill:var(--ink)">Machine learning</text>
+      <rect x="20" y="164" width="110" height="34" rx="8" style="fill:var(--surface-2);stroke:var(--line)"/><text x="75" y="186" text-anchor="middle" style="font-size:14px;fill:var(--ink)">Data</text>
+      <rect x="20" y="164" width="0" height="0"/>
+      <rect x="140" y="164" width="110" height="34" rx="8" style="fill:var(--surface-2);stroke:var(--line)"/><text x="195" y="186" text-anchor="middle" style="font-size:14px;fill:var(--ink)">Answers</text>
+      <line x1="255" y1="181" x2="300" y2="181" style="stroke:var(--ink-3);stroke-width:2" marker-end="url(#vsArw)"/>
+      <rect x="305" y="156" width="130" height="50" rx="10" style="fill:var(--violet-soft);stroke:var(--violet)"/><text x="370" y="186" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--violet)">Learning</text>
+      <line x1="440" y1="181" x2="500" y2="181" style="stroke:var(--ink-3);stroke-width:2" marker-end="url(#vsArw)"/>
+      <rect x="505" y="164" width="110" height="34" rx="8" style="fill:var(--accent-soft);stroke:var(--accent)"/><text x="560" y="186" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--accent)">Rules</text>
+      <text x="560" y="34" text-anchor="middle" style="font-size:13px;fill:var(--ink-3)"></text>
+      <text x="640" y="80" style="font-size:13px;fill:var(--ink-2)">You write the rule.</text>
+      <text x="640" y="176" style="font-size:13px;fill:var(--ink-2)">The computer finds</text>
+      <text x="640" y="194" style="font-size:13px;fill:var(--ink-2)">the rule for you.</text>
+    </svg>
+  </figure>
+  <div class="two">
+<pre class="code" data-lang="py"># Traditional: a human writes the rule
+def expected_rating(delivery_days):
+    if delivery_days &lt;= 3:
+        return 4
+    return 3
+
+print(expected_rating(2), expected_rating(6))</pre>
+<pre class="code" data-lang="py"># Machine learning: the rule is learned from 1,133 rated orders
+a, b = np.polyfit(rated["delivery_days"], rated["rating"], 1)
+predict = lambda d: round(a * d + b, 2)
+
+print(predict(2), predict(6))</pre>
+  </div>
+<pre class="out">Traditional:  4 3          (a guess someone typed in)
+Learned:      4.08 2.91    (found from data, and updates when the data changes)</pre>
+
+  <div class="activity" id="vsGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">Which one is it?</h3>
+    <p class="muted" style="font-size:15px">Choose the <b>best</b> label for each example.</p>
+    <div class="vg"></div>
+  </div>
+
+  <div class="callout warn"><b>Common misconceptions</b>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li><b>“Data science = AI.”</b> A dashboard that shows Electronics earns half the revenue is pure data science with zero AI.</li>
+      <li><b>“All AI learns from data.”</b> A chess engine based on hand-written rules and search is AI but not ML.</li>
+      <li><b>“Deep learning is always better.”</b> For a table of 1,200 orders, a simple line or tree usually beats a neural network and is easier to explain.</li>
+    </ul></div>
+</section>
+
+<!-- ================================================================ 6 -->
+<section class="block" id="apps">
+  <div class="sec-no">Section 6</div>
+  <h2>Real-life applications</h2>
+  <p>You use dozens of data products before lunch. Here is one ordinary day:</p>
+  <div class="day">
+    <div><b>07:00</b> Your fitness band scores last night’s sleep from motion and heart-rate data.</div>
+    <div><b>08:30</b> Maps predicts 23 minutes to college using live traffic from millions of phones.</div>
+    <div><b>13:00</b> A food app estimates delivery time from distance, restaurant load and rider availability.</div>
+    <div><b>16:00</b> You pay by UPI; your bank’s fraud model scores the payment before it completes.</div>
+    <div><b>19:00</b> An e-commerce app shows “customers also bought” based on millions of baskets.</div>
+    <div><b>22:00</b> Your OTT app chooses which shows and even which thumbnail to show you.</div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card app"><h3><span>🏥</span>Healthcare</h3><dl>
+      <dt>Problem</dt><dd>Find disease early</dd><dt>Data</dt><dd>X-rays, scans, lab reports, patient history</dd>
+      <dt>Method</dt><dd>Image classification (deep learning), risk scores</dd><dt>Result</dt><dd>Screening support, e.g. for diabetic eye disease and TB from X-rays</dd></dl></div>
+    <div class="card app"><h3><span>🏦</span>Banking and fintech</h3><dl>
+      <dt>Problem</dt><dd>Stop fraud, decide on loans</dd><dt>Data</dt><dd>Transaction history, device, location, repayments</dd>
+      <dt>Method</dt><dd>Anomaly detection, classification</dd><dt>Result</dt><dd>Suspicious payments flagged in real time; faster credit decisions</dd></dl></div>
+    <div class="card app"><h3><span>🛒</span>Retail and e-commerce</h3><dl>
+      <dt>Problem</dt><dd>What to show, stock and price</dd><dt>Data</dt><dd>Clicks, baskets, searches, sales history</dd>
+      <dt>Method</dt><dd>Recommendation systems, demand forecasting</dd><dt>Result</dt><dd>Personal home pages; stock planned before big sales</dd></dl></div>
+    <div class="card app"><h3><span>🛵</span>Food and quick delivery</h3><dl>
+      <dt>Problem</dt><dd>Accurate delivery times</dd><dt>Data</dt><dd>GPS, traffic, prep times, weather</dd>
+      <dt>Method</dt><dd>Regression, route optimisation</dd><dt>Result</dt><dd>ETAs shown to customers; riders assigned efficiently</dd></dl></div>
+    <div class="card app"><h3><span>🚆</span>Transport</h3><dl>
+      <dt>Problem</dt><dd>Traffic, seat demand, pricing</dd><dt>Data</dt><dd>Phone locations, bookings, timetables</dd>
+      <dt>Method</dt><dd>Time-series forecasting</dd><dt>Result</dt><dd>Live traffic maps; waitlist confirmation chances; dynamic fares</dd></dl></div>
+    <div class="card app"><h3><span>🌾</span>Agriculture</h3><dl>
+      <dt>Problem</dt><dd>When to sow, irrigate, sell</dd><dt>Data</dt><dd>Weather, soil, satellite images, mandi prices</dd>
+      <dt>Method</dt><dd>Forecasting, image analysis</dd><dt>Result</dt><dd>Crop and weather advisories sent to farmers’ phones</dd></dl></div>
+    <div class="card app"><h3><span>🎬</span>Entertainment</h3><dl>
+      <dt>Problem</dt><dd>Keep viewers watching</dd><dt>Data</dt><dd>Watch history, pauses, skips, ratings</dd>
+      <dt>Method</dt><dd>Recommendation, A/B testing</dd><dt>Result</dt><dd>Personal rows and thumbnails; decisions on what to produce</dd></dl></div>
+    <div class="card app"><h3><span>🏏</span>Sports</h3><dl>
+      <dt>Problem</dt><dd>Pick players, plan strategy</dd><dt>Data</dt><dd>Ball-by-ball records, ball-tracking, fitness data</dd>
+      <dt>Method</dt><dd>Statistics, simulation, computer vision</dd><dt>Result</dt><dd>Match-ups, field placements, auction strategy, DRS ball-tracking</dd></dl></div>
+    <div class="card app"><h3><span>🏛️</span>Government</h3><dl>
+      <dt>Problem</dt><dd>Plan services, respond to disasters</dd><dt>Data</dt><dd>Census, satellite, weather radar, tax filings</dd>
+      <dt>Method</dt><dd>Forecasting, geo-analysis</dd><dt>Result</dt><dd>Cyclone early warnings and evacuations; targeted welfare schemes</dd></dl></div>
+  </div>
+  <div class="callout idea" style="margin-top:18px"><b>Spot the pattern</b>Every application has the same skeleton: a <b>problem</b> that costs money or lives, <b>data</b> that captures behaviour, a <b>method</b> that finds the pattern, and a <b>decision</b> that changes because of it.</div>
+</section>
+
+<!-- ================================================================ 7 -->
+<section class="block" id="crisp">
+  <div class="sec-no">Section 7</div>
+  <h2>Data science methodology: CRISP-DM</h2>
+  <p><b>CRISP-DM</b> = <b>CR</b>oss-<b>I</b>ndustry <b>S</b>tandard <b>P</b>rocess for <b>D</b>ata <b>M</b>ining. It was created in the late 1990s by a group of companies (including SPSS, Teradata, Daimler-Benz and NCR) and published in 2000. It is <b>industry-neutral</b> (works for banks, hospitals, shops) and <b>tool-neutral</b> (Python, R or Excel), which is why it is still the most widely used process model for data projects.</p>
+
+  <div class="two" style="grid-template-columns:1.35fr 1fr">
+    <figure class="diagram">
+      <svg id="crispSvg" viewBox="0 0 560 470" role="img" aria-label="CRISP-DM cycle with six phases around data"></svg>
+      <figcaption>Solid arrows: main flow. Dashed: common loops back.</figcaption>
+    </figure>
+    <div>
+      <h3>Three things to remember</h3>
+      <p><b>1. It starts and ends with the business.</b> Phase 1 is not “get data”, it is “understand the problem”. Evaluation checks the result against the <i>business</i> goal, not just accuracy.</p>
+      <p><b>2. It is iterative.</b> Going back is normal. Data Understanding often changes the question. Modeling often needs different preparation.</p>
+      <p><b>3. Data is in the centre.</b> Every phase reads from or changes the data.</p>
+    </div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Phase</th><th>Key questions</th><th>Main tasks</th><th>Deliverable</th></tr>
+    <tr><td><b>1. Business Understanding</b></td><td>What is the goal? How will we measure success?</td><td>Define objectives, assess situation, set data-mining goals, plan project</td><td>Problem statement, success criteria, project plan</td></tr>
+    <tr><td><b>2. Data Understanding</b></td><td>What data do we have? Is it good enough?</td><td>Collect initial data, describe, explore, verify quality</td><td>Data description and quality report</td></tr>
+    <tr><td><b>3. Data Preparation</b></td><td>How do we get it model-ready?</td><td>Select, clean, construct new columns, integrate, format</td><td>Final clean dataset</td></tr>
+    <tr><td><b>4. Modeling</b></td><td>Which technique fits?</td><td>Choose techniques, design tests, build and tune models</td><td>Models and their settings</td></tr>
+    <tr><td><b>5. Evaluation</b></td><td>Does it meet the business goal?</td><td>Evaluate results, review process, decide next steps</td><td>Go / no-go decision</td></tr>
+    <tr><td><b>6. Deployment</b></td><td>How will it be used and maintained?</td><td>Plan deployment, monitoring and maintenance, final report</td><td>Live solution, final report, monitoring plan</td></tr>
+  </table></div>
+
+  <h3>Case study: KiranaMart’s rating problem, phase by phase</h3>
+  <div class="phase" style="border-left-color:var(--brand)"><h4>1 · Business Understanding</h4>
+    <p>The manager notices more 1★ and 2★ reviews. <b>Business goal:</b> raise the average rating from <b>3.84 ★ to 4.0 ★</b> within 3 months. <b>Data science goal:</b> find which measurable factors drive low ratings.</p></div>
+  <div class="phase" style="border-left-color:var(--teal)"><h4>2 · Data Understanding</h4>
+    <p>1,208 orders, 12 columns. Rating missing in 64 orders, 8 duplicates, 3 impossible quantities, an extra city spelling. Ratings range 1–5. Delivery takes 1–7 days, mostly 2–4.</p></div>
+  <div class="phase" style="border-left-color:var(--accent)"><h4>3 · Data Preparation</h4>
+    <p>Remove duplicates and bad quantities, fix city names, convert dates, compute revenue. Use only rated orders (1,133) for rating analysis. Create a new column <code>slow = delivery_days &gt; 3</code>.</p></div>
+  <div class="phase" style="border-left-color:var(--violet)"><h4>4 · Modeling</h4>
+    <p>Compare groups and fit a simple line:</p>
+    <div class="tbl-wrap" style="margin:8px 0"><table>
+      <tr><th>Delivery</th><th class="num">Share of orders</th><th class="num">Average rating</th><th class="num">Ratings of 1–2 ★</th></tr>
+      <tr><td>Fast (≤ 3 days)</td><td class="num">69%</td><td class="num">4.07</td><td class="num">1.9%</td></tr>
+      <tr><td>Slow (&gt; 3 days)</td><td class="num">31%</td><td class="num">3.33</td><td class="num" style="color:var(--bad);font-weight:700">11.5%</td></tr>
+    </table></div>
+    <p>Model: <code>rating = −0.29 × delivery_days + 4.66</code></p></div>
+  <div class="phase" style="border-left-color:var(--good)"><h4>5 · Evaluation</h4>
+    <p>Slow orders are <b>6× more likely</b> to get a 1–2 ★ rating. If all slow orders reached the fast-order average, the overall rating would be about 0.69 × 4.07 + 0.31 × 4.07 = <b>4.07 ★</b>, which beats the 4.0 target. <b>Decision: go.</b> We also check alternatives: average delivery is about the same in every city (2.7–2.9 days) and category, so the fix is company-wide, not one city.</p></div>
+  <div class="phase" style="border-left-color:var(--brand-ink)"><h4>6 · Deployment</h4>
+    <p>Add a delivery partner for slow pin codes. Launch a weekly dashboard and an alert when average delivery passes 3 days. Re-check after 3 months: did ratings really rise? That result starts the next CRISP-DM cycle.</p></div>
+
+  <div class="callout warn"><b>Careful: correlation is not causation</b> We saw that slow delivery goes with low ratings. Maybe slow orders are also the damaged ones, or late orders are from far-away areas with other problems. Phase 5 should ask “what else could explain this?” The safest proof is a test: speed up delivery for some areas and compare (see <a href="#ddd">Section 8</a>).</div>
+
+  <h3>CRISP-DM and the other methodologies</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Method</th><th>Steps</th><th>Best known for</th></tr>
+    <tr><td><b>CRISP-DM</b></td><td>Business understanding → Data understanding → Preparation → Modeling → Evaluation → Deployment</td><td>Strong business focus; most widely used; industry neutral</td></tr>
+    <tr><td><b>KDD</b> (Knowledge Discovery in Databases)</td><td>Selection → Preprocessing → Transformation → Data mining → Interpretation</td><td>Academic origin (1996); very data-focused</td></tr>
+    <tr><td><b>SEMMA</b> (SAS)</td><td>Sample → Explore → Modify → Model → Assess</td><td>Tied to SAS tools; no business-understanding step</td></tr>
+    <tr><td><b>OSEMN</b></td><td>Obtain → Scrub → Explore → Model → iNterpret</td><td>Simple, easy to remember (“awesome”)</td></tr>
+    <tr><td><b>TDSP</b> (Microsoft)</td><td>Business understanding → Data acquisition → Modeling → Deployment → Customer acceptance</td><td>Adds team roles and project management</td></tr>
+  </table></div>
+</section>
+
+<!-- ================================================================ 8 -->
+<section class="block" id="ddd">
+  <div class="sec-no">Section 8</div>
+  <h2>Importance of data-driven decision-making</h2>
+  <div class="definition">Data-driven decision-making (DDDM) means making decisions based on <b>evidence from data</b> rather than intuition, habit or the opinion of the most senior person.</div>
+  <div class="callout story"><b>Meet the HiPPO</b>The <b>Hi</b>ghest <b>P</b>aid <b>P</b>erson’s <b>O</b>pinion. In many meetings the boss’s guess wins. In a data-driven company, the boss asks “what does the data say?”, and the data can prove the boss wrong.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Gut-feel decision</th><th>Data-driven decision</th></tr>
+    <tr><td><b>Basis</b></td><td>Experience, intuition, opinion</td><td>Measured evidence</td></tr>
+    <tr><td><b>KiranaMart example</b></td><td>“Grocery has the most orders, put our budget there.”</td><td>“Electronics earns 49% of revenue, protect its stock.”</td></tr>
+    <tr><td><b>Can be checked?</b></td><td>Hard to verify</td><td>Measurable; can be tested</td></tr>
+    <tr><td><b>Bias</b></td><td>High (memory, ego, recent events)</td><td>Lower (but data can be biased too)</td></tr>
+    <tr><td><b>Learning</b></td><td>Slow</td><td>Every decision is measured and improves the next one</td></tr>
+  </table></div>
+
+  <h3>The DDDM cycle</h3>
+  <div class="chev">
+    <div>Ask<small>a clear question</small></div>
+    <div>Collect<small>the right data</small></div>
+    <div>Analyse<small>find the evidence</small></div>
+    <div>Decide &amp; act<small>change something</small></div>
+    <div>Measure<small>did it work?</small></div>
+  </div>
+
+  <h3>Worked example 1: an A/B test</h3>
+  <p>KiranaMart wants to know if a “Free delivery above ₹499” banner increases orders. Instead of arguing, they run a test: half the visitors see the old page (A), half see the banner (B).</p>
+  <div class="callout warn"><b>The maths</b>
+    Conversion rate <code>p = orders ÷ visitors</code> · Lift <code>= (p<sub>B</sub> − p<sub>A</sub>) ÷ p<sub>A</sub></code><br>
+    Is the difference real or luck? Two-proportion z-test: <code>z = (p<sub>B</sub> − p<sub>A</sub>) ÷ √( p̂(1−p̂)(1/n<sub>A</sub> + 1/n<sub>B</sub>) )</code>, where p̂ is the combined rate. If |z| &gt; 1.96, we are about 95% confident the difference is real. (Full details in Unit 2.)
+  </div>
+  <div class="activity">
+    <span class="tag">Calculator · change the numbers</span>
+    <div class="calc">
+      <div><label>A visitors</label><input type="number" id="nA" value="5000" min="1"></div>
+      <div><label>A orders</label><input type="number" id="oA" value="200" min="0"></div>
+      <div><label>B visitors</label><input type="number" id="nB" value="5000" min="1"></div>
+      <div><label>B orders</label><input type="number" id="oB" value="245" min="0"></div>
+      <div><label>Avg order value ₹</label><input type="number" id="aov" value="2696" min="0"></div>
+    </div>
+    <div class="kpis" id="abOut"></div>
+    <div class="verdict" id="abVerdict"></div>
+  </div>
+
+  <h3>Worked example 2: expected value</h3>
+  <p>Should KiranaMart buy <b>200 extra phones</b> for Diwali? Each costs ₹9,000 and sells for ₹11,000 (profit ₹2,000). An unsold phone is returned to the supplier for ₹7,500 (loss ₹1,500).</p>
+  <div class="callout warn"><b>The maths</b>
+    <code>EV per phone = p × 2000 − (1 − p) × 1500</code>, where p is the chance a phone sells.<br>
+    Break-even: <code>p × 2000 = (1 − p) × 1500 → p = 1500 ÷ 3500 ≈ 0.43</code>. Buy only if more than 43% are likely to sell.
+  </div>
+  <div class="activity">
+    <span class="tag">Slide · what does last year’s data say?</span>
+    <label style="font-weight:600">Chance a phone sells (from past festive data): <span id="pVal">70</span>%</label>
+    <input type="range" id="pSell" min="0" max="100" value="70" style="width:100%">
+    <div class="kpis" id="evOut"></div>
+  </div>
+  <p>With a gut feeling, “it might sell” could mean anything. With data (“last Diwali we sold 70% of extra stock”), the decision becomes simple arithmetic: about <b>₹1.9 lakh expected profit</b>.</p>
+
+  <h3>Traps that fool even data-driven teams</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Trap</th><th>What goes wrong</th><th>Example</th></tr>
+    <tr><td><b>Correlation ≠ causation</b></td><td>Two things move together, but one does not cause the other</td><td>Ice-cream sales and drowning both rise in summer. Heat causes both.</td></tr>
+    <tr><td><b>Sampling bias</b></td><td>Data does not represent everyone</td><td>An online survey misses people without internet</td></tr>
+    <tr><td><b>Survivorship bias</b></td><td>Looking only at the winners</td><td>Studying only successful dropouts and concluding “drop out to succeed”</td></tr>
+    <tr><td><b>Confirmation bias</b></td><td>Looking only for data that agrees with you</td><td>Showing the one month where your idea worked</td></tr>
+    <tr><td><b>Garbage in, garbage out</b></td><td>Bad data gives bad answers</td><td>Counting “delhi ” and “Delhi” separately under-reports Delhi</td></tr>
+    <tr><td><b>Vanity metrics</b></td><td>Measuring what looks good, not what matters</td><td>App downloads go up but nobody places an order</td></tr>
+  </table></div>
+</section>
+
+<!-- ================================================================ 9 -->
+<section class="block" id="lab">
+  <div class="sec-no">Section 9</div>
+  <h2>Hands-on lab: explore KiranaMart yourself</h2>
+  <p><b>Part A</b> runs in this page; no installation needed. <b>Part B</b> is the same project in Python, for the computer lab or at home.</p>
+
+  <h3>Part A · Data Explorer (in the browser)</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div><label for="gb">Group by</label>
+        <select id="gb">
+          <option value="city">City</option><option value="category">Category</option><option value="month">Month</option>
+          <option value="payment_mode">Payment mode</option><option value="customer_type">Customer type</option><option value="delivery_days">Delivery days</option><option value="discount_pct">Discount %</option>
+        </select></div>
+      <div><label for="mt">Measure</label>
+        <select id="mt">
+          <option value="revenue">Total revenue (₹)</option><option value="orders">Number of orders</option>
+          <option value="avg_rating">Average rating</option><option value="aov">Average order value (₹)</option>
+        </select></div>
+      <label class="toggle"><input type="checkbox" id="cl"> Clean the data first</label>
+    </div>
+    <div class="kpis" id="labKpi"></div>
+    <div id="labChart"></div>
+    <div class="tbl-wrap" id="labTable"></div>
+    <p class="muted" id="labNote" style="font-size:14px;margin:0"></p>
+  </div>
+
+  <h3>Your tasks</h3>
+  <div class="card">
+    <label class="task"><input type="checkbox"><span><b>Task 1.</b> With cleaning <b>off</b>, group by <b>City</b>. How many cities do you see? Where did the extra one come from?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 2.</b> Turn cleaning <b>on</b>. Did the ranking of cities change? How many rows were removed, and why?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 3.</b> Group by <b>Category</b>. Compare “Number of orders” with “Total revenue”. Which category is most important, and why does your answer depend on the measure?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 4.</b> Group by <b>Month</b> with total revenue. Which two months peak? Give a business reason.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 5.</b> Group by <b>Delivery days</b> with average rating. Describe the pattern in one sentence. Can you be sure delivery <i>causes</i> it?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 6.</b> Group by <b>Discount %</b> with number of orders, then average order value. Write one data-driven recommendation for KiranaMart.</span></label>
+    <details><summary>Check your answers</summary>
+      <p>1. Seven: “delhi ” (lower case + space) is counted as a separate city. 2. 11 rows removed (8 duplicates, 3 negative quantities); the 5 “delhi ” orders join Delhi. 3. Grocery wins on orders, Electronics on revenue (about half). Revenue matters more for profit planning, order count for delivery workload. 4. October and November, the festive (Diwali) sale season. 5. Rating falls steadily as delivery days grow. It is a strong correlation, but to prove causation you would run an experiment. 6. Answers vary; a good one quotes a number from the chart.</p>
+    </details>
+  </div>
+
+  <h3>Part B · The same project in Python</h3>
+  <div class="grid g3">
+    <a class="card tile" href="lab/kiranamart_sales_2025.csv" download><div class="ic c-brand">🗂️</div><h3>1. Dataset</h3><p>kiranamart_sales_2025.csv</p></a>
+    <a class="card tile" href="lab/unit1_lab.ipynb" download><div class="ic c-accent">📓</div><h3>2. Notebook</h3><p>Open in Jupyter or VS Code</p></a>
+    <a class="card tile" href="lab/unit1_lab.py" download><div class="ic c-teal">🐍</div><h3>or: script</h3><p>python unit1_lab.py</p></a>
+  </div>
+  <ol style="margin-top:16px">
+    <li>Put the CSV and the notebook in the same folder.</li>
+    <li>Install the libraries once: <code>pip install pandas matplotlib numpy</code></li>
+    <li>Run each cell from top to bottom. The notebook is organised by the six CRISP-DM phases.</li>
+    <li>The last cell saves <code>kiranamart_dashboard.png</code> and prints three recommendations for the manager.</li>
+  </ol>
+  <div class="callout tip"><b>Challenge (assignment)</b> Add one more business question of your own, for example: “Do new customers spend more than returning ones?” Answer it with a <code>groupby</code>, one chart and one sentence of recommendation. Label each step with its CRISP-DM phase.</div>
+</section>
+
+<!-- ================================================================ 10 -->
+<section class="block" id="summary">
+  <div class="sec-no">Section 10</div>
+  <h2>Summary and revision</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Topic</th><th>Remember this</th></tr>
+    <tr><td>Definition</td><td>Stats + programming + domain knowledge → insight → decisions and data products</td></tr>
+    <tr><td>Significance</td><td>Data volume doubles about every 2–3 years; 5 V’s: volume, velocity, variety, veracity, value</td></tr>
+    <tr><td>Lifecycle</td><td>Problem → Collect → Clean → EDA → Model → Evaluate → Deploy/Monitor, repeated; cleaning takes the most time</td></tr>
+    <tr><td>Roles</td><td>Analyst (what happened), Scientist (what will happen), Engineer (data pipelines), ML Engineer (production), Business Analyst (requirements)</td></tr>
+    <tr><td>DS vs AI vs ML</td><td>AI ⊃ ML ⊃ DL. ML learns rules from data. DS is about insight and may or may not use ML</td></tr>
+    <tr><td>CRISP-DM</td><td>Business Understanding → Data Understanding → Data Preparation → Modeling → Evaluation → Deployment; iterative; business-first</td></tr>
+    <tr><td>DDDM</td><td>Evidence over HiPPO. Use A/B tests and expected value. Beware correlation ≠ causation and biased data</td></tr>
+  </table></div>
+
+  <h3>Key terms (click a card to flip)</h3>
+  <div class="grid g4">
+    <div class="flip"><div class="inner"><div class="face"><b>Data product</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Software that turns data into automatic value, e.g. a recommendation engine or fraud alert.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>EDA</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Exploratory Data Analysis: summarising and plotting data to find patterns, surprises and problems.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Data cleaning</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Fixing duplicates, errors, missing values and inconsistent formats before analysis.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Model</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">A simplified mathematical description of a pattern, e.g. rating = −0.29 × days + 4.66.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Model drift</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">When a deployed model gets worse because the real world changed. Why we monitor.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>CRISP-DM</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Cross-Industry Standard Process for Data Mining: a 6-phase, iterative, business-first method.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>HiPPO</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Highest Paid Person’s Opinion: deciding by rank instead of evidence.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>A/B test</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Randomly show two versions to two groups and compare a metric to see which really works better.</div></div></div>
+  </div>
+
+  <div class="callout tip" style="margin-top:22px"><b>Ready for the quiz?</b> You should be able to: define data science in one sentence · list the lifecycle stages in order · name the 6 CRISP-DM phases and one deliverable for each · say who does what in a data team · explain how DS, AI, ML and DL relate · give 3 real applications · explain why data beats the HiPPO, and one trap to avoid.</div>
+  <p style="text-align:center;margin-top:20px"><a class="btn accent" href="quiz.html">Go to the Unit 1 quiz →</a></p>
+</section>
+    </main>
+  </div>
+</div>
+<footer class="foot">Unit 1 · Introduction to Data Science · BCA Semester 5</footer>
+
+<script>
+/* ---------- diagrams ---------- */
+drawCycle(document.getElementById('lifeSvg'), {
+  cx: 400, cy: 222, rx: 290, ry: 165, w: 172, h: 56, center: ['Data Science', 'Lifecycle', 'iterate ↺'],
+  items: [
+    { t: 'Problem', s: 'what decision?', fill: 'var(--surface-2)', ink: 'var(--ink-2)' },
+    { t: 'Collect', s: 'gather data', fill: 'var(--teal-soft)', ink: 'var(--teal)' },
+    { t: 'Clean', s: 'fix errors, gaps', fill: 'var(--accent-soft)', ink: 'var(--accent)' },
+    { t: 'Explore (EDA)', s: 'find patterns', fill: 'var(--violet-soft)', ink: 'var(--violet)' },
+    { t: 'Model', s: 'describe / predict', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+    { t: 'Evaluate', s: 'good enough?', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+    { t: 'Deploy', s: 'use + monitor', fill: 'var(--good-soft)', ink: 'var(--good)' }
+  ]
+});
+
+(function () {
+  var svg = document.getElementById('crispSvg');
+  var c = drawCycle(svg, {
+    cx: 280, cy: 238, rx: 200, ry: 180, w: 168, h: 54, start: -90,
+    items: [
+      { t: 'Business', s: 'Understanding', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+      { t: 'Data', s: 'Understanding', fill: 'var(--teal-soft)', ink: 'var(--teal)' },
+      { t: 'Data', s: 'Preparation', fill: 'var(--accent-soft)', ink: 'var(--accent)' },
+      { t: 'Modeling', s: 'build models', fill: 'var(--violet-soft)', ink: 'var(--violet)' },
+      { t: 'Evaluation', s: 'meets the goal?', fill: 'var(--good-soft)', ink: 'var(--good)' },
+      { t: 'Deployment', s: 'use + maintain', fill: 'var(--surface-2)', ink: 'var(--ink-2)' }
+    ]
+  });
+  svgArrow(svg, 'crispBack', 'var(--accent)');
+  var back = function (from, to) {
+    var a = c.point(-90 + from * 60), b = c.point(-90 + to * 60);
+    var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = 280 - mx, dy = 238 - my;
+    var path = svgEl('path', { d: 'M' + (a[0] + (280 - a[0]) * 0.3) + ',' + (a[1] + (238 - a[1]) * 0.3) + ' Q' + (mx + dx * 0.55) + ',' + (my + dy * 0.55) + ' ' + (b[0] + (280 - b[0]) * 0.3) + ',' + (b[1] + (238 - b[1]) * 0.3),
+      style: 'fill:none;stroke:var(--accent);stroke-width:1.8;stroke-dasharray:6 5', 'marker-end': 'url(#crispBack)' });
+    svg.insertBefore(path, svg.querySelector('g'));   // keep the loops underneath the phase boxes
+  };
+  back(1, 0); back(3, 2); back(4, 0);
+  svgEl('circle', { cx: 280, cy: 238, r: 46, style: 'fill:var(--surface);stroke:var(--ink-3);stroke-width:2' }, svg);
+  svgText(svg, 280, 236, 'DATA', 'font-size:18px;font-weight:800;fill:var(--ink)');
+  svgText(svg, 280, 254, '(centre)', 'font-size:11px;fill:var(--ink-3)');
+})();
+
+/* ---------- activity: order the lifecycle ---------- */
+var orderGame = (function () {
+  var correct = ['Problem definition', 'Data collection', 'Data cleaning', 'Exploratory analysis', 'Modeling', 'Evaluation', 'Deployment'];
+  var box = document.getElementById('orderGame'), pool = box.querySelector('.order-pool'), done = box.querySelector('.order-done'), fb = box.querySelector('.feedback');
+  var picked = [];
+  function render() {
+    pool.innerHTML = ''; done.innerHTML = picked.length ? '' : '<span class="muted" style="font-size:14px;padding:8px;display:inline-block">Your order appears here…</span>';
+    var rest = correct.filter(function (s) { return picked.indexOf(s) < 0; });
+    rest.sort(function (a, b) { return (a.length * 7 % 5) - (b.length * 7 % 5) || a.localeCompare(b); });
+    rest.forEach(function (s) {
+      var b = document.createElement('button'); b.className = 'choice'; b.textContent = s;
+      b.onclick = function () {
+        if (correct[picked.length] === s) { picked.push(s); fb.textContent = ''; }
+        else { fb.innerHTML = '<span style="color:var(--bad)">Not yet. What has to happen before “' + s + '”?</span>'; }
+        render();
+      };
+      pool.appendChild(b);
+    });
+    picked.forEach(function (s, i) { var b = document.createElement('span'); b.className = 'choice right'; b.textContent = (i + 1) + '. ' + s; done.appendChild(b); });
+    if (picked.length === correct.length) fb.innerHTML = '<span style="color:var(--good);font-weight:700">Perfect! And after Deployment… the cycle starts again with a new question.</span>';
+  }
+  render();
+  return { reset: function () { picked = []; fb.textContent = ''; render(); } };
+})();
+
+/* ---------- activity: generic multiple-choice rows ---------- */
+function choiceRows(container, rows, labels) {
+  rows.forEach(function (r, idx) {
+    var d = document.createElement('div'); d.style.margin = '14px 0';
+    d.innerHTML = '<div style="font-weight:600;font-size:15.5px">' + (idx + 1) + '. ' + r.q + '</div>';
+    var fb = document.createElement('div'); fb.className = 'feedback';
+    labels.forEach(function (l, i) {
+      var b = document.createElement('button'); b.className = 'choice'; b.textContent = l;
+      b.onclick = function () {
+        d.querySelectorAll('.choice').forEach(function (x) { x.classList.remove('right', 'wrong'); });
+        if (i === r.a) { b.classList.add('right'); fb.innerHTML = '✅ ' + r.why; }
+        else { b.classList.add('wrong'); fb.innerHTML = '<span style="color:var(--bad)">Not quite. Try again.</span>'; }
+      };
+      d.appendChild(b);
+    });
+    d.appendChild(fb); container.appendChild(d);
+  });
+}
+choiceRows(document.querySelector('#roleGame .rg'), [
+  { q: 'The nightly job that copies orders from the shop database into the warehouse keeps failing.', a: 2, why: 'Pipelines and data flow are the data engineer’s job.' },
+  { q: 'The manager wants a dashboard of last month’s sales by city.', a: 0, why: 'Reporting what happened is classic data-analyst work.' },
+  { q: 'Build a model that predicts which customers will stop buying next month.', a: 1, why: 'Prediction and modeling is the data scientist’s core work.' },
+  { q: 'The churn model must answer 5,000 requests per second inside the app.', a: 3, why: 'Running models at scale in production is ML engineering.' },
+  { q: 'Find out from store managers what “a good delivery experience” means and turn it into a KPI.', a: 4, why: 'Requirements and KPIs are the business analyst’s job.' }
+], ['Data Analyst', 'Data Scientist', 'Data Engineer', 'ML Engineer', 'Business Analyst']);
+
+choiceRows(document.querySelector('#vsGame .vg'), [
+  { q: 'A report showing that Electronics brings 49% of revenue.', a: 0, why: 'Insight from analysis, no learning algorithm involved.' },
+  { q: 'Email spam filter that learns from emails users marked as spam.', a: 1, why: 'It learns rules from labelled examples: machine learning.' },
+  { q: 'Phone camera that recognises faces in photos.', a: 2, why: 'Image recognition uses deep neural networks: deep learning.' },
+  { q: 'A 1990s chess program that follows rules written by grandmasters.', a: 3, why: 'Intelligent behaviour from hand-written rules: AI, but not ML.' },
+  { q: 'A/B test showing the new banner increased orders by 22%.', a: 0, why: 'Experiment and statistics for a decision: data science.' },
+  { q: 'Predicting house prices from size and location using past sales.', a: 1, why: 'Learning a price rule from past data: machine learning (regression).' }
+], ['Data Science (no ML)', 'Machine Learning', 'Deep Learning', 'AI without ML']);
+
+/* ---------- A/B calculator ---------- */
+function erf(x) { var t = 1 / (1 + 0.3275911 * Math.abs(x)); var y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x); return x >= 0 ? y : -y; }
+var inr = function (v) { return '₹' + Math.round(v).toLocaleString('en-IN'); };
+function ab() {
+  var nA = +document.getElementById('nA').value, oA = +document.getElementById('oA').value,
+      nB = +document.getElementById('nB').value, oB = +document.getElementById('oB').value, aov = +document.getElementById('aov').value;
+  if (!(nA > 0 && nB > 0) || oA > nA || oB > nB) { document.getElementById('abVerdict').textContent = 'Orders cannot exceed visitors.'; return; }
+  var pA = oA / nA, pB = oB / nB, pp = (oA + oB) / (nA + nB);
+  var se = Math.sqrt(pp * (1 - pp) * (1 / nA + 1 / nB)), z = se ? (pB - pA) / se : 0;
+  var pval = 2 * (1 - 0.5 * (1 + erf(Math.abs(z) / Math.SQRT2)));
+  var lift = pA ? (pB - pA) / pA : 0;
+  document.getElementById('abOut').innerHTML =
+    '<div class="kpi"><div class="v">' + (100 * pA).toFixed(2) + '%</div><div class="l">conversion A</div></div>' +
+    '<div class="kpi"><div class="v">' + (100 * pB).toFixed(2) + '%</div><div class="l">conversion B</div></div>' +
+    '<div class="kpi"><div class="v" style="color:' + (lift >= 0 ? 'var(--good)' : 'var(--bad)') + '">' + (lift >= 0 ? '+' : '') + (100 * lift).toFixed(1) + '%</div><div class="l">lift</div></div>' +
+    '<div class="kpi"><div class="v">' + z.toFixed(2) + '</div><div class="l">z-score (p ≈ ' + pval.toFixed(3) + ')</div></div>' +
+    '<div class="kpi"><div class="v">' + inr((pB - pA) * 100000 * aov) + '</div><div class="l">extra revenue per 1 lakh visitors</div></div>';
+  var v = document.getElementById('abVerdict');
+  if (Math.abs(z) >= 1.96) { v.style.background = 'var(--good-soft)'; v.style.color = 'var(--good)'; v.textContent = (z > 0 ? '✅ B is really better' : '❌ B is really worse') + ' (|z| ≥ 1.96, unlikely to be luck). Data-driven decision: ' + (z > 0 ? 'launch the banner.' : 'keep the old page.'); }
+  else { v.style.background = 'var(--accent-soft)'; v.style.color = 'var(--accent)'; v.textContent = '⚠️ Not enough evidence (|z| < 1.96). The difference could be luck. Keep testing with more visitors before deciding.'; }
+}
+['nA', 'oA', 'nB', 'oB', 'aov'].forEach(function (id) { document.getElementById(id).addEventListener('input', ab); });
+ab();
+
+/* ---------- expected value ---------- */
+function ev() {
+  var p = +document.getElementById('pSell').value / 100, per = p * 2000 - (1 - p) * 1500;
+  document.getElementById('pVal').textContent = Math.round(p * 100);
+  document.getElementById('evOut').innerHTML =
+    '<div class="kpi"><div class="v" style="color:' + (per >= 0 ? 'var(--good)' : 'var(--bad)') + '">' + inr(per) + '</div><div class="l">expected profit per phone</div></div>' +
+    '<div class="kpi"><div class="v" style="color:' + (per >= 0 ? 'var(--good)' : 'var(--bad)') + '">' + inr(per * 200) + '</div><div class="l">expected profit for 200 phones</div></div>' +
+    '<div class="kpi"><div class="v">' + (per >= 0 ? 'BUY ✅' : 'DON’T BUY ❌') + '</div><div class="l">break-even at 43%</div></div>';
+}
+document.getElementById('pSell').addEventListener('input', ev);
+ev();
+
+/* ---------- in-browser lab ---------- */
+(function () {
+  var RAW = [], MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var note = document.getElementById('labNote');
+  fetch('lab/kiranamart_sales_2025.csv').then(function (r) { return r.text(); }).then(function (txt) {
+    var lines = txt.trim().split(/\r?\n/), head = lines[0].split(',');
+    RAW = lines.slice(1).map(function (l) { var v = l.split(','), o = {}; head.forEach(function (h, i) { o[h] = v[i]; }); return o; });
+    draw();
+  }).catch(function () { note.textContent = 'Could not load the dataset. Open this page through the classroom server (not as a file).'; });
+
+  function prep(rows, clean) {
+    var seen = {}, out = [];
+    rows.forEach(function (r) {
+      if (clean) {
+        var key = JSON.stringify(r); if (seen[key]) return; seen[key] = 1;
+        if (+r.quantity <= 0) return;
+      }
+      var city = clean ? r.city.trim().replace(/^./, function (c) { return c.toUpperCase(); }) : r.city;
+      out.push({ city: city, category: r.category, payment_mode: r.payment_mode, customer_type: r.customer_type,
+        month: +r.order_date.slice(5, 7), delivery_days: +r.delivery_days, discount_pct: +r.discount_pct,
+        rating: r.rating === '' ? null : +r.rating, revenue: (+r.quantity) * (+r.unit_price) * (1 - (+r.discount_pct) / 100) });
+    });
+    return out;
+  }
+
+  function draw() {
+    if (!RAW.length) return;
+    var gb = document.getElementById('gb').value, mt = document.getElementById('mt').value, clean = document.getElementById('cl').checked;
+    var rows = prep(RAW, clean), g = {};
+    rows.forEach(function (r) {
+      var k = r[gb]; var x = g[k] || (g[k] = { n: 0, rev: 0, rs: 0, rn: 0 });
+      x.n++; x.rev += r.revenue; if (r.rating !== null) { x.rs += r.rating; x.rn++; }
+    });
+    var data = Object.keys(g).map(function (k) {
+      var x = g[k], v = mt === 'revenue' ? x.rev : mt === 'orders' ? x.n : mt === 'aov' ? x.rev / x.n : (x.rn ? x.rs / x.rn : 0);
+      return { k: k, label: gb === 'month' ? MONTHS[k - 1] : (gb === 'discount_pct' ? k + '%' : gb === 'delivery_days' ? k + ' day' + (k == 1 ? '' : 's') : '“' + k + '”'), v: v, n: x.n };
+    });
+    var ordered = gb === 'month' || gb === 'delivery_days' || gb === 'discount_pct';
+    data.sort(ordered ? function (a, b) { return a.k - b.k; } : function (a, b) { return b.v - a.v; });
+
+    var fmt = function (v) { return mt === 'avg_rating' ? v.toFixed(2) + ' ★' : mt === 'orders' ? v.toLocaleString('en-IN') : inr(v); };
+    var totalRev = rows.reduce(function (s, r) { return s + r.revenue; }, 0);
+    var rated = rows.filter(function (r) { return r.rating !== null; });
+    document.getElementById('labKpi').innerHTML =
+      '<div class="kpi"><div class="v">' + rows.length.toLocaleString('en-IN') + '</div><div class="l">rows used' + (clean ? ' (cleaned)' : ' (raw)') + '</div></div>' +
+      '<div class="kpi"><div class="v">' + inr(totalRev) + '</div><div class="l">total revenue</div></div>' +
+      '<div class="kpi"><div class="v">' + (rated.reduce(function (s, r) { return s + r.rating; }, 0) / rated.length).toFixed(2) + ' ★</div><div class="l">average rating</div></div>' +
+      '<div class="kpi"><div class="v">' + data.length + '</div><div class="l">groups</div></div>';
+
+    // horizontal bar chart (SVG)
+    var W = 760, rowH = 30, padL = 150, padR = 110, H = data.length * rowH + 20;
+    var max = Math.max.apply(null, data.map(function (d) { return d.v; })) || 1;
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Bar chart">';
+    data.forEach(function (d, i) {
+      var y = 10 + i * rowH, w = (W - padL - padR) * d.v / max, bad = d.k === 'delhi ';
+      s += '<text x="' + (padL - 10) + '" y="' + (y + 19) + '" text-anchor="end" style="font-size:14px;fill:' + (bad ? 'var(--bad)' : 'var(--ink)') + ';font-weight:' + (bad ? 700 : 400) + '">' + d.label + '</text>' +
+        '<rect x="' + padL + '" y="' + (y + 4) + '" width="' + Math.max(2, w) + '" height="' + (rowH - 9) + '" rx="5" style="fill:' + (bad ? 'var(--bad)' : i === 0 && !ordered ? 'var(--brand)' : 'var(--brand)') + ';fill-opacity:' + (i === 0 || ordered || bad ? 1 : .55) + '"/>' +
+        '<text x="' + (padL + w + 8) + '" y="' + (y + 19) + '" style="font-size:13px;fill:var(--ink-2)">' + fmt(d.v) + '</text>';
+    });
+    document.getElementById('labChart').innerHTML = s + '</svg>';
+
+    document.getElementById('labTable').innerHTML = '<table><tr><th>' + document.getElementById('gb').selectedOptions[0].text + '</th><th class="num">Orders</th><th class="num">' + document.getElementById('mt').selectedOptions[0].text + '</th></tr>' +
+      data.map(function (d) { return '<tr><td>' + d.label + '</td><td class="num">' + d.n + '</td><td class="num">' + fmt(d.v) + '</td></tr>'; }).join('') + '</table>';
+    note.textContent = clean ? 'Cleaning removed duplicates and impossible quantities, and fixed city spellings. Missing ratings are ignored only when averaging ratings.'
+                             : 'Raw data: duplicates, negative quantities and messy spellings are still in. Tick “Clean the data first” and compare.';
+  }
+  ['gb', 'mt', 'cl'].forEach(function (id) { document.getElementById(id).addEventListener('change', draw); });
+})();
+</script>
+</body>
+</html>

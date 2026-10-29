@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 Board Slides</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/diagrams.js"></script>
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  body { background: #11161f; margin: 0; }
+  #stage { position: absolute; width: 1280px; height: 720px; left: 50%; top: 50%; transform-origin: center center; }
+  .slide { position: absolute; inset: 0; background: var(--surface); border-radius: 6px; padding: 54px 70px; display: none; overflow: hidden; color: var(--ink); font-size: 27px; line-height: 1.45; }
+  .slide.on { display: block; }
+  .slide h1 { font-size: 58px; margin-bottom: 18px; }
+  .slide h2 { font-size: 42px; margin-bottom: 22px; color: var(--ink); }
+  .slide h2 .k { color: var(--brand); }
+  .slide .sub { font-size: 24px; color: var(--ink-3); }
+  .slide ul, .slide ol { margin: 0; padding-left: 32px; }
+  .slide li { margin: 8px 0; }
+  .slide .math { font-family: var(--mono); font-size: 25px; background: var(--surface-2); border-left: 5px solid var(--accent); padding: 14px 20px; border-radius: 8px; margin: 12px 0; line-height: 1.6; }
+  .slide .big { font-size: 34px; font-weight: 700; }
+  .slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+  .slide .box { border: 2px solid var(--line); border-radius: 14px; padding: 16px 20px; font-size: 23px; }
+  .slide table { font-size: 24px; }
+  .slide td { padding: 11px 16px; }
+  .slide th { font-size: 17px; }
+  .slide svg { width: 100%; height: auto; }
+  .slide .tag { position: absolute; top: 22px; right: 30px; font-size: 15px; font-weight: 700; color: var(--ink-3); letter-spacing: .08em; text-transform: uppercase; }
+  .slide .ask { position: absolute; left: 70px; right: 70px; bottom: 30px; background: var(--violet-soft); color: var(--violet); font-weight: 700; font-size: 22px; padding: 12px 20px; border-radius: 12px; }
+  .title-slide { background: linear-gradient(135deg, #1b4fa8, #2a6fdb 55%, #149c9c) !important; color: #fff !important; }
+  .title-slide .sub { color: rgba(255,255,255,.85); }
+  #ink { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+  body.drawing #ink { pointer-events: auto; cursor: crosshair; }
+  #hud { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 6px; align-items: center;
+    background: rgba(20,26,38,.88); color: #dfe6f2; padding: 6px 10px; border-radius: 12px; font: 14px var(--font); opacity: .25; transition: opacity .2s; }
+  #hud:hover, body.drawing #hud { opacity: 1; }
+  #hud button { background: transparent; color: inherit; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  #hud button.on { background: #2a6fdb; border-color: #2a6fdb; }
+  #hud .sw { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,.5); padding: 0; }
+  #notes { position: fixed; right: 12px; top: 12px; width: 380px; max-height: calc(100vh - 80px); overflow: auto; z-index: 15; background: #fffbe8; color: #3d3517;
+    border-radius: 12px; padding: 16px 18px; font: 15px/1.5 var(--font); box-shadow: 0 10px 30px rgba(0,0,0,.4); display: none; }
+  #notes.on { display: block; }
+  #notes b { color: #8a5a00; }
+  #notes ul { padding-left: 18px; margin: 6px 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 -->
+<section class="slide title-slide" data-notes="<b>0:00 · 1 min.</b> Last unit. We have models; now we make them useful and safe: explain them, put them into production, watch them, and use them responsibly. New case: a lender scoring 2,000 loan applications, plus healthcare and marketing cases.">
+  <div style="margin-top:110px">
+    <div class="sub" style="font-weight:700;letter-spacing:.12em;text-transform:uppercase">BCA DS &amp; AI · Semester 3 · Predictive Analytics Modeler · Unit 5</div>
+    <h1 style="font-size:70px;margin-top:14px">Model Deployment<br>&amp; Applications</h1>
+    <div class="sub" style="font-size:24px">Interpretation · Deployment · Real-time prediction · Finance, healthcare, marketing · Ethics · AI integration</div>
+  </div>
+  <div style="position:absolute;left:70px;right:70px;bottom:50px;display:flex;gap:6px;font-size:18px;font-weight:700">
+    <div style="flex:30;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Board · 30</div>
+    <div style="flex:5;background:rgba(255,255,255,.1);padding:10px 4px;border-radius:8px">5</div>
+    <div style="flex:35;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Study + lab · 35</div>
+    <div style="flex:10;background:rgba(255,255,255,.1);padding:10px 4px;border-radius:8px">10</div>
+    <div style="flex:40;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Quiz + review · 40</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-notes="<b>1–3 min.</b> Hook. Ask: 'If a bank rejects your loan and says only “the computer said no”, what would you want to know?' Collect answers: why, what can I change, is it fair, who checks the computer, what happens to my data. Each answer is a topic today.">
+  <span class="tag">Warm-up</span>
+  <h2>“Sorry, the <span class="k">computer said no</span>.”</h2>
+  <div class="grid g3" style="margin-top:24px;font-size:23px">
+    <div class="box">❓ <b>Why</b> was I rejected?<br><span class="sub" style="font-size:18px">interpretation</span></div>
+    <div class="box">🔁 What could I <b>change</b>?<br><span class="sub" style="font-size:18px">counterfactuals</span></div>
+    <div class="box">⚖️ Is it <b>fair</b> to people like me?<br><span class="sub" style="font-size:18px">bias audit</span></div>
+    <div class="box">⚙️ Is the model <b>still right</b> this month?<br><span class="sub" style="font-size:18px">monitoring</span></div>
+    <div class="box">🔒 What happens to my <b>data</b>?<br><span class="sub" style="font-size:18px">privacy</span></div>
+    <div class="box">⚡ How does it answer in <b>milliseconds</b>?<br><span class="sub" style="font-size:18px">deployment</span></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-notes="<b>3–5 min.</b> MATHS · global interpretation of the credit model (logistic, AUC 0.75). Standardised coefficients compare features on the same scale: credit score −0.93 is the strongest, then EMI-to-income +0.60, past defaults +0.45, self-employed +0.38. Odds ratios on natural units: +50 credit points → e^(−0.01455×50) = 0.483 (odds roughly halve); EMI ratio +0.10 → × 1.43; each past default → × 2.47.">
+  <span class="tag">Interpretation · maths</span>
+  <h2>Global interpretation: what drives <span class="k">default</span>?</h2>
+  <div class="cols">
+    <table style="font-size:21px">
+      <tr><th>Feature</th><th class="num">std. coefficient</th></tr>
+      <tr><td>credit_score</td><td class="num">−0.929</td></tr>
+      <tr><td>emi_to_income</td><td class="num">+0.596</td></tr>
+      <tr><td>past_defaults</td><td class="num">+0.451</td></tr>
+      <tr><td>self-employed</td><td class="num">+0.380</td></tr>
+      <tr><td>income_lakh</td><td class="num">−0.075</td></tr>
+      <tr><td>age, loan amount, years employed</td><td class="num">≈ 0</td></tr>
+    </table>
+    <div>
+      <div class="math" style="font-size:21px">+50 credit points: e<sup>−0.01455 × 50</sup> = <b>0.48</b> → odds halve<br>EMI share +0.10: e<sup>3.588 × 0.1</sup> = <b>1.43</b><br>each past default: e<sup>0.903</sup> = <b>2.47</b></div>
+      <p class="sub" style="font-size:19px">Standardised = effect of +1 standard deviation, so features with different units can be compared.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-notes="<b>5–7 min.</b> MATHS · permutation importance: shuffle one column in the TEST data and measure how much AUC drops. Base AUC 0.750. Shuffling credit_score drops it by 0.109; EMI ratio 0.062; past defaults 0.036; age 0.0001. It works for ANY model and avoids the impurity bias we saw in Unit 4. Partial dependence: set everybody's credit score to one value, average the predictions: 550 → 0.60, 650 → 0.29, 700 → 0.18, 750 → 0.10, 800 → 0.05.">
+  <span class="tag">Interpretation · maths</span>
+  <h2>Permutation importance and <span class="k">partial dependence</span></h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:20px">importance = AUC(original) − AUC(column shuffled)</div>
+      <table style="font-size:20px">
+        <tr><th>Shuffled column</th><th class="num">AUC drop</th></tr>
+        <tr><td>credit_score</td><td class="num"><b>0.109</b></td></tr>
+        <tr><td>emi_to_income</td><td class="num">0.062</td></tr>
+        <tr><td>past_defaults</td><td class="num">0.036</td></tr>
+        <tr><td>employment</td><td class="num">0.008</td></tr>
+        <tr><td>age</td><td class="num">0.0001</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="math" style="font-size:20px">PDP: set every applicant’s credit score to s, average P(default)</div>
+      <table style="font-size:20px;width:auto">
+        <tr><th>score s</th><td>550</td><td>650</td><td>700</td><td>750</td><td>800</td></tr>
+        <tr><th>P(default)</th><td>0.60</td><td>0.29</td><td>0.18</td><td>0.10</td><td>0.05</td></tr>
+      </table>
+      <p class="sub" style="font-size:18px">Model-agnostic: works for logistic, forests, boosting…</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-notes="<b>7–10 min.</b> MATHS · local explanation (reason codes). For a linear model, each feature's contribution = coefficient × (applicant's value − average value). Applicant LN71318: P(default) = 0.413 > 0.25 → declined. Average applicant log-odds −1.53 (p = 0.18). Contributions: EMI ratio 0.567 vs average 0.39 → +0.64; credit score 664 vs 690 → +0.38; self-employed → +0.24; no past defaults → −0.20 (helps). Sum ≈ +1.18 → log-odds −0.35 → p = 0.413. Counterfactual: with a credit score of about 716 (everything else the same), p would fall below 0.25. India's RBI Fair Practices Code asks lenders to tell applicants the main reasons for rejecting a loan. SHAP generalises this idea to any model.">
+  <span class="tag">Interpretation · maths</span>
+  <h2>Local explanation: <span class="k">reason codes</span></h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:20px">contribution = b × (x − x̄)<br>log-odds = baseline + Σ contributions</div>
+      <table style="font-size:20px">
+        <tr><th>LN71318</th><th class="num">value</th><th class="num">average</th><th class="num">contribution</th></tr>
+        <tr><td>EMI-to-income</td><td class="num">0.567</td><td class="num">0.390</td><td class="num" style="color:var(--bad)">+0.64</td></tr>
+        <tr><td>credit score</td><td class="num">664</td><td class="num">690</td><td class="num" style="color:var(--bad)">+0.38</td></tr>
+        <tr><td>self-employed</td><td class="num">yes</td><td class="num">37%</td><td class="num" style="color:var(--bad)">+0.24</td></tr>
+        <tr><td>past defaults</td><td class="num">0</td><td class="num">0.23</td><td class="num" style="color:var(--good)">−0.20</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="math" style="font-size:20px">baseline −1.53 (p = 0.18) + 1.18 = −0.35<br>p = 1/(1 + e<sup>0.35</sup>) = <b>0.413</b> &gt; 0.25 → decline</div>
+      <div class="box" style="font-size:20px;margin-bottom:10px"><b>Reasons:</b> ① EMIs take 57% of income ② credit score below average ③ self-employed income</div>
+      <div class="box" style="font-size:20px;border-color:var(--good)"><b>Counterfactual:</b> credit score ≈ <b>716</b> (+52) → approved</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-notes="<b>10–12 min.</b> Deployment basics. Save the WHOLE pipeline (preprocessing + model) with joblib / pickle, so the same transformations run in production. Recall Unit 3's bug: get_dummies on one row created different columns. That is training–serving skew. Version every model and dataset. Four ways to serve predictions: batch, real-time API, streaming, edge.">
+  <span class="tag">Deployment</span>
+  <h2>Deployment: from notebook to <span class="k">production</span></h2>
+  <div class="cols">
+    <div style="font-size:21px">
+      <div class="box" style="margin-bottom:10px"><b>Save the pipeline, not just the model</b><br><code style="font-size:17px">joblib.dump(pipe, "credit_model.joblib")</code><br>scaler + encoder + model travel together</div>
+      <div class="box" style="margin-bottom:10px"><b>Training–serving skew</b>: production must transform data exactly like training (Unit 3’s get_dummies bug)</div>
+      <div class="box"><b>Version everything</b>: model v1, v2…, the data and code that made it</div>
+    </div>
+    <table style="font-size:19px">
+      <tr><th>Mode</th><th>When results are needed</th><th>Example</th></tr>
+      <tr><td><b>Batch</b></td><td>hours later is fine</td><td>nightly churn call list</td></tr>
+      <tr><td><b>Real-time API</b></td><td>within milliseconds</td><td>loan decision in an app</td></tr>
+      <tr><td><b>Streaming</b></td><td>continuously, per event</td><td>card-fraud checks</td></tr>
+      <tr><td><b>Edge</b></td><td>on the device, offline</td><td>phone keyboard, camera</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-notes="<b>12–14 min.</b> Real-time prediction. Walk the request: app sends JSON → API validates input → loads features (feature store) → pipeline predicts → applies threshold → returns decision + model version → logs everything for monitoring. Our 50-line Python API answered in about 2.6 ms (median) on the teacher laptop; real systems also count network time and feature lookups. Load the model once at start-up. Latency budget: if a payment must complete in a fixed time, the model gets only a slice of it.">
+  <span class="tag">Real-time prediction</span>
+  <h2>Real-time prediction: one <span class="k">request</span></h2>
+  <svg viewBox="0 0 1140 230" id="bApi"></svg>
+  <div class="grid g3" style="font-size:19px;margin-top:8px">
+    <div class="box"><b>Latency</b>: our API answered in ≈ <b>2.6 ms</b> (median, this laptop). Load the model <b>once</b>, at start-up.</div>
+    <div class="box"><b>Feature store</b>: the same features, computed the same way, for training and serving</div>
+    <div class="box"><b>Reliability</b>: validate inputs, return a version number, log every request, have a fallback rule</div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-notes="<b>14–17 min.</b> MATHS · monitoring with PSI. Data drift = inputs change; concept drift = the relationship changes (e.g. after an interest-rate rise, the same customer is riskier). PSI = Σ (actual% − expected%) × ln(actual% / expected%) over bins. First bin: expected 0.099, actual 0.248: (0.248 − 0.099) × ln(0.248/0.099) = 0.149 × 0.918 = 0.137. Summed over 10 bins: 0.339. Rules of thumb: < 0.10 stable, 0.10–0.25 watch, > 0.25 significant: investigate and probably retrain. Here a partner bank started sending thin-file applicants.">
+  <span class="tag">Monitoring · maths</span>
+  <h2>Monitoring: is the model <span class="k">still valid</span>?</h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:20px">PSI = Σ (A − E) × ln(A / E) over bins<br>bin 1: (0.248 − 0.099) × ln(0.248/0.099)<br>= 0.149 × 0.918 = 0.137<br>all 10 bins: PSI = <b style="color:var(--bad)">0.339</b></div>
+      <table style="font-size:19px;width:auto">
+        <tr><th>PSI</th><td>&lt; 0.10</td><td>0.10–0.25</td><td>&gt; 0.25</td></tr>
+        <tr><th>Meaning</th><td>stable</td><td>watch</td><td><b>act</b></td></tr>
+      </table>
+    </div>
+    <div style="font-size:20px">
+      <div class="box" style="margin-bottom:10px"><b>Data drift</b>: inputs change. Mean credit score 690 → 651 this month.</div>
+      <div class="box" style="margin-bottom:10px"><b>Concept drift</b>: the input→outcome link changes (rates rise, same person now riskier).</div>
+      <div class="box"><b>Respond</b>: alert → investigate → retrain → <b>champion–challenger</b> or A/B test, or run the new model in <b>shadow mode</b> first.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-notes="<b>17–19 min.</b> Case study 1, finance. Credit scoring with a lender's 2,000 applications: default rate 23.5%, logistic AUC 0.75, approve if P(default) < 0.25 → about two-thirds approved. Explainable by law and by design, monitored with PSI. But watch slide 13: the fairness audit.">
+  <span class="tag">Case study · finance</span>
+  <h2>Finance: <span class="k">credit scoring</span></h2>
+  <div class="cols">
+    <table style="font-size:21px">
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Applications</td><td>2,000 (1,400 train / 600 test)</td></tr>
+      <tr><td>Default rate</td><td>23.5%</td></tr>
+      <tr><td>Model</td><td>logistic regression pipeline</td></tr>
+      <tr><td>Test AUC</td><td>0.750</td></tr>
+      <tr><td>Rule</td><td>approve if P(default) &lt; 0.25</td></tr>
+      <tr><td>Approved (test)</td><td>402 of 600 (67%)</td></tr>
+    </table>
+    <div style="font-size:21px">
+      <div class="box" style="margin-bottom:10px"><b>Why logistic?</b> Regulators and customers need reasons; coefficients give reason codes directly.</div>
+      <div class="box" style="margin-bottom:10px"><b>Other finance uses</b>: fraud detection (streaming), collections priority, insurance pricing, credit-limit setting.</div>
+      <div class="box"><b>Human in the loop</b>: decline → “refer to a credit officer”, not an automatic no.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-notes="<b>19–21 min.</b> Case study 2, healthcare: diabetes screening. 22.1% of the clinic's patients are diabetic (confirmed by lab test). The model (AUC 0.73) decides who gets the confirmatory blood test. Missing a patient is far worse than an extra test, so we pick a LOW threshold: at 0.1 recall is 0.86 (14 of 99 missed) but 289 of 450 are referred. At 0.5 we would miss 73. The model supports the doctor; it does not diagnose.">
+  <span class="tag">Case study · healthcare</span>
+  <h2>Healthcare: <span class="k">screening</span> needs high recall</h2>
+  <div class="cols">
+    <table style="font-size:21px">
+      <tr><th class="num">threshold</th><th class="num">recall</th><th class="num">referred for test</th><th class="num">missed</th></tr>
+      <tr><td class="num">0.5</td><td class="num">0.263</td><td class="num">47 / 450</td><td class="num" style="color:var(--bad);font-weight:700">73</td></tr>
+      <tr><td class="num">0.2</td><td class="num">0.667</td><td class="num">177 / 450</td><td class="num">33</td></tr>
+      <tr><td class="num">0.1</td><td class="num"><b>0.859</b></td><td class="num">289 / 450</td><td class="num" style="color:var(--good);font-weight:700">14</td></tr>
+    </table>
+    <div style="font-size:21px">
+      <div class="box" style="margin-bottom:10px">Inputs: age, BMI, fasting glucose, blood pressure, family history, activity · AUC <b>0.73</b></div>
+      <div class="box" style="margin-bottom:10px">A missed diabetic ≫ cost of one extra blood test → <b>low threshold</b></div>
+      <div class="box">Decision support, not diagnosis. Check performance for every age group and gender.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-notes="<b>21–24 min.</b> Case study 3, marketing: K-means segmentation (Lab Experiment 9). Algorithm: choose k, place k centroids, assign each customer to the nearest centroid, move each centroid to the mean of its customers, repeat until nothing changes. Minimises inertia = Σ squared distance to own centroid. Scale first (distances!). Elbow: inertia 6000 → 4067 → 3218 → 2660 (k=4) → 2285, bend around 3–4. Silhouette prefers 2 (0.31) but 4 segments are more actionable: business judgement. Profiles: new prepaid talkers (507, churn 29%), premium data lovers (380, 22%), light users (323, 25%), loyal veterans (290, 10%).">
+  <span class="tag">Case study · marketing</span>
+  <h2>Marketing: <span class="k">K-means</span> customer segments</h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:19px;line-height:1.6">1 choose k · 2 place k centroids<br>3 assign each customer to the nearest centroid<br>4 move each centroid to its members’ mean<br>5 repeat 3–4 until nothing changes<br>minimises inertia = Σ ‖x − c<sub>own</sub>‖²</div>
+      <table style="font-size:18px;width:auto">
+        <tr><th>k</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+        <tr><th>inertia</th><td>6000</td><td>4067</td><td>3218</td><td><b>2660</b></td><td>2285</td><td>2055</td></tr>
+      </table>
+    </div>
+    <table style="font-size:18px">
+      <tr><th>Segment</th><th class="num">size</th><th class="num">churn</th><th>Action</th></tr>
+      <tr><td>New prepaid talkers</td><td class="num">507</td><td class="num" style="color:var(--bad)">29%</td><td>onboarding offer, autopay</td></tr>
+      <tr><td>Premium data lovers</td><td class="num">380</td><td class="num">22%</td><td>data add-ons, priority care</td></tr>
+      <tr><td>Light users</td><td class="num">323</td><td class="num">25%</td><td>cheaper plan before they leave</td></tr>
+      <tr><td>Loyal veterans</td><td class="num">290</td><td class="num" style="color:var(--good)">10%</td><td>loyalty rewards, referrals</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-notes="<b>24–26 min.</b> MATHS · fairness audit. The model never sees 'region'. Yet rural approval is 53.4% vs urban 74.8%. Disparate impact = 0.534 / 0.748 = 0.714, below the common four-fifths (0.8) benchmark. Equal opportunity: among applicants who would REPAY, approval is 62.0% rural vs 83.6% urban, a 21.6-point gap. Actual default rates are similar (24.2% vs 23.1%). Cause: rural applicants have thin credit files, so their credit score understates them: the score is a PROXY that carries the bias in. Gender passes (0.981).">
+  <span class="tag">Ethics · maths</span>
+  <h2>Ethics 1: <span class="k">bias</span> without a biased column</h2>
+  <div class="cols">
+    <table style="font-size:20px">
+      <tr><th></th><th class="num">Urban</th><th class="num">Rural</th></tr>
+      <tr><td>applicants (test)</td><td class="num">381</td><td class="num">219</td></tr>
+      <tr><td>actual default rate</td><td class="num">23.1%</td><td class="num">24.2%</td></tr>
+      <tr><td>approval rate</td><td class="num">74.8%</td><td class="num" style="color:var(--bad);font-weight:700">53.4%</td></tr>
+      <tr><td>approval among good payers</td><td class="num">83.6%</td><td class="num" style="color:var(--bad);font-weight:700">62.0%</td></tr>
+      <tr><td>mean credit score (all data)</td><td class="num">705</td><td class="num">664</td></tr>
+    </table>
+    <div>
+      <div class="math" style="font-size:20px">Disparate impact = 0.534 / 0.748 = <b style="color:var(--bad)">0.714</b> &lt; 0.8<br>Equal-opportunity gap = 83.6 − 62.0 = <b>21.6 points</b><br>Gender: 0.663 / 0.675 = 0.981 ✔</div>
+      <div class="box" style="font-size:19px">Region is not a feature, but <b>thin credit files</b> make rural scores understate repayment ability: a <b>proxy</b>. Fixes: better data (rent, utility payments), per-group checks, adjusted thresholds, human review.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-notes="<b>26–28 min.</b> Ethics beyond fairness. India's Digital Personal Data Protection Act, 2023: process personal data only with consent for a stated purpose, collect only what is needed, keep it secure, let people access and correct it; penalties up to ₹250 crore. Transparency: reason codes. Accountability: a named owner for every model. Feedback loops: if a model denies loans to a group, that group never builds a repayment history, which 'confirms' the model. Misuse: the same churn model could target vulnerable customers with aggressive offers.">
+  <span class="tag">Ethics</span>
+  <h2>Ethics 2: privacy, transparency, <span class="k">accountability</span></h2>
+  <table style="font-size:20px">
+    <tr><th>Issue</th><th>Risk</th><th>Good practice</th></tr>
+    <tr><td><b>Privacy</b></td><td>personal data used beyond consent</td><td>DPDP Act 2023: consent, purpose limitation, data minimisation, rights to access and correct</td></tr>
+    <tr><td><b>Fairness</b></td><td>groups treated unequally via proxies</td><td>audit by group; disparate impact; equal opportunity</td></tr>
+    <tr><td><b>Transparency</b></td><td>“the computer said no”</td><td>reason codes, model documentation (“model cards”)</td></tr>
+    <tr><td><b>Accountability</b></td><td>nobody responsible</td><td>named model owner, human review of declines</td></tr>
+    <tr><td><b>Feedback loops</b></td><td>denied groups never build history</td><td>monitor outcomes, occasional exploration</td></tr>
+    <tr><td><b>Security &amp; misuse</b></td><td>data leaks; manipulative targeting</td><td>access control, purpose review, red-teaming</td></tr>
+  </table>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-notes="<b>28–29 min.</b> Introduction to AI integration. Predictive models are now components of bigger AI systems. A generative AI model (an LLM) can turn reason codes into a polite letter in the customer's language, or turn review text into features. AutoML (e.g. IBM's AutoAI in watsonx) automates feature engineering, model choice and tuning. MLOps automates training → deployment → monitoring. Decisions still need humans and governance.">
+  <span class="tag">AI integration</span>
+  <h2>Predictive models inside <span class="k">AI systems</span></h2>
+  <div class="grid g2" style="font-size:21px">
+    <div class="box">🤖 <b>Generative AI + prediction</b>: an LLM writes the rejection letter from the reason codes, in Hindi or English; or turns call transcripts into features</div>
+    <div class="box">⚙️ <b>AutoML</b>: tools such as IBM’s AutoAI (watsonx) try preprocessing, models and hyperparameters automatically</div>
+    <div class="box">🔁 <b>MLOps</b>: pipelines that retrain, test, deploy and monitor models automatically</div>
+    <div class="box">🧑‍⚖️ <b>Governance</b>: AI systems still need human oversight, documentation, fairness and privacy checks</div>
+  </div>
+  <p class="big" style="text-align:center;margin-top:24px;font-size:28px">Predict → explain → decide → act → monitor ↺</p>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-notes="<b>29–30 min.</b> Recap of Unit 5 and of the whole course: Unit 1 types of analytics, 2 data preparation, 3 models, 4 validation, 5 deployment and responsibility. Then break → study guide and labs.">
+  <span class="tag">Recap</span>
+  <h2>Today in <span class="k">one slide</span></h2>
+  <div class="grid g2" style="font-size:20px">
+    <div class="box"><b>Interpret</b>: std. coefficients, odds ratios (×0.48 per +50 points), permutation importance, PDP</div>
+    <div class="box"><b>Explain one case</b>: contribution = b(x − x̄); reason codes; counterfactual (score 716)</div>
+    <div class="box"><b>Deploy</b>: save the pipeline; batch / real-time / streaming / edge; avoid training–serving skew</div>
+    <div class="box"><b>Monitor</b>: PSI = Σ(A − E)ln(A/E): 0.339 → act; data vs concept drift; champion–challenger</div>
+    <div class="box"><b>Cases</b>: credit (AUC 0.75), screening (recall 0.86 at 0.1), K-means segments (k = 4)</div>
+    <div class="box"><b>Ethics</b>: disparate impact 0.714 via a proxy; DPDP Act 2023; accountability; AI integration</div>
+  </div>
+  <div class="ask">Next: 5-minute break → open <b>Study guide</b> on your screen → quiz at the end</div>
+</section>
+
+<canvas id="ink" width="1280" height="720"></canvas>
+</div>
+
+<div id="notes"></div>
+<div id="hud">
+  <button onclick="go(-1)" title="Previous (←)">◀</button>
+  <span id="count">1 / 15</span>
+  <button onclick="go(1)" title="Next (→ or space)">▶</button>
+  <button id="drawBtn" onclick="toggleDraw()" title="Draw (D)">✏️ Draw</button>
+  <button class="sw" style="background:#d64545" onclick="pen='#d64545'"></button>
+  <button class="sw" style="background:#2a6fdb" onclick="pen='#2a6fdb'"></button>
+  <button class="sw" style="background:#1f9d6b" onclick="pen='#1f9d6b'"></button>
+  <button class="sw" style="background:#18202f" onclick="pen='#18202f'"></button>
+  <button onclick="clearInk()" title="Clear drawing (C)">Clear</button>
+  <button onclick="toggleNotes()" title="Teacher notes (N)">Notes</button>
+  <button onclick="fullscreen()" title="Full screen (F)">⛶</button>
+  <a href="./" style="color:inherit;padding:0 6px">Exit</a>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide'), cur = 0, pen = '#d64545';
+var stage = document.getElementById('stage'), ink = document.getElementById('ink'), ctx = ink.getContext('2d');
+var strokes = {};  // per-slide drawings, kept while you move between slides
+
+function fit() {
+  var s = Math.min(innerWidth / 1280, innerHeight / 720);
+  stage.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+}
+addEventListener('resize', fit); fit();
+
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach(function (s, k) { s.classList.toggle('on', k === cur); });
+  document.getElementById('count').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('notes').innerHTML = '<div style="font-size:12px;color:#8a7a40;margin-bottom:6px">SLIDE ' + (cur + 1) + ' · TEACHER NOTES</div>' + (slides[cur].dataset.notes || '');
+  redraw();
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) {}
+}
+function go(d) { show(cur + d); }
+function toggleNotes() { document.getElementById('notes').classList.toggle('on'); }
+function toggleDraw() { document.body.classList.toggle('drawing'); document.getElementById('drawBtn').classList.toggle('on'); }
+function fullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+function clearInk() { strokes[cur] = []; redraw(); }
+
+function redraw() {
+  ctx.clearRect(0, 0, 1280, 720);
+  (strokes[cur] || []).forEach(function (st) {
+    ctx.strokeStyle = st.c; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); st.p.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+  });
+}
+function pos(e) { var r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * 1280 / r.width, (e.clientY - r.top) * 720 / r.height]; }
+var active = null;
+ink.addEventListener('pointerdown', function (e) { active = { c: pen, p: [pos(e)] }; (strokes[cur] = strokes[cur] || []).push(active); ink.setPointerCapture(e.pointerId); });
+ink.addEventListener('pointermove', function (e) { if (active) { active.p.push(pos(e)); redraw(); } });
+addEventListener('pointerup', function () { active = null; });
+
+addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(slides.length - 1);
+  else if (e.key === 'n' || e.key === 'N') toggleNotes();
+  else if (e.key === 'd' || e.key === 'D') toggleDraw();
+  else if (e.key === 'c' || e.key === 'C') clearInk();
+  else if (e.key === 'f' || e.key === 'F') fullscreen();
+});
+stage.addEventListener('click', function (e) { if (!document.body.classList.contains('drawing') && e.target.closest('.slide')) go(e.clientX > innerWidth / 2 ? 1 : -1); });
+
+(function () {   // one real-time scoring request
+  var svg = document.getElementById('bApi');
+  svgArrow(svg, 'apiArw', 'var(--ink-3)');
+  var steps = [['📱 App', 'sends JSON', 'teal'], ['Validate', 'all 8 fields?', 'accent'], ['Features', 'feature store', 'violet'],
+               ['Pipeline', 'scale → model', 'brand'], ['Decide', 'p < 0.25?', 'good'], ['Reply + log', 'p, decision, v1', 'teal']];
+  steps.forEach(function (s, i) {
+    var x = 20 + i * 188;
+    svgEl('rect', { x: x, y: 40, width: 160, height: 90, rx: 12, style: 'fill:var(--' + s[2] + '-soft);stroke:var(--' + s[2] + ');stroke-width:2' }, svg);
+    svgText(svg, x + 80, 78, s[0], 'font-size:20px;font-weight:800;fill:var(--' + (s[2] === 'brand' ? 'brand-ink' : s[2]) + ')');
+    svgText(svg, x + 80, 106, s[1], 'font-size:15px;fill:var(--ink-2)');
+    if (i < 5) svgEl('line', { x1: x + 162, y1: 85, x2: x + 184, y2: 85, style: 'stroke:var(--ink-3);stroke-width:2.5', 'marker-end': 'url(#apiArw)' }, svg);
+  });
+  svgEl('rect', { x: 20, y: 160, width: 1100, height: 50, rx: 10, style: 'fill:var(--surface-2)' }, svg);
+  svgText(svg, 570, 191, '{"p_default": 0.4132, "decision": "refer to officer", "model_version": "credit-logit-v1", "latency_ms": 4.26}',
+          'font-size:16px;font-family:var(--mono);fill:var(--ink)');
+})();
+
+addEventListener('hashchange', function () { var k = (parseInt(location.hash.slice(1), 10) || 1) - 1; if (k !== cur) show(k); });
+show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+{
+ "title": "Unit 2 Quiz · Data Preparation & Exploration",
+ "minutes": 30,
+ "shuffle_questions": true,
+ "instructions": [
+  "33 questions, 34 marks. You have 30 minutes; the quiz submits itself when time runs out.",
+  "Questions and options are shuffled, so your neighbour's screen will not match yours.",
+  "Multi-select questions need ALL correct options for the marks. Ordering questions give part marks for each item in the right place.",
+  "After submitting you will see your score and an explanation for every question."
+ ],
+ "questions": [
+  {
+   "id": "q01",
+   "topic": "Collection",
+   "type": "mcq",
+   "q": "Data collected earlier for a different purpose, such as billing records reused for a churn study, is called:",
+   "options": [
+    "Primary data",
+    "Secondary data",
+    "Unstructured data",
+    "Synthetic data"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "Secondary data was collected for another purpose. Primary data is collected for your exact question."
+  },
+  {
+   "id": "q02",
+   "topic": "Collection",
+   "type": "mcq",
+   "q": "The ticket file has one row per complaint (1,840 rows). Before joining it to a one-row-per-customer table you should:",
+   "options": [
+    "Aggregate it to one count per customer",
+    "Join it directly on customer_id",
+    "Delete customers with many tickets",
+    "Sort it by date"
+   ],
+   "answer": 0,
+   "explain": "Joining at the wrong grain copies each customer once per ticket. Group by customer first (tickets.groupby(...).size())."
+  },
+  {
+   "id": "q03",
+   "topic": "Collection",
+   "type": "mcq",
+   "q": "The CRM has 1,500 customers; the usage file covers 1,475 of them. Which join keeps all 1,500 customers?",
+   "options": [
+    "Left join (CRM on the left)",
+    "Inner join",
+    "Right join (usage on the right)",
+    "Cross join"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "A left join keeps every row of the left table. An inner join would silently drop the 25 customers with no usage record."
+  },
+  {
+   "id": "q04",
+   "topic": "Collection",
+   "type": "mcq",
+   "q": "10 usage rows have IDs like “st10007” while the CRM uses “ST10007”. What happens if you join without fixing this?",
+   "options": [
+    "Those 10 customers get no usage data",
+    "pandas fixes the case automatically",
+    "The join fails with an error",
+    "Nothing; IDs are compared ignoring case"
+   ],
+   "answer": 0,
+   "explain": "String keys must match exactly. Standardise keys (e.g. .str.upper()) before joining."
+  },
+  {
+   "id": "q05",
+   "topic": "Cleaning",
+   "type": "order",
+   "q": "Arrange these cleaning steps in a sensible order.",
+   "options": [
+    "Read the raw file as text",
+    "Remove exact duplicates",
+    "Standardise labels and fix types",
+    "Join the sources",
+    "Check for impossible values"
+   ],
+   "answer": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "marks": 2,
+   "explain": "Read safely, de-duplicate before counting anything, standardise so keys and labels match, join, then check values in the combined table."
+  },
+  {
+   "id": "q06",
+   "topic": "Cleaning",
+   "type": "mcq",
+   "q": "“Prepaid”, “prepaid”, “Pre-paid” and “PREPAID” all appear in plan_type. Which data-quality dimension is this?",
+   "options": [
+    "Consistency",
+    "Timeliness",
+    "Uniqueness",
+    "Completeness"
+   ],
+   "answer": 0,
+   "explain": "The same thing written different ways is a consistency problem. It splits one group into several."
+  },
+  {
+   "id": "q07",
+   "topic": "Cleaning",
+   "type": "mcq",
+   "q": "Which pandas code turns “₹399” and “399.00” into the number 399.0?",
+   "options": [
+    "pd.to_numeric(s.str.replace(\"₹\", \"\"))",
+    "s.astype(int)",
+    "s.str.upper()",
+    "s.fillna(0)"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Remove the symbol, then convert. astype(int) would fail on “₹399” and on “399.00”."
+  },
+  {
+   "id": "q08",
+   "topic": "Cleaning",
+   "type": "mcq",
+   "q": "Why should exact duplicates be removed BEFORE computing the churn rate?",
+   "options": [
+    "Otherwise duplicated customers are counted twice",
+    "Duplicates have missing values",
+    "Churn rate needs sorted data",
+    "pandas cannot compute rates with duplicates"
+   ],
+   "answer": 0,
+   "explain": "Every statistic computed before de-duplication counts the copies again, biasing rates and averages."
+  },
+  {
+   "id": "q09",
+   "topic": "Missing values",
+   "type": "mcq",
+   "q": "Age is missing for 6.0% of prepaid customers but 1.4% of postpaid customers. This missingness is best described as:",
+   "options": [
+    "MCAR",
+    "MAR",
+    "MNAR",
+    "Not missing"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "It depends on another column we know (plan type): Missing At Random given that column."
+  },
+  {
+   "id": "q10",
+   "topic": "Missing values",
+   "type": "mcq",
+   "q": "Customers who are unhappy skip the satisfaction survey. This missingness is:",
+   "options": [
+    "MCAR",
+    "MAR",
+    "MNAR",
+    "Structural"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "The gap depends on the very value that is missing (low satisfaction): Missing Not At Random."
+  },
+  {
+   "id": "q11",
+   "topic": "Missing values",
+   "type": "mcq",
+   "q": "1,436 observed ages have sd 10.22. After filling 64 gaps with the mean, the sd becomes:",
+   "options": [
+    "Larger than 10.22",
+    "Exactly 10.22",
+    "About 10.00 (smaller)",
+    "Zero"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "The filled values sit on the mean and add nothing to Σ(x − x̄)², so sd = 10.22 × √(1435/1499) ≈ 10.00."
+  },
+  {
+   "id": "q12",
+   "topic": "Missing values",
+   "type": "mcq",
+   "q": "Why add an “age_was_missing” column before filling the gaps?",
+   "options": [
+    "So the model can still use the fact that the value was missing",
+    "To make the dataset larger",
+    "Because pandas requires it",
+    "To remove duplicates"
+   ],
+   "answer": 0,
+   "explain": "If missingness carries information (MAR/MNAR), the flag preserves it after imputation."
+  },
+  {
+   "id": "q13",
+   "topic": "Missing values",
+   "type": "mcq",
+   "q": "A customer with no support ticket in the ticket file should get support_calls =",
+   "options": [
+    "0",
+    "Missing (NaN)",
+    "The average number of calls",
+    "The median number of calls"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "No ticket means zero calls: a known fact, not an unknown value. Imputing an average would invent complaints."
+  },
+  {
+   "id": "q14",
+   "topic": "Outliers",
+   "type": "mcq",
+   "q": "data_gb has Q1 = 21.90 and Q3 = 43.65. What is the upper IQR fence (1.5 rule)?",
+   "options": [
+    "65.40",
+    "76.28",
+    "87.30",
+    "43.65"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "IQR = 21.75; upper fence = 43.65 + 1.5 × 21.75 = 43.65 + 32.63 = 76.28."
+  },
+  {
+   "id": "q15",
+   "topic": "Outliers",
+   "type": "mcq",
+   "q": "With mean 37.76 and sd 59.18, what is the z-score of a 999.9 GB reading?",
+   "options": [
+    "About 1.6",
+    "About 10.0",
+    "About 16.3",
+    "About 26.4"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "z = (999.9 − 37.76) / 59.18 = 962.14 / 59.18 ≈ 16.3."
+  },
+  {
+   "id": "q16",
+   "topic": "Outliers",
+   "type": "mcq",
+   "q": "Six huge glitches inflate the standard deviation, so genuine heavy users no longer reach |z| > 3. This effect is called:",
+   "options": [
+    "Masking",
+    "Leakage",
+    "Binning",
+    "Imputation"
+   ],
+   "answer": 0,
+   "explain": "Outliers distort the mean and sd that the z rule depends on, hiding other outliers. The IQR rule is more robust."
+  },
+  {
+   "id": "q17",
+   "topic": "Outliers",
+   "type": "mcq",
+   "q": "A monthly charge of ₹59,900 appears where all plans cost ₹199–₹999, and the billing team confirms it was ₹599. Best treatment:",
+   "options": [
+    "Fix it to ₹599",
+    "Delete the customer",
+    "Keep it as is",
+    "Replace it with the mean charge"
+   ],
+   "answer": 0,
+   "explain": "An error you can explain and correct should be corrected, not deleted or averaged away."
+  },
+  {
+   "id": "q18",
+   "topic": "Outliers",
+   "type": "mcq",
+   "q": "In a fraud-detection project, extremely unusual transactions should usually be:",
+   "options": [
+    "Kept, because they may be the very cases you want to detect",
+    "Deleted before modelling",
+    "Capped at the 99th percentile",
+    "Replaced with the median"
+   ],
+   "answer": 0,
+   "explain": "In fraud and anomaly detection the outliers are the signal."
+  },
+  {
+   "id": "q19",
+   "topic": "Transformation",
+   "type": "mcq",
+   "q": "Monthly charges range from ₹199 to ₹999. What is the min-max scaled value of ₹599?",
+   "options": [
+    "0.25",
+    "0.50",
+    "0.60",
+    "0.75"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "(599 − 199) / (999 − 199) = 400 / 800 = 0.50."
+  },
+  {
+   "id": "q20",
+   "topic": "Transformation",
+   "type": "mcq",
+   "q": "Mean charge is ₹474.55 and sd ₹211.44. What is the z-score of ₹599?",
+   "options": [
+    "0.159",
+    "0.589",
+    "1.262",
+    "2.833"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "(599 − 474.55) / 211.44 = 124.45 / 211.44 ≈ 0.589."
+  },
+  {
+   "id": "q21",
+   "topic": "Transformation",
+   "type": "mcq",
+   "q": "Which model does NOT need its features scaled?",
+   "options": [
+    "Decision tree",
+    "K-nearest neighbours",
+    "K-means clustering",
+    "Logistic regression with regularization"
+   ],
+   "answer": 0,
+   "explain": "Trees split on one feature at a time using thresholds, so scale does not matter. Distance- and gradient-based models need scaling."
+  },
+  {
+   "id": "q22",
+   "topic": "Transformation",
+   "type": "mcq",
+   "q": "Voice minutes are strongly right-skewed (skew 1.39). Which transformation helps most?",
+   "options": [
+    "log(1 + x)",
+    "One-hot encoding",
+    "Min-max scaling",
+    "Sorting the column"
+   ],
+   "answer": 0,
+   "explain": "A log transform compresses large values more than small ones; skew fell from 1.39 to −0.60. Scaling does not change the shape."
+  },
+  {
+   "id": "q23",
+   "topic": "Transformation",
+   "type": "mcq",
+   "q": "Payment mode (UPI, Card, Cash, Net banking) should be encoded with:",
+   "options": [
+    "One-hot encoding",
+    "Ordinal encoding 1–4",
+    "Min-max scaling",
+    "A log transform"
+   ],
+   "answer": 0,
+   "explain": "Nominal categories have no order; ordinal codes would invent one."
+  },
+  {
+   "id": "q24",
+   "topic": "Transformation",
+   "type": "mcq",
+   "q": "City tier (Tier-1, Tier-2, Tier-3) can sensibly be encoded as:",
+   "options": [
+    "Ordinal codes 1, 2, 3",
+    "Random numbers",
+    "Its text length",
+    "Nothing; tier cannot be used"
+   ],
+   "answer": 0,
+   "explain": "City tier has a natural order, so ordinal encoding preserves it."
+  },
+  {
+   "id": "q25",
+   "topic": "Feature selection",
+   "type": "mcq",
+   "q": "Which of these is a FILTER feature-selection method?",
+   "options": [
+    "Chi-square test against the target",
+    "Recursive feature elimination (RFE)",
+    "Forward selection with a model",
+    "L1 (lasso) regularization"
+   ],
+   "answer": 0,
+   "explain": "Filters score each feature on its own. RFE and forward selection are wrappers; L1 is embedded."
+  },
+  {
+   "id": "q26",
+   "topic": "Feature selection",
+   "type": "mcq",
+   "q": "Monthly charge and data_gb have r = 0.91. What should you usually do?",
+   "options": [
+    "Keep one of them; they carry nearly the same information",
+    "Keep both; more features are always better",
+    "Drop both",
+    "Multiply them together"
+   ],
+   "answer": 0,
+   "explain": "Highly correlated predictors are redundant (multicollinearity) and make coefficients unstable."
+  },
+  {
+   "id": "q27",
+   "topic": "Feature selection",
+   "type": "mcq",
+   "q": "For plan type vs churn, χ² = 12.96 with 1 degree of freedom (5% critical value 3.84). Conclusion:",
+   "options": [
+    "Plan type and churn are related; keep the feature",
+    "They are independent; drop the feature",
+    "The test is invalid",
+    "Churn causes plan type"
+   ],
+   "answer": 0,
+   "explain": "12.96 > 3.84 (p = 0.0003), so we reject independence. The test shows association, not causation."
+  },
+  {
+   "id": "q28",
+   "topic": "Feature selection",
+   "type": "mcq",
+   "q": "Expected count for Postpaid & Churn = Yes: 566 postpaid customers, 340 churners, 1,500 customers in total.",
+   "options": [
+    "128.29",
+    "100.00",
+    "226.67",
+    "340.00"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Expected = row total × column total ÷ grand total = 566 × 340 / 1500 = 128.29."
+  },
+  {
+   "id": "q29",
+   "topic": "Feature selection",
+   "type": "mcq",
+   "q": "Why should feature selection be done on the training data only?",
+   "options": [
+    "Using the test set to choose features leaks information and inflates test scores",
+    "Training data is smaller",
+    "Test data has no target",
+    "It is faster"
+   ],
+   "answer": 0,
+   "explain": "If test rows influence which features are chosen, the test score is no longer an honest estimate (data leakage)."
+  },
+  {
+   "id": "q30",
+   "topic": "EDA & visualization",
+   "type": "mcq",
+   "q": "Mean voice minutes 401, median 338. The distribution is most likely:",
+   "options": [
+    "Right-skewed (long tail of large values)",
+    "Left-skewed",
+    "Perfectly symmetric",
+    "Uniform"
+   ],
+   "answer": 0,
+   "explain": "A mean well above the median signals a few large values pulling the mean up."
+  },
+  {
+   "id": "q31",
+   "topic": "EDA & visualization",
+   "type": "mcq",
+   "q": "Which chart best shows whether leavers have shorter tenure than stayers, including spread and outliers?",
+   "options": [
+    "Box plot of tenure by churn group",
+    "Pie chart",
+    "Line chart",
+    "Heatmap of all columns"
+   ],
+   "answer": 0,
+   "explain": "A box plot by group compares centre, spread and outliers at a glance."
+  },
+  {
+   "id": "q32",
+   "topic": "EDA & visualization",
+   "type": "mcq",
+   "q": "Match the question to the chart: “Do data used and monthly charge rise together?”",
+   "options": [
+    "Scatter plot",
+    "Histogram",
+    "Pie chart",
+    "Stacked bar"
+   ],
+   "answer": 0,
+   "explain": "Two numeric variables together: scatter plot."
+  },
+  {
+   "id": "q33",
+   "topic": "EDA & visualization",
+   "type": "mcq",
+   "q": "123 customers are recorded as exactly 18 years old, but only 23 as 19. An analyst should:",
+   "options": [
+    "Flag it as a likely form default or minimum value and check with the data owner",
+    "Delete all 18-year-olds",
+    "Ignore it; it is normal",
+    "Replace 18 with the mean age"
+   ],
+   "answer": 0,
+   "explain": "EDA finds suspicious patterns and raises questions; it doesn’t silently ‘fix’ them."
+  }
+ ]
+}

@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 Study Guide</title>
+<meta name="description" content="Introduction to predictive analytics: basics, descriptive vs predictive vs prescriptive analytics, business applications, data types and measurement levels, the predictive analytics lifecycle, and tools (Python, R, Excel, SPSS), with a telecom churn dataset.">
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<script src="/courses/shared/diagrams.js"></script>
+<style>
+  .pace { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 18px 0 4px; }
+  .pace a { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; color: var(--ink); font-size: 14px; }
+  .pace a:hover { border-color: var(--brand); text-decoration: none; }
+  .pace b { display: block; font-size: 12px; color: var(--accent); }
+  .diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .step-head { display: flex; gap: 12px; align-items: center; margin: 28px 0 8px; }
+  .step-head .n { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--brand); color: #fff; font-size: 15px; }
+  .step-head h3 { margin: 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .app h3 { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
+  .app h3 span { font-size: 26px; }
+  .app dl { margin: 0; font-size: 14.5px; display: grid; grid-template-columns: 82px 1fr; gap: 4px 10px; }
+  .app dt { color: var(--ink-3); font-weight: 600; }
+  .app dd { margin: 0; color: var(--ink-2); }
+  .lab-ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: end; }
+  .lab-ctrl label, .sl label { font-size: 13px; font-weight: 600; color: var(--ink-3); display: block; margin-bottom: 4px; }
+  .sl { margin: 8px 0; }
+  .sl input[type=range] { width: 100%; }
+  .sl b { color: var(--ink); }
+  .chart svg { width: 100%; height: auto; }
+  .gauge { text-align: center; }
+  .gauge .v { font-size: 52px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .gbar { height: 16px; border-radius: 8px; background: var(--surface-2); overflow: hidden; margin: 12px 0 6px; }
+  .gbar div { height: 100%; border-radius: 8px; transition: width .2s; }
+  .task { display: grid; grid-template-columns: 28px 1fr; gap: 8px; margin: 10px 0; font-size: 15.5px; }
+  .task input { width: 18px; height: 18px; margin-top: 4px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  .verdict { padding: 12px 14px; border-radius: 10px; font-weight: 600; margin-top: 12px; }
+  .stage4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0; }
+  @media (max-width: 820px) { .stage4 { grid-template-columns: 1fr 1fr; } }
+  .stage4 div { border-radius: 12px; padding: 14px; border: 1.5px solid; }
+  .stage4 b { display: block; font-size: 17px; }
+  .stage4 i { display: block; font-size: 14px; color: var(--ink-2); margin: 4px 0 8px; }
+  .stage4 span { font-size: 14.5px; }
+  .ok { color: var(--good); font-weight: 700; } .bad { color: var(--bad); font-weight: 700; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Predictive Analytics</a> › <a href="./">Unit 1</a> › <b>Study guide</b></div>
+  <a class="icon-btn" href="quiz.html">Quiz →</a>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+  <div class="progress"></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 1 · Study guide · 35 minutes</span>
+    <h1>Introduction to Predictive Analytics</h1>
+    <p class="lead">You heard the theory on the board. Now see it work on real data: <b>1,500 customers</b> of <b>SwiftTel</b>, a telecom company, of whom <b>340 left</b> in three months. You will describe what happened, predict who leaves next, and decide who should get a retention offer: all three kinds of analytics on one dataset.</p>
+    <div class="pace">
+      <a href="#basics"><b>0–5 min</b>What it is</a>
+      <a href="#types"><b>5–10 min</b>Types of analytics</a>
+      <a href="#apps"><b>10–13 min</b>Applications</a>
+      <a href="#data"><b>13–18 min</b>Data types</a>
+      <a href="#lifecycle"><b>18–25 min</b>Lifecycle in action</a>
+      <a href="#tools"><b>25–28 min</b>Tools</a>
+      <a href="#lab"><b>28–35 min</b>Hands-on lab</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc">
+      <div class="t">On this page</div>
+      <a href="#basics">1. What is predictive analytics?</a>
+      <a href="#types">2. Four types of analytics</a>
+      <a href="#apps">3. Business applications</a>
+      <a href="#data">4. Data types</a>
+      <a href="#lifecycle">5. The lifecycle</a>
+      <a href="#tools">6. Tools: Python, R, Excel, SPSS</a>
+      <a href="#lab">7. Hands-on lab</a>
+      <a href="#summary">8. Summary and revision</a>
+    </nav>
+
+    <main>
+<!-- ================================================================ 1 -->
+<section class="block" id="basics">
+  <div class="sec-no">Section 1</div>
+  <h2>What is predictive analytics?</h2>
+  <div class="definition">
+    <b>Predictive analytics</b> uses <b>historical data</b>, <b>statistics</b> and <b>machine learning</b> to estimate the <b>probability</b> of a <b>future or unknown outcome</b>, so that a better <b>decision</b> can be made.
+    <small>“Unknown” matters: predicting whether a past transaction was fraud is also prediction, even though it already happened.</small>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Key word</th><th>What it means</th><th>SwiftTel example</th></tr>
+    <tr><td><b>Historical data</b></td><td>Past cases where we already know the outcome</td><td>1,500 customers on 1 Jan 2025, and whether each left by 31 March</td></tr>
+    <tr><td><b>Target (outcome)</b></td><td>The thing we want to predict</td><td><code>churned</code>: Yes or No</td></tr>
+    <tr><td><b>Predictors (features)</b></td><td>Facts we know <i>before</i> the outcome</td><td>tenure, plan type, monthly charge, support calls, satisfaction</td></tr>
+    <tr><td><b>Model</b></td><td>A formula learned from the data that links predictors to the target</td><td>logistic regression (Unit 3)</td></tr>
+    <tr><td><b>Score</b></td><td>The model’s output for one new case: usually a probability</td><td>“customer ST10899: 75% likely to leave”</td></tr>
+    <tr><td><b>Decision</b></td><td>The action taken because of the score</td><td>call the customer and offer a ₹300 voucher</td></tr>
+  </table></div>
+
+  <figure class="diagram">
+    <svg id="pipeSvg" viewBox="0 0 800 130" role="img" aria-label="Historical data, model learns, score new case, decision"></svg>
+    <figcaption>How a prediction is made and used</figcaption>
+  </figure>
+
+  <div class="callout idea"><b>Probability, not certainty</b>A weather app’s “70% chance of rain” means: on past days that looked like today, it rained about 7 times in 10. It will sometimes be wrong, and that is fine. A good prediction is one that leads to <b>better decisions on average</b>, not one that is always right.</div>
+</section>
+
+<!-- ================================================================ 2 -->
+<section class="block" id="types">
+  <div class="sec-no">Section 2</div>
+  <h2>Descriptive, diagnostic, predictive, prescriptive</h2>
+  <p>Analytics is usually split into four types, each answering a harder and more valuable question. Your syllabus names three of them; <b>diagnostic</b> sits between descriptive and predictive. Here is SwiftTel at each step:</p>
+  <div class="stage4">
+    <div style="border-color:var(--teal);background:var(--teal-soft)"><b style="color:var(--teal)">Descriptive</b><i>What happened?</i><span>22.7% of customers left in Q1 2025. Prepaid: 25.7%, postpaid: 17.7%.</span></div>
+    <div style="border-color:var(--violet);background:var(--violet-soft)"><b style="color:var(--violet)">Diagnostic</b><i>Why did it happen?</i><span>Leavers made more support calls (1.71 vs 1.09) and were newer (15 vs 23 months).</span></div>
+    <div style="border-color:var(--accent);background:var(--accent-soft)"><b style="color:var(--accent)">Predictive</b><i>What will happen?</i><span>Customer ST10899 has a 75% chance of leaving next quarter.</span></div>
+    <div style="border-color:var(--good);background:var(--good-soft)"><b style="color:var(--good)">Prescriptive</b><i>What should we do?</i><span>Offer a ₹300 voucher to these 455 customers: expected gain ₹93,591.</span></div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Descriptive</th><th>Predictive</th><th>Prescriptive</th></tr>
+    <tr><td><b>Question</b></td><td>What happened?</td><td>What is likely to happen?</td><td>What should we do about it?</td></tr>
+    <tr><td><b>Time focus</b></td><td>Past</td><td>Future (or unknown)</td><td>Future actions</td></tr>
+    <tr><td><b>Techniques</b></td><td>Counts, averages, percentages, charts, dashboards, reports</td><td>Regression, classification, time-series forecasting, machine learning</td><td>Optimisation, simulation, expected value, decision rules</td></tr>
+    <tr><td><b>Output</b></td><td>A summary: “churn was 22.7%”</td><td>A score: “70% likely to leave”</td><td>An action: “offer ₹300 to these 455”</td></tr>
+    <tr><td><b>Needs</b></td><td>Clean data</td><td>Data + a validated model</td><td>Model + costs, benefits and constraints</td></tr>
+    <tr><td><b>Everyday example</b></td><td>Your phone’s weekly screen-time report</td><td>Maps estimating arrival time</td><td>Maps choosing the fastest route for you</td></tr>
+  </table></div>
+
+  <div class="callout warn"><b>Do the maths: descriptive</b>
+    Churn rate = churned ÷ total = 340 ÷ 1,500 = <b>0.227</b>, i.e. <b>22.7%</b>. For prepaid customers only: 240 ÷ 934 = 25.7%. Percentages let you compare groups of different sizes fairly.
+  </div>
+
+  <div class="activity" id="typeGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">Which type of analytics is it?</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 3 -->
+<section class="block" id="apps">
+  <div class="sec-no">Section 3</div>
+  <h2>Applications in business</h2>
+  <p>Every application below has the same shape: <b>historical data</b> with known outcomes, a <b>prediction</b> for new cases, and a <b>decision</b> that changes because of it.</p>
+  <div class="grid g3">
+    <div class="card app"><h3><span>📱</span>Telecom</h3><dl><dt>Predict</dt><dd>Which customers will switch networks</dd><dt>Data</dt><dd>Usage, recharges, complaints, tenure</dd><dt>Decision</dt><dd>Who gets a retention offer</dd></dl></div>
+    <div class="card app"><h3><span>🏦</span>Banking</h3><dl><dt>Predict</dt><dd>Will a borrower repay the loan?</dd><dt>Data</dt><dd>Income, past repayments, credit history</dd><dt>Decision</dt><dd>Approve, reject, or set the interest rate</dd></dl></div>
+    <div class="card app"><h3><span>💳</span>Payments</h3><dl><dt>Predict</dt><dd>Is this transaction fraud?</dd><dt>Data</dt><dd>Amount, device, location, time, past behaviour</dd><dt>Decision</dt><dd>Allow, ask for OTP, or block, within milliseconds</dd></dl></div>
+    <div class="card app"><h3><span>🛒</span>Retail</h3><dl><dt>Predict</dt><dd>Next month’s demand for each product</dd><dt>Data</dt><dd>Past sales, festivals, prices, weather</dd><dt>Decision</dt><dd>How much stock to order for each store</dd></dl></div>
+    <div class="card app"><h3><span>🏭</span>Manufacturing</h3><dl><dt>Predict</dt><dd>Which machine will fail soon</dd><dt>Data</dt><dd>Sensor readings: vibration, temperature</dd><dt>Decision</dt><dd>Service it before it breaks (predictive maintenance)</dd></dl></div>
+    <div class="card app"><h3><span>🏥</span>Healthcare</h3><dl><dt>Predict</dt><dd>Will a patient be readmitted within 30 days?</dd><dt>Data</dt><dd>Diagnosis, tests, age, previous visits</dd><dt>Decision</dt><dd>Extra follow-up for high-risk patients</dd></dl></div>
+    <div class="card app"><h3><span>🛡️</span>Insurance</h3><dl><dt>Predict</dt><dd>Chance and size of a claim</dd><dt>Data</dt><dd>Vehicle, driver age, past claims</dd><dt>Decision</dt><dd>Premium for each policy</dd></dl></div>
+    <div class="card app"><h3><span>📣</span>Marketing</h3><dl><dt>Predict</dt><dd>Who will respond to a campaign</dd><dt>Data</dt><dd>Past purchases, clicks, demographics</dd><dt>Decision</dt><dd>Whom to send the offer to (and whom not to annoy)</dd></dl></div>
+    <div class="card app"><h3><span>👥</span>Human resources</h3><dl><dt>Predict</dt><dd>Which employees may resign</dd><dt>Data</dt><dd>Tenure, pay changes, appraisals, leave</dd><dt>Decision</dt><dd>Retention talks, promotions</dd></dl></div>
+  </div>
+</section>
+
+<!-- ================================================================ 4 -->
+<section class="block" id="data">
+  <div class="sec-no">Section 4</div>
+  <h2>Data types</h2>
+  <p>Before any model, you must know <b>what kind of data</b> each column holds. It decides which summaries are allowed, which charts make sense and which models can use it. Getting it wrong gives nonsense such as “average gender = 0.45”.</p>
+
+  <h3>By structure</h3>
+  <div class="grid g3">
+    <div class="card"><b>Structured</b><p class="muted" style="margin:6px 0 0;font-size:15px">Rows and columns with fixed meaning: our customer table, bank transactions. Ready for analysis.</p></div>
+    <div class="card"><b>Semi-structured</b><p class="muted" style="margin:6px 0 0;font-size:15px">Has tags or keys but no fixed table: JSON from an app, XML, web server logs.</p></div>
+    <div class="card"><b>Unstructured</b><p class="muted" style="margin:6px 0 0;font-size:15px">No predefined form: customer reviews, call recordings, photos. Must be converted to features first.</p></div>
+  </div>
+
+  <h3>Qualitative vs quantitative</h3>
+  <figure class="diagram">
+    <svg id="typesSvg" viewBox="0 0 800 210" role="img" aria-label="Qualitative splits into nominal and ordinal; quantitative into discrete and continuous"></svg>
+  </figure>
+
+  <h3>Levels of measurement (NOIR)</h3>
+  <p>Psychologist S. S. Stevens (1946) described four levels. Each level allows everything the level above it in the table allows, plus one more operation:</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Level</th><th>What you can say</th><th>Examples</th><th>Valid centre</th><th>Allowed maths</th><th>SPSS Measure</th></tr>
+    <tr><td><b>Nominal</b></td><td>Categories with no order</td><td>gender, plan type, churned, city name</td><td>mode</td><td>= ≠, counts, %</td><td>Nominal</td></tr>
+    <tr><td><b>Ordinal</b></td><td>Categories <b>with order</b>, gaps not equal</td><td>city tier, satisfaction 1–5, grades A/B/C</td><td>median</td><td>+ &lt; &gt;, ranks, percentiles</td><td>Ordinal</td></tr>
+    <tr><td><b>Interval</b></td><td>Equal gaps, but <b>no true zero</b></td><td>temperature in °C, calendar year, dates</td><td>mean</td><td>+ − differences</td><td>Scale</td></tr>
+    <tr><td><b>Ratio</b></td><td>Equal gaps and a <b>true zero</b></td><td>tenure, ₹ charge, data GB, age, support calls</td><td>mean</td><td>+ × ÷ ratios</td><td>Scale</td></tr>
+  </table></div>
+  <div class="callout warn"><b>Two traps</b>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li><b>Numbers that are not quantities.</b> Satisfaction is stored as 1–5, but the step from 1 to 2 is not guaranteed equal to the step from 4 to 5. It is ordinal, so the median is the safe summary. A PIN code or roll number is nominal even though it is made of digits.</li>
+      <li><b>No true zero.</b> 0 °C does not mean “no temperature”, so 40 °C is <i>not</i> twice as hot as 20 °C. ₹0 does mean no money, so ₹800 <i>is</i> twice ₹400.</li>
+    </ul></div>
+
+  <h3>SwiftTel’s columns</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Column</th><th>Example</th><th>Level</th><th>Python dtype</th><th>Notes</th></tr>
+    <tr><td><code>customer_id</code></td><td>ST10001</td><td>Nominal</td><td>object</td><td>An identifier: never use it as a predictor</td></tr>
+    <tr><td><code>gender</code>, <code>plan_type</code>, <code>autopay</code></td><td>Female, Prepaid, Yes</td><td>Nominal</td><td>object</td><td>Convert to 0/1 before modelling</td></tr>
+    <tr><td><code>city_tier</code></td><td>Tier-1 / 2 / 3</td><td>Ordinal</td><td>object</td><td>Order matters</td></tr>
+    <tr><td><code>satisfaction</code></td><td>1–5</td><td>Ordinal</td><td>float64</td><td>45 missing: float because of the blanks</td></tr>
+    <tr><td><code>join_date</code></td><td>2023-06-29</td><td>Interval</td><td>datetime64</td><td>Differences between dates make sense</td></tr>
+    <tr><td><code>age</code>, <code>tenure_months</code>, <code>support_calls</code></td><td>42, 18, 3</td><td>Ratio (discrete)</td><td>int64</td><td>Counted in whole units</td></tr>
+    <tr><td><code>monthly_charge</code>, <code>data_gb</code></td><td>₹999, 76.7</td><td>Ratio (continuous)</td><td>int64, float64</td><td>Measured amounts</td></tr>
+    <tr><td><code>churned</code></td><td>Yes / No</td><td>Nominal</td><td>object</td><td>The <b>target</b> we predict</td></tr>
+  </table></div>
+  <p><b>Also by time:</b> our customer file is <b>cross-sectional</b> (many customers at one moment). <code>swifttel_monthly.csv</code> is a <b>time series</b> (one company over 24 months). Following many customers month after month would be <b>panel</b> data.</p>
+
+  <div class="activity" id="levelGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">Name the level of measurement</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 5 -->
+<section class="block" id="lifecycle">
+  <div class="sec-no">Section 5</div>
+  <h2>The predictive analytics lifecycle</h2>
+  <p>A predictive project is a <b>cycle</b>: after deployment the world changes, the model slowly gets worse (<b>model drift</b>), and you go round again. IBM’s SPSS Modeler follows the same idea under the name CRISP-DM.</p>
+  <figure class="diagram">
+    <svg id="lifeSvg" viewBox="0 0 800 440" role="img" aria-label="Eight-stage predictive analytics lifecycle"></svg>
+  </figure>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>#</th><th>Stage</th><th>Key question</th><th>SwiftTel</th></tr>
+    <tr><td>1</td><td><b>Define the problem</b></td><td>What decision will the prediction improve? How is success measured?</td><td>Reduce churn with a limited voucher budget</td></tr>
+    <tr><td>2</td><td><b>Collect data</b></td><td>Which past cases, with known outcomes, are available?</td><td>Customer snapshot on 1 Jan + who left by 31 Mar</td></tr>
+    <tr><td>3</td><td><b>Prepare data</b></td><td>Are types, missing values and errors fixed?</td><td>Yes/No → 1/0; fill 45 missing satisfaction scores</td></tr>
+    <tr><td>4</td><td><b>Explore</b></td><td>What patterns does descriptive analysis show?</td><td>Churn rises with support calls, falls with tenure</td></tr>
+    <tr><td>5</td><td><b>Build model</b></td><td>Which technique fits the target?</td><td>Logistic regression on 70% of customers</td></tr>
+    <tr><td>6</td><td><b>Evaluate</b></td><td>Does it work on data it has never seen?</td><td>Test on the other 30%: lift 2.16</td></tr>
+    <tr><td>7</td><td><b>Deploy</b></td><td>How are scores used in daily work?</td><td>Weekly call list for the retention team</td></tr>
+    <tr><td>8</td><td><b>Monitor</b></td><td>Is it still accurate? When do we retrain?</td><td>Compare predicted vs actual churn every month</td></tr>
+  </table></div>
+
+  <h3>Walk-through: the lifecycle on real data</h3>
+  <p>Below is real Python run on the SwiftTel data. Every output is exactly what the code prints. The full script is in the <a href="#lab">lab</a>.</p>
+
+  <div class="step-head"><div class="n">2</div><h3>Collect: load the data and check the types</h3></div>
+<pre class="code" data-lang="py">import pandas as pd
+df = pd.read_csv("swifttel_customers.csv", parse_dates=["join_date"])
+print(df.shape)
+print(df.dtypes)</pre>
+<pre class="out">(1500, 13)
+customer_id               object
+gender                    object
+age                        int64
+city_tier                 object
+plan_type                 object
+join_date         datetime64[ns]
+tenure_months              int64
+monthly_charge             int64
+data_gb                  float64
+autopay                   object
+support_calls              int64
+satisfaction             float64
+churned                   object</pre>
+
+  <div class="step-head"><div class="n">3</div><h3>Prepare: missing values and a 0/1 target</h3></div>
+<pre class="code" data-lang="py">print(df.isna().sum()[df.isna().sum() &gt; 0])
+df["churn_flag"] = (df["churned"] == "Yes").astype(int)</pre>
+<pre class="out">satisfaction    45</pre>
+  <p>45 customers skipped the satisfaction survey. We keep them: they still have a known outcome. Before modelling we fill the gap with the <b>median</b> (the right centre for ordinal data). Unit 2 covers missing values in depth.</p>
+
+  <div class="step-head"><div class="n">4</div><h3>Explore: descriptive and diagnostic</h3></div>
+<pre class="code" data-lang="py">print(f"Overall churn rate: {df['churn_flag'].mean():.1%}")
+print((df.groupby("plan_type")["churn_flag"].mean() * 100).round(1))
+print(df.groupby("churned")[["tenure_months", "support_calls", "monthly_charge"]].mean().round(2))</pre>
+<pre class="out">Overall churn rate: 22.7%
+plan_type
+Postpaid    17.7
+Prepaid     25.7
+         tenure_months  support_calls  monthly_charge
+churned
+No               23.28           1.09          476.00
+Yes              15.00           1.71          469.59</pre>
+  <div class="two">
+    <figure class="shot"><img src="img/churn_by_calls.png" alt="Churn rises from 13% with no support calls to 53% with four or more" loading="lazy"><figcaption>Each extra complaint call raises the churn rate.</figcaption></figure>
+    <figure class="shot"><img src="img/churn_by_tenure.png" alt="Churn is 27-35% in the first year and falls to 4% after four years" loading="lazy"><figcaption>Loyalty grows with time: first-year customers are the risk.</figcaption></figure>
+  </div>
+  <div class="callout idea"><b>Diagnostic insight</b>Leavers are newer (15 vs 23 months) and complain more (1.71 vs 1.09 calls). But monthly charge hardly differs (₹470 vs ₹476): price is <b>not</b> the main reason people leave. Without the data, a manager might have cut prices, which is the wrong fix.</div>
+
+  <div class="step-head"><div class="n">5</div><h3>Build a model: predictive</h3></div>
+<pre class="code" data-lang="py">from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+model = LogisticRegression(max_iter=5000).fit(X_train, y_train)</pre>
+<pre class="out">Learned weights (+ means more likely to churn):
+  tenure_months   -0.0350
+  monthly_charge  +0.0012
+  support_calls   +0.3980
+  prepaid         +0.6351
+  autopay         -0.5842
+  tier3           +0.0109
+  satisfaction    -0.2437</pre>
+  <p>Read the signs: each support call <b>raises</b> the risk; longer tenure, autopay and higher satisfaction <b>lower</b> it. The model turns these into a probability with <code>p = 1 / (1 + e<sup>−z</sup>)</code>, where z is the weighted sum. You will build this yourself in Unit 3; for now, play with it in <a href="#lab">Lab Part B</a>.</p>
+
+  <div class="step-head"><div class="n">6</div><h3>Evaluate: on customers the model never saw</h3></div>
+<pre class="out">Test accuracy             : 78.4%
+Always-say-No accuracy    : 77.3%   &lt;- accuracy alone can fool you!
+Churn rate in top 10% risk: 48.9%  vs 22.7% overall  -&gt; lift 2.16x</pre>
+  <div class="two">
+    <figure class="shot"><img src="img/risk_deciles.png" alt="Churn is 50% in the riskiest tenth and 3% in the safest tenth" loading="lazy"><figcaption>Sorted by predicted risk, real churn falls steadily from group 1 to group 10.</figcaption></figure>
+    <div class="callout warn" style="margin-top:0"><b>Why accuracy is not enough</b>Only 22.7% of customers churn, so a lazy “model” that always says <i>No</i> is already 77.3% accurate. Our model’s 78.4% barely beats it. Its real value is <b>ranking</b>: the 10% it rates riskiest churn at 48.9%, more than twice the average (<b>lift = 48.9 ÷ 22.7 ≈ 2.16</b>). Units 3–4 add precision, recall and ROC curves.</div>
+  </div>
+
+  <div class="step-head"><div class="n">7</div><h3>Deploy: prescriptive decision and a forecast</h3></div>
+<pre class="code" data-lang="py">df["churn_prob"] = model.predict_proba(X_all)[:, 1]
+df["expected_gain"] = df["churn_prob"] * 0.40 * df["monthly_charge"] * 6 - 300
+offer = df[df["expected_gain"] &gt; 0]</pre>
+<pre class="out">Offer the voucher to 455 customers; expected net gain Rs 93,591
+Offer to all 1500 customers instead  : expected net Rs -68,497</pre>
+  <div class="callout warn"><b>Do the maths: expected value</b>
+    A ₹300 voucher; 40% of would-be leavers accept it and stay 6 more months.<br>
+    <code>Expected gain = p × 0.40 × (6 × monthly charge) − 300</code><br>
+    Customer with p = 0.70 on a ₹399 plan: 0.70 × 0.40 × 2,394 − 300 = <b>+₹372</b> → offer.<br>
+    Break-even risk: <code>p = 300 ÷ (0.40 × 6 × charge)</code> = 0.31 for ₹399 but only 0.125 for ₹999. High-value customers are worth saving even at lower risk, which is why the top of the call list is mostly postpaid.
+  </div>
+  <p>The same lifecycle also answers a <b>time-series</b> question: next quarter’s revenue. A straight trend line through 24 months gives <code>revenue = 482.81 + 5.664 × t</code>, so January 2025 (t = 25) ≈ <b>₹624.4 lakh</b>.</p>
+  <figure class="shot"><img src="img/revenue_forecast.png" alt="Monthly revenue rising from 487 to 623 lakh with a dashed trend line and three forecast points" loading="lazy"><figcaption>A simple forecast: extend the trend line three months ahead.</figcaption></figure>
+</section>
+
+<!-- ================================================================ 6 -->
+<section class="block" id="tools">
+  <div class="sec-no">Section 6</div>
+  <h2>Tools: Python, R, Excel (and SPSS)</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Python</th><th>R</th><th>Excel</th><th>IBM SPSS</th></tr>
+    <tr><td><b>Type</b></td><td>General programming language</td><td>Language built for statistics</td><td>Spreadsheet</td><td>Menu-driven statistics package</td></tr>
+    <tr><td><b>For prediction</b></td><td>pandas, scikit-learn, statsmodels, matplotlib</td><td>lm(), glm(), tidyverse, caret / tidymodels</td><td>FORECAST.LINEAR, Forecast Sheet, Analysis ToolPak, Solver</td><td>Statistics: regression, trees · Modeler: drag-and-drop streams</td></tr>
+    <tr><td><b>Data size</b></td><td>Millions of rows</td><td>Millions of rows</td><td>Up to 10,48,576 rows per sheet</td><td>Large</td></tr>
+    <tr><td><b>Coding?</b></td><td>Yes</td><td>Yes</td><td>Formulas only</td><td>No (syntax optional)</td></tr>
+    <tr><td><b>Cost</b></td><td>Free, open source</td><td>Free, open source</td><td>Paid (Microsoft 365)</td><td>Paid licence</td></tr>
+    <tr><td><b>Best for</b></td><td>Full pipelines, deployment as apps/APIs</td><td>Statistical modelling, research, reports</td><td>Quick small analyses, sharing with managers</td><td>Business analysts; our lab experiments</td></tr>
+  </table></div>
+
+  <h3>The same question in each tool: “What is the churn rate?”</h3>
+  <div class="two">
+<pre class="code" data-lang="py"># Python (pandas)
+df = pd.read_csv("swifttel_customers.csv")
+print((df["churned"] == "Yes").mean())</pre>
+<pre class="code"># R
+df &lt;- read.csv("swifttel_customers.csv")
+mean(df$churned == "Yes")</pre>
+  </div>
+  <div class="two">
+<pre class="code">' Excel (churned is column M, rows 2 to 1501)
+=COUNTIF(M2:M1501,"Yes")/COUNTA(M2:M1501)</pre>
+<pre class="code">SPSS Statistics
+Analyze → Descriptive Statistics → Frequencies
+→ move "churned" into Variable(s) → OK</pre>
+  </div>
+  <p>All four give <b>0.227 (22.7%)</b>. The concepts are the same in every tool; only the interface changes.</p>
+
+  <h3>Excel: forecast revenue in three formulas</h3>
+  <p>Open <code>swifttel_monthly.csv</code> in Excel. Column B is <code>t</code> (1 to 24) and column F is <code>revenue_lakh</code>.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Type this</th><th>Result</th><th>Meaning</th></tr>
+    <tr><td><code>=SLOPE(F2:F25,B2:B25)</code></td><td>5.664</td><td>Revenue grows about ₹5.66 lakh per month</td></tr>
+    <tr><td><code>=INTERCEPT(F2:F25,B2:B25)</code></td><td>482.81</td><td>Trend value at t = 0</td></tr>
+    <tr><td><code>=FORECAST.LINEAR(25,F2:F25,B2:B25)</code></td><td>624.4</td><td>Forecast for January 2025</td></tr>
+    <tr><td>(customer file) <code>=COUNTIFS(E2:E1501,"Prepaid",M2:M1501,"Yes")/COUNTIF(E2:E1501,"Prepaid")</code></td><td>25.7%</td><td>Churn rate of prepaid customers</td></tr>
+  </table></div>
+
+  <h3>SPSS · Lab Experiment 1: import, define variables, set measurement levels</h3>
+  <ol>
+    <li><b>File → Import Data → CSV Data</b>, choose <code>swifttel_customers.csv</code>, keep “first line contains variable names”, finish.</li>
+    <li>Switch to <b>Variable View</b> (tab at the bottom). Each row is one column of your data.</li>
+    <li>Check <b>Type</b>: text columns are <i>String</i>, numbers <i>Numeric</i>, <code>join_date</code> should be <i>Date</i>.</li>
+    <li>Set <b>Measure</b> using the table in <a href="#data">Section 4</a>: Nominal for gender, plan_type, autopay, churned, customer_id; Ordinal for city_tier and satisfaction; Scale for age, tenure_months, monthly_charge, data_gb, support_calls.</li>
+    <li>For <code>satisfaction</code>, click <b>Values</b> and add labels: 1 = Very unhappy, 2 = Unhappy, 3 = Neutral, 4 = Happy, 5 = Very happy.</li>
+    <li>Run <b>Analyze → Descriptive Statistics → Frequencies</b> on <code>churned</code> and <code>plan_type</code>. Check you get 22.7% Yes.</li>
+  </ol>
+  <div class="callout tip"><b>Why Measure matters in SPSS</b> SPSS uses it to decide which charts and procedures to offer. A variable marked Scale gets a histogram and a mean; one marked Nominal gets a bar chart and counts. Mark <code>satisfaction</code> as Scale by mistake and SPSS will happily report a mean that may mislead.</div>
+</section>
+
+<!-- ================================================================ 7 -->
+<section class="block" id="lab">
+  <div class="sec-no">Section 7</div>
+  <h2>Hands-on lab</h2>
+  <p><b>Parts A–C</b> run in this page on all 1,500 customers. No installation needed. <b>Part D</b> is the same project in Python, R, Excel and SPSS.</p>
+
+  <h3>Part A · Descriptive explorer</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div><label for="gb">Group customers by</label>
+        <select id="gb">
+          <option value="plan_type">Plan type</option><option value="autopay">Autopay</option><option value="city_tier">City tier</option>
+          <option value="gender">Gender</option><option value="support_calls">Support calls</option><option value="tenure_band">Tenure band</option>
+          <option value="satisfaction">Satisfaction</option><option value="age_band">Age band</option>
+        </select></div>
+      <div><label for="mt">Show</label>
+        <select id="mt"><option value="rate">Churn rate %</option><option value="n">Number of customers</option><option value="charge">Average monthly charge ₹</option></select></div>
+    </div>
+    <div class="kpis" id="dKpi"></div>
+    <div class="chart" id="dChart"></div>
+    <p class="muted" id="dNote" style="font-size:14px;margin:0"></p>
+  </div>
+
+  <h3>Part B · What-if churn predictor</h3>
+  <div class="card">
+    <div class="two">
+      <div>
+        <div class="sl"><label>Tenure: <b id="vTen">8</b> months</label><input type="range" id="sTen" min="1" max="72" value="8"></div>
+        <div class="sl"><label>Monthly charge: <b id="vCh">₹399</b></label><input type="range" id="sCh" min="199" max="999" step="10" value="399"></div>
+        <div class="sl"><label>Support calls (last 3 months): <b id="vCalls">4</b></label><input type="range" id="sCalls" min="0" max="9" value="4"></div>
+        <div class="sl"><label>Satisfaction (1–5): <b id="vSat">2</b></label><input type="range" id="sSat" min="1" max="5" value="2"></div>
+        <div class="lab-ctrl" style="margin-top:6px">
+          <label class="choice" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="cPre" checked> Prepaid</label>
+          <label class="choice" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="cAuto"> Autopay</label>
+          <label class="choice" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="cT3"> Tier-3 city</label>
+        </div>
+      </div>
+      <div class="gauge">
+        <div class="muted" style="font-size:14px;font-weight:600">Predicted chance of leaving next quarter</div>
+        <div class="v" id="pVal">70%</div>
+        <div class="gbar"><div id="pBar"></div></div>
+        <div class="muted" style="font-size:13px" id="pZ"></div>
+        <div class="muted" style="font-size:12px;margin-top:4px">Uses the model’s exact weights, so the default customer shows 0.706 where the board’s hand calculation with rounded weights gave 0.70.</div>
+        <div class="verdict" id="pAct"></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Part C · Prescriptive: who gets the voucher?</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div class="sl"><label>Voucher cost: <b id="vCost">₹300</b></label><input type="range" id="sCost" min="50" max="1000" step="50" value="300"></div>
+      <div class="sl"><label>Leavers who accept and stay: <b id="vAcc">40%</b></label><input type="range" id="sAcc" min="5" max="90" step="5" value="40"></div>
+      <div class="sl"><label>Months they stay after accepting: <b id="vMon">6</b></label><input type="range" id="sMon" min="1" max="12" value="6"></div>
+    </div>
+    <div class="tbl-wrap" id="rxTable" style="margin-bottom:6px"></div>
+    <p class="muted" style="font-size:14px;margin:0">Expected gain for each customer = p × acceptance × (months × monthly charge) − voucher cost. “Model-targeted” offers only customers whose expected gain is above zero.</p>
+  </div>
+
+  <h3>Your tasks</h3>
+  <div class="card">
+    <label class="task"><input type="checkbox"><span><b>Task 1.</b> In Part A, find the two columns that separate leavers from stayers most strongly. Which column hardly matters? (Descriptive + diagnostic.)</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 2.</b> Group by <b>Satisfaction</b>. Why is “missing” its own group, and should you average satisfaction scores? Use the idea of measurement levels.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 3.</b> In Part B, start from the default customer. Change <b>one</b> thing at a time. Which single change lowers the risk the most? Turn that into a business action.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 4.</b> In Part B, build the safest customer you can, then the riskiest. Write both probabilities.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 5.</b> In Part C, raise the voucher cost to ₹600. What happens to the number of offers and the expected gain? Then find a cost at which “offer to everyone” would be profitable.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 6.</b> Explain in two sentences why Part C needs <b>both</b> the predictive score and business numbers (cost, value). That is the difference between predictive and prescriptive.</span></label>
+    <details><summary>Check your answers</summary>
+      <p>1. Support calls (13% → 53%) and tenure band (35% in months 7–12 → 4% after four years) separate most; autopay and plan type also matter. Gender barely matters, and average charge is almost the same for leavers and stayers. 2. 45 customers skipped the survey: their missing value is a fact, not a 0, so it is shown separately. Satisfaction is ordinal, so the median (or the share of 4–5 scores) is safer than the mean. 3. From the default (about 71%), cutting support calls from 4 to 0 has the largest single effect (down to about 33%), far more than switching to autopay (about 57%), postpaid (about 56%) or raising satisfaction to 5 (about 54%). Action: fix customers’ problems on the first call, since every repeat call raises risk. 4. Safest is under 1% (72 months, ₹199 postpaid plan, autopay, 0 calls, satisfaction 5); riskiest is about 98% (1 month, ₹999 prepaid, 9 calls, satisfaction 1, Tier-3). 5. At ₹600 only 103 customers qualify and the expected gain falls to about ₹19,000, because the break-even risk doubles. Offering everyone becomes profitable only when the voucher costs about ₹250 or less. 6. The score says who is likely to leave, but not whether saving them is worth the money. Prescriptive analytics combines the probability with costs and values to choose the best action.</p>
+    </details>
+  </div>
+
+  <h3>Part D · The same project in Python, R, Excel and SPSS</h3>
+  <div class="grid g3">
+    <a class="card tile" href="lab/swifttel_customers.csv" download><div class="ic c-brand">🗂️</div><h3>Customers (CSV)</h3><p>swifttel_customers.csv · 1,500 rows · 13 columns</p></a>
+    <a class="card tile" href="lab/swifttel_monthly.csv" download><div class="ic c-teal">📈</div><h3>Monthly (CSV)</h3><p>swifttel_monthly.csv · 24 months · for Excel</p></a>
+    <a class="card tile" href="lab/unit1_lab.ipynb" download><div class="ic c-accent">📓</div><h3>Jupyter notebook</h3><p>All 7 lifecycle stages, step by step</p></a>
+    <a class="card tile" href="lab/unit1_lab.py" download><div class="ic c-accent">🐍</div><h3>Python script</h3><p>python unit1_lab.py</p></a>
+    <a class="card tile" href="lab/unit1_lab.R" download><div class="ic c-violet">📊</div><h3>R script</h3><p>Base R only · Rscript unit1_lab.R</p></a>
+    <a class="card tile" href="#tools"><div class="ic c-good">🧮</div><h3>Excel and SPSS</h3><p>Step-by-step in Section 6</p></a>
+  </div>
+  <ol style="margin-top:16px">
+    <li>Put both CSV files and the notebook (or script) in the same folder.</li>
+    <li>Python: <code>pip install pandas numpy scikit-learn matplotlib</code>, then run each notebook cell from top to bottom.</li>
+    <li>The last stage saves <code>retention_call_list.csv</code> (the 455 customers to call) and <code>swifttel_dashboard.png</code>.</li>
+    <li>R: open <code>unit1_lab.R</code> in RStudio and click <b>Source</b>. Excel and SPSS: follow <a href="#tools">Section 6</a>.</li>
+  </ol>
+  <div class="callout tip"><b>Challenge (assignment)</b> Pick one business application from <a href="#apps">Section 3</a>. Write: (1) one descriptive, one predictive and one prescriptive question for it; (2) five columns of data you would need, with the level of measurement of each; (3) what each stage of the lifecycle would involve. One page.</div>
+</section>
+
+<!-- ================================================================ 8 -->
+<section class="block" id="summary">
+  <div class="sec-no">Section 8</div>
+  <h2>Summary and revision</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Topic</th><th>Remember this</th></tr>
+    <tr><td>Basics</td><td>Historical data + statistics/ML → probability of a future or unknown outcome → better decision. A probability, not a certainty</td></tr>
+    <tr><td>Types of analytics</td><td>Descriptive (what happened) → diagnostic (why) → predictive (what will happen) → prescriptive (what to do). Value and difficulty rise along the way</td></tr>
+    <tr><td>Key maths</td><td>Rate = part ÷ total; trend ŷ = a + bt; p = 1/(1+e<sup>−z</sup>); lift = rate in top group ÷ overall rate; expected gain = p × benefit − cost</td></tr>
+    <tr><td>Applications</td><td>Churn, credit scoring, fraud, demand forecasting, predictive maintenance, readmission, insurance pricing, campaign response, attrition</td></tr>
+    <tr><td>Data types</td><td>Structured / semi-structured / unstructured; qualitative (nominal, ordinal) vs quantitative (discrete, continuous); cross-sectional, time series, panel</td></tr>
+    <tr><td>Measurement levels</td><td>Nominal (mode) · Ordinal (median) · Interval (mean, no true zero) · Ratio (mean, true zero, ratios). SPSS: Nominal, Ordinal, Scale</td></tr>
+    <tr><td>Lifecycle</td><td>Define → Collect → Prepare → Explore → Model → Evaluate (on unseen data) → Deploy → Monitor (drift) ↺</td></tr>
+    <tr><td>Tools</td><td>Python (pandas, scikit-learn), R (glm, lm), Excel (FORECAST.LINEAR, Solver), SPSS (menus, Measure)</td></tr>
+  </table></div>
+
+  <h3>Key terms (click a card to flip)</h3>
+  <div class="grid g4">
+    <div class="flip"><div class="inner"><div class="face"><b>Target variable</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">The outcome a model predicts, e.g. churned (Yes/No).</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Predictor (feature)</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">A column known before the outcome, used to predict it, e.g. support calls.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Churn</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Customers leaving a company. Churn rate = customers who left ÷ customers at the start.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Lift</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">How many times better than random a model’s top group is: 48.9% ÷ 22.7% ≈ 2.16.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Ordinal</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Ordered categories with unequal gaps (satisfaction 1–5). Use the median, not the mean.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Ratio scale</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Numeric with a true zero, so ratios make sense: ₹800 is twice ₹400.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Train / test split</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Learn on one part (70%), judge on unseen data (30%) to get an honest score.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Model drift</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">A deployed model getting worse because behaviour changed. Why we monitor and retrain.</div></div></div>
+  </div>
+
+  <div class="callout tip" style="margin-top:22px"><b>Ready for the quiz?</b> You should be able to: define predictive analytics · tell descriptive, diagnostic, predictive and prescriptive apart, with an example of each · compute a rate, a trend-line forecast, a lift and an expected gain · name business applications · classify any column as nominal, ordinal, interval or ratio, and set its SPSS Measure · list the lifecycle stages in order · say what Python, R, Excel and SPSS are each best at.</div>
+  <p style="text-align:center;margin-top:20px"><a class="btn accent" href="quiz.html">Go to the Unit 1 quiz →</a></p>
+</section>
+    </main>
+  </div>
+</div>
+<footer class="foot">Unit 1 · Introduction to Predictive Analytics · BCA DS &amp; AI Semester 3</footer>
+
+<script>
+/* ---------- diagrams ---------- */
+(function () {
+  var svg = document.getElementById('pipeSvg');
+  svgArrow(svg, 'pArw', 'var(--ink-3)');
+  [['Historical data', 'known outcomes', 'teal'], ['Model learns', 'stats / ML', 'violet'], ['Score new case', 'p = 0.70', 'accent'], ['Decision', 'offer a voucher', 'good']].forEach(function (it, i) {
+    var x = 100 + i * 200;
+    svgEl('rect', { x: x - 85, y: 25, width: 170, height: 72, rx: 12, style: 'fill:var(--' + it[2] + '-soft);stroke:var(--' + it[2] + ');stroke-width:1.5' }, svg);
+    svgText(svg, x, 56, it[0], 'font-size:16px;font-weight:700;fill:var(--' + it[2] + ')');
+    svgText(svg, x, 78, it[1], 'font-size:13px;fill:var(--ink-2)');
+    if (i < 3) svgEl('line', { x1: x + 88, y1: 61, x2: x + 112, y2: 61, style: 'stroke:var(--ink-3);stroke-width:2', 'marker-end': 'url(#pArw)' }, svg);
+  });
+})();
+
+(function () {
+  var svg = document.getElementById('typesSvg');
+  var box = function (x, y, w, h, t, s, c) {
+    svgEl('rect', { x: x - w / 2, y: y, width: w, height: h, rx: 10, style: 'fill:var(--' + c + '-soft);stroke:var(--' + c + ');stroke-width:1.5' }, svg);
+    svgText(svg, x, y + (s ? h / 2 - 3 : h / 2 + 5), t, 'font-size:15px;font-weight:700;fill:var(--' + c + ')');
+    if (s) svgText(svg, x, y + h / 2 + 14, s, 'font-size:12px;fill:var(--ink-2)');
+  };
+  var line = function (x1, y1, x2, y2) { svgEl('path', { d: 'M' + x1 + ',' + y1 + ' C' + x1 + ',' + (y1 + y2) / 2 + ' ' + x2 + ',' + (y1 + y2) / 2 + ' ' + x2 + ',' + y2, style: 'fill:none;stroke:var(--ink-3);stroke-width:1.5' }, svg); };
+  [[200, 100], [200, 300], [600, 500], [600, 700]].forEach(function (p) { line(p[0], 62, p[1], 120); });
+  box(200, 10, 300, 52, 'Qualitative (categorical)', 'labels and groups', 'violet');
+  box(600, 10, 300, 52, 'Quantitative (numeric)', 'amounts and counts', 'accent');
+  box(100, 120, 180, 66, 'Nominal', 'no order: plan type', 'violet');
+  box(300, 120, 180, 66, 'Ordinal', 'ordered: satisfaction', 'violet');
+  box(500, 120, 180, 66, 'Discrete', 'counted: support calls', 'accent');
+  box(700, 120, 180, 66, 'Continuous', 'measured: data GB', 'accent');
+})();
+
+drawCycle(document.getElementById('lifeSvg'), {
+  cx: 400, cy: 222, rx: 300, ry: 172, w: 160, h: 56, center: ['Predictive', 'analytics', 'lifecycle ↺'],
+  items: [
+    { t: 'Define', s: 'business problem', fill: 'var(--surface-2)', ink: 'var(--ink-2)' },
+    { t: 'Collect', s: 'past cases', fill: 'var(--teal-soft)', ink: 'var(--teal)' },
+    { t: 'Prepare', s: 'types, gaps', fill: 'var(--accent-soft)', ink: 'var(--accent)' },
+    { t: 'Explore', s: 'descriptive', fill: 'var(--violet-soft)', ink: 'var(--violet)' },
+    { t: 'Model', s: 'train on 70%', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+    { t: 'Evaluate', s: 'test on 30%', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+    { t: 'Deploy', s: 'score + act', fill: 'var(--good-soft)', ink: 'var(--good)' },
+    { t: 'Monitor', s: 'drift → retrain', fill: 'var(--good-soft)', ink: 'var(--good)' }
+  ]
+});
+
+/* ---------- generic multiple-choice rows ---------- */
+function choiceRows(container, rows, labels) {
+  rows.forEach(function (r, idx) {
+    var d = document.createElement('div'); d.style.margin = '14px 0';
+    d.innerHTML = '<div style="font-weight:600;font-size:15.5px">' + (idx + 1) + '. ' + r.q + '</div>';
+    var fb = document.createElement('div'); fb.className = 'feedback';
+    labels.forEach(function (l, i) {
+      var b = document.createElement('button'); b.className = 'choice'; b.textContent = l;
+      b.onclick = function () {
+        d.querySelectorAll('.choice').forEach(function (x) { x.classList.remove('right', 'wrong'); });
+        if (i === r.a) { b.classList.add('right'); fb.innerHTML = '✅ ' + r.why; }
+        else { b.classList.add('wrong'); fb.innerHTML = '<span style="color:var(--bad)">Not quite. Try again.</span>'; }
+      };
+      d.appendChild(b);
+    });
+    d.appendChild(fb); container.appendChild(d);
+  });
+}
+choiceRows(document.querySelector('#typeGame .rg'), [
+  { q: 'A dashboard showing last month’s sales by city.', a: 0, why: 'It summarises what already happened: descriptive.' },
+  { q: 'Finding that returns rose because one courier damaged parcels.', a: 1, why: 'It explains why something happened: diagnostic.' },
+  { q: 'A score showing a loan applicant has a 12% chance of default.', a: 2, why: 'A probability about an unknown future outcome: predictive.' },
+  { q: 'Software that sets tomorrow’s flight prices to maximise revenue.', a: 3, why: 'It chooses the best action: prescriptive.' },
+  { q: 'Forecasting next Diwali’s demand for sweets from five years of sales.', a: 2, why: 'Estimating a future value from history: predictive.' },
+  { q: 'Choosing which 455 customers get a voucher so expected profit is highest.', a: 3, why: 'Combines predictions with costs to pick an action: prescriptive.' }
+], ['Descriptive', 'Diagnostic', 'Predictive', 'Prescriptive']);
+
+choiceRows(document.querySelector('#levelGame .rg'), [
+  { q: 'Blood group (A, B, AB, O)', a: 0, why: 'Categories with no natural order: nominal.' },
+  { q: 'Movie rating: ★ to ★★★★★', a: 1, why: 'Ordered categories, but the gaps are not guaranteed equal: ordinal.' },
+  { q: 'Temperature in °C', a: 2, why: 'Equal gaps but 0 °C is not “no temperature”: interval.' },
+  { q: 'Monthly data used, in GB', a: 3, why: 'A true zero (no data used) and ratios make sense: ratio.' },
+  { q: 'Education level: 10th, 12th, Graduate, Postgraduate', a: 1, why: 'Clear order, unequal gaps: ordinal.' },
+  { q: 'Mobile number', a: 0, why: 'Made of digits, but only a label. You never add or average phone numbers: nominal.' },
+  { q: 'Year of joining (2019, 2020, …)', a: 2, why: 'Differences make sense (3 years apart), but year 0 is not a true zero: interval.' }
+], ['Nominal', 'Ordinal', 'Interval', 'Ratio']);
+
+/* ---------- data + model shared by the lab ---------- */
+// Logistic regression fitted in Python on 70% of customers (see lab/unit1_lab.py, stage 5)
+var MODEL = { intercept: -1.081610565192643, tenure: -0.03501570494212995, charge: 0.0012425698482224005, calls: 0.39800747285160337,
+              prepaid: 0.6351424938408746, autopay: -0.584201382524081, tier3: 0.010949309603359896, sat: -0.24372806098412403, satMedian: 4 };
+function churnProb(c) {
+  var z = MODEL.intercept + MODEL.tenure * c.tenure + MODEL.charge * c.charge + MODEL.calls * c.calls + MODEL.prepaid * c.prepaid +
+          MODEL.autopay * c.autopay + MODEL.tier3 * c.tier3 + MODEL.sat * (c.sat == null ? MODEL.satMedian : c.sat);
+  return { z: z, p: 1 / (1 + Math.exp(-z)) };
+}
+var inr = function (v) { return (v < 0 ? '−₹' : '₹') + Math.abs(Math.round(v)).toLocaleString('en-IN'); };
+var ROWS = [];
+
+/* ---------- Part A: descriptive explorer ---------- */
+var BANDS = {
+  tenure_band: function (r) { var t = r.tenure; return t <= 6 ? '01–06 m' : t <= 12 ? '07–12 m' : t <= 24 ? '13–24 m' : t <= 48 ? '25–48 m' : '49–72 m'; },
+  age_band: function (r) { var a = r.age; return a < 25 ? '18–24' : a < 35 ? '25–34' : a < 45 ? '35–44' : a < 55 ? '45–54' : '55+'; },
+  support_calls: function (r) { return r.calls >= 4 ? '4+' : String(r.calls); },
+  satisfaction: function (r) { return r.sat == null ? 'missing' : String(r.sat); }
+};
+function explore() {
+  if (!ROWS.length) return;
+  var gb = document.getElementById('gb').value, mt = document.getElementById('mt').value, g = {};
+  ROWS.forEach(function (r) {
+    var k = BANDS[gb] ? BANDS[gb](r) : r[gb];
+    var x = g[k] || (g[k] = { n: 0, ch: 0, sum: 0 });
+    x.n++; x.ch += r.churn; x.sum += r.charge;
+  });
+  var keys = Object.keys(g).sort(), overall = ROWS.reduce(function (s, r) { return s + r.churn; }, 0) / ROWS.length;
+  var data = keys.map(function (k) { var x = g[k]; return { k: k, v: mt === 'rate' ? 100 * x.ch / x.n : mt === 'n' ? x.n : x.sum / x.n, n: x.n, rate: 100 * x.ch / x.n }; });
+  var fmt = function (v) { return mt === 'rate' ? v.toFixed(1) + '%' : mt === 'n' ? v.toLocaleString('en-IN') : inr(v); };
+  var rates = data.map(function (d) { return d.rate; });
+  document.getElementById('dKpi').innerHTML =
+    '<div class="kpi"><div class="v">' + ROWS.length.toLocaleString('en-IN') + '</div><div class="l">customers</div></div>' +
+    '<div class="kpi"><div class="v">' + (100 * overall).toFixed(1) + '%</div><div class="l">overall churn rate</div></div>' +
+    '<div class="kpi"><div class="v">' + (Math.max.apply(null, rates) - Math.min.apply(null, rates)).toFixed(1) + ' pts</div><div class="l">gap between highest and lowest group</div></div>';
+  var W = 760, rowH = 32, padL = 120, padR = 90, H = data.length * rowH + 16, max = Math.max.apply(null, data.map(function (d) { return d.v; })) || 1;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Bar chart by group">';
+  data.forEach(function (d, i) {
+    var y = 8 + i * rowH, w = (W - padL - padR) * d.v / max, hot = mt === 'rate' && d.rate > 100 * overall;
+    s += '<text x="' + (padL - 10) + '" y="' + (y + 20) + '" text-anchor="end" style="font-size:14px;fill:var(--ink)">' + d.k + '</text>' +
+      '<rect x="' + padL + '" y="' + (y + 5) + '" width="' + Math.max(2, w) + '" height="' + (rowH - 10) + '" rx="5" style="fill:' + (hot ? 'var(--accent)' : 'var(--brand)') + '"/>' +
+      '<text x="' + (padL + w + 8) + '" y="' + (y + 20) + '" style="font-size:13px;fill:var(--ink-2)">' + fmt(d.v) + '</text>';
+  });
+  if (mt === 'rate') { var ox = padL + (W - padL - padR) * 100 * overall / max; s += '<line x1="' + ox + '" y1="4" x2="' + ox + '" y2="' + (H - 4) + '" style="stroke:var(--bad);stroke-width:1.5;stroke-dasharray:5 4"/>'; }
+  document.getElementById('dChart').innerHTML = s + '</svg>';
+  document.getElementById('dNote').textContent = mt === 'rate' ? 'Orange bars are above the overall churn rate (red dashed line).' : mt === 'charge' ? 'Compare with churn rate: is price what drives people away?' : 'Small groups give less reliable percentages; check the counts.';
+}
+['gb', 'mt'].forEach(function (id) { document.getElementById(id).addEventListener('change', explore); });
+
+/* ---------- Part B: what-if predictor ---------- */
+function whatIf() {
+  var c = { tenure: +sTen.value, charge: +sCh.value, calls: +sCalls.value, sat: +sSat.value,
+            prepaid: cPre.checked ? 1 : 0, autopay: cAuto.checked ? 1 : 0, tier3: cT3.checked ? 1 : 0 };
+  vTen.textContent = c.tenure; vCh.textContent = '₹' + c.charge; vCalls.textContent = c.calls; vSat.textContent = c.sat;
+  var r = churnProb(c), pct = 100 * r.p, col = pct >= 50 ? 'var(--bad)' : pct >= 23 ? 'var(--accent)' : 'var(--good)';
+  pVal.textContent = pct.toFixed(pct < 10 ? 1 : 0) + '%'; pVal.style.color = col;
+  pBar.style.width = pct + '%'; pBar.style.background = col;
+  pZ.innerHTML = 'z = ' + r.z.toFixed(3) + ' → p = 1 / (1 + e<sup>−z</sup>) = ' + r.p.toFixed(3) + ' · average customer: 22.7%';
+  var gain = r.p * 0.40 * 6 * c.charge - 300;
+  pAct.style.background = gain > 0 ? 'var(--good-soft)' : 'var(--surface-2)'; pAct.style.color = gain > 0 ? 'var(--good)' : 'var(--ink-2)';
+  pAct.textContent = 'Prescriptive (₹300 voucher, 40% accept, 6 months): expected gain ' + inr(gain) + (gain > 0 ? ' → offer the voucher' : ' → do not offer');
+}
+['sTen', 'sCh', 'sCalls', 'sSat', 'cPre', 'cAuto', 'cT3'].forEach(function (id) { document.getElementById(id).addEventListener('input', whatIf); });
+whatIf();
+
+/* ---------- Part C: prescriptive targeting ---------- */
+function prescribe() {
+  if (!ROWS.length) return;
+  var cost = +sCost.value, acc = +sAcc.value / 100, mon = +sMon.value;
+  vCost.textContent = '₹' + cost; vAcc.textContent = Math.round(acc * 100) + '%'; vMon.textContent = mon;
+  var all = 0, tgt = 0, n = 0, saved = 0, savedAll = 0;
+  ROWS.forEach(function (r) {
+    var g = r.p * acc * mon * r.charge - cost;
+    all += g; savedAll += r.p * acc;
+    if (g > 0) { tgt += g; n++; saved += r.p * acc; }
+  });
+  var row = function (name, offers, kept, net) {
+    return '<tr><td><b>' + name + '</b></td><td class="num">' + offers.toLocaleString('en-IN') + '</td><td class="num">' + inr(offers * cost) + '</td><td class="num">' + kept.toFixed(0) +
+      '</td><td class="num ' + (net > 0 ? 'ok' : net < 0 ? 'bad' : '') + '">' + inr(net) + '</td></tr>';
+  };
+  rxTable.innerHTML = '<table><tr><th>Strategy</th><th class="num">Vouchers</th><th class="num">Voucher cost</th><th class="num">Customers kept (expected)</th><th class="num">Expected net gain</th></tr>' +
+    row('Offer nobody', 0, 0, 0) + row('Offer all 1,500', ROWS.length, savedAll, all) + row('Model-targeted', n, saved, tgt) + '</table>';
+}
+['sCost', 'sAcc', 'sMon'].forEach(function (id) { document.getElementById(id).addEventListener('input', prescribe); });
+
+/* ---------- load the customer file once for Parts A and C ---------- */
+fetch('lab/swifttel_customers.csv').then(function (r) { return r.text(); }).then(function (txt) {
+  var lines = txt.trim().split(/\r?\n/), head = lines[0].split(',');
+  ROWS = lines.slice(1).map(function (l) {
+    var v = l.split(','), o = {};
+    head.forEach(function (h, i) { o[h] = v[i]; });
+    var c = { gender: o.gender, plan_type: o.plan_type, autopay: o.autopay, city_tier: o.city_tier, age: +o.age,
+              tenure: +o.tenure_months, charge: +o.monthly_charge, calls: +o.support_calls,
+              sat: o.satisfaction === '' ? null : +o.satisfaction, churn: o.churned === 'Yes' ? 1 : 0,
+              prepaid: o.plan_type === 'Prepaid' ? 1 : 0, autopayFlag: o.autopay === 'Yes' ? 1 : 0, tier3: o.city_tier === 'Tier-3' ? 1 : 0 };
+    c.p = churnProb({ tenure: c.tenure, charge: c.charge, calls: c.calls, sat: c.sat, prepaid: c.prepaid, autopay: c.autopayFlag, tier3: c.tier3 }).p;
+    return c;
+  });
+  explore(); prescribe();
+}).catch(function () { document.getElementById('dNote').textContent = 'Could not load the dataset. Open this page through the classroom server (not as a file).'; });
+</script>
+</body>
+</html>

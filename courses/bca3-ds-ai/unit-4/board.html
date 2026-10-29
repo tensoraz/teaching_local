@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 Board Slides</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/diagrams.js"></script>
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  body { background: #11161f; margin: 0; }
+  #stage { position: absolute; width: 1280px; height: 720px; left: 50%; top: 50%; transform-origin: center center; }
+  .slide { position: absolute; inset: 0; background: var(--surface); border-radius: 6px; padding: 54px 70px; display: none; overflow: hidden; color: var(--ink); font-size: 27px; line-height: 1.45; }
+  .slide.on { display: block; }
+  .slide h1 { font-size: 58px; margin-bottom: 18px; }
+  .slide h2 { font-size: 42px; margin-bottom: 22px; color: var(--ink); }
+  .slide h2 .k { color: var(--brand); }
+  .slide .sub { font-size: 24px; color: var(--ink-3); }
+  .slide ul, .slide ol { margin: 0; padding-left: 32px; }
+  .slide li { margin: 8px 0; }
+  .slide .math { font-family: var(--mono); font-size: 25px; background: var(--surface-2); border-left: 5px solid var(--accent); padding: 14px 20px; border-radius: 8px; margin: 12px 0; line-height: 1.6; }
+  .slide .big { font-size: 34px; font-weight: 700; }
+  .slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+  .slide .box { border: 2px solid var(--line); border-radius: 14px; padding: 16px 20px; font-size: 23px; }
+  .slide table { font-size: 24px; }
+  .slide td { padding: 11px 16px; }
+  .slide th { font-size: 17px; }
+  .slide svg { width: 100%; height: auto; }
+  .slide .tag { position: absolute; top: 22px; right: 30px; font-size: 15px; font-weight: 700; color: var(--ink-3); letter-spacing: .08em; text-transform: uppercase; }
+  .slide .ask { position: absolute; left: 70px; right: 70px; bottom: 30px; background: var(--violet-soft); color: var(--violet); font-weight: 700; font-size: 22px; padding: 12px 20px; border-radius: 12px; }
+  .title-slide { background: linear-gradient(135deg, #1b4fa8, #2a6fdb 55%, #149c9c) !important; color: #fff !important; }
+  .title-slide .sub { color: rgba(255,255,255,.85); }
+  #ink { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+  body.drawing #ink { pointer-events: auto; cursor: crosshair; }
+  #hud { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 6px; align-items: center;
+    background: rgba(20,26,38,.88); color: #dfe6f2; padding: 6px 10px; border-radius: 12px; font: 14px var(--font); opacity: .25; transition: opacity .2s; }
+  #hud:hover, body.drawing #hud { opacity: 1; }
+  #hud button { background: transparent; color: inherit; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  #hud button.on { background: #2a6fdb; border-color: #2a6fdb; }
+  #hud .sw { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,.5); padding: 0; }
+  #notes { position: fixed; right: 12px; top: 12px; width: 380px; max-height: calc(100vh - 80px); overflow: auto; z-index: 15; background: #fffbe8; color: #3d3517;
+    border-radius: 12px; padding: 16px 18px; font: 15px/1.5 var(--font); box-shadow: 0 10px 30px rgba(0,0,0,.4); display: none; }
+  #notes.on { display: block; }
+  #notes b { color: #8a5a00; }
+  #notes ul { padding-left: 18px; margin: 6px 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 -->
+<section class="slide title-slide" data-notes="<b>0:00 · 1 min.</b> Unit 3 built single models and ended with a puzzle: 78% accuracy but only 14% of churners caught. Today: better models (ensembles), honest validation (cross-validation, tuning) and the right metrics. Usual 2-hour plan.">
+  <div style="margin-top:110px">
+    <div class="sub" style="font-weight:700;letter-spacing:.12em;text-transform:uppercase">BCA DS &amp; AI · Semester 3 · Predictive Analytics Modeler · Unit 4</div>
+    <h1 style="font-size:70px;margin-top:14px">Advanced Modeling<br>&amp; Validation</h1>
+    <div class="sub" style="font-size:24px">Random forest · Boosting · Cross-validation · Tuning · Accuracy, precision, recall, F1, ROC · Over/underfitting</div>
+  </div>
+  <div style="position:absolute;left:70px;right:70px;bottom:50px;display:flex;gap:6px;font-size:18px;font-weight:700">
+    <div style="flex:30;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Board · 30</div>
+    <div style="flex:5;background:rgba(255,255,255,.1);padding:10px 4px;border-radius:8px">5</div>
+    <div style="flex:35;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Study + lab · 35</div>
+    <div style="flex:10;background:rgba(255,255,255,.1);padding:10px 4px;border-radius:8px">10</div>
+    <div style="flex:40;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Quiz + review · 40</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-notes="<b>1–3 min.</b> Hook: two students. One memorises last year's paper word for word and scores 100% on it, then 55% on the real exam. The other understands the ideas: 80% on both. Models do the same. A fully grown tree scores 100% on its training data and AUC 0.58 on new customers.">
+  <span class="tag">Warm-up</span>
+  <h2>The student who <span class="k">memorised</span> last year’s paper</h2>
+  <div class="cols" style="margin-top:20px">
+    <div class="box" style="font-size:24px;border-color:var(--bad)">📚 Memoriser<br>Last year’s paper: <b>100%</b><br>This year’s exam: <b>55%</b></div>
+    <div class="box" style="font-size:24px;border-color:var(--good)">💡 Understander<br>Last year’s paper: <b>80%</b><br>This year’s exam: <b>78%</b></div>
+  </div>
+  <p class="big" style="text-align:center;margin-top:40px">A fully grown decision tree on SwiftTel:<br>training accuracy <span style="color:var(--bad)">100%</span> · test AUC <span style="color:var(--bad)">0.58</span></p>
+  <p class="sub" style="text-align:center">The score that matters is on data the model has never seen.</p>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-notes="<b>3–6 min.</b> Underfitting = too simple (high bias): poor on train AND test. Overfitting = too complex (high variance): great on train, poor on test. Walk through the real curve: depth 1 is underfit (train AUC 0.58). Train AUC keeps climbing to 1.00. CV and test AUC peak around depth 3–4 (~0.66–0.70), then fall. The goal is the sweet spot, chosen by cross-validation, not by the test set.">
+  <span class="tag">Over / underfitting</span>
+  <h2>Underfitting, overfitting and the <span class="k">sweet spot</span></h2>
+  <div class="cols" style="grid-template-columns:1.25fr 1fr">
+    <svg viewBox="0 0 640 380" id="bOver"></svg>
+    <div style="font-size:21px">
+      <div class="box" style="margin-bottom:10px"><b>Underfitting</b> (high bias): too simple. Bad on train <i>and</i> test. Depth 1: AUC 0.58 / 0.55.</div>
+      <div class="box" style="margin-bottom:10px"><b>Overfitting</b> (high variance): memorises noise. Train ≫ test. No depth limit: 1.00 / 0.58.</div>
+      <div class="box" style="border-color:var(--good)"><b>Just right</b>: depth 4, CV AUC <b>0.658</b>. Choose it with <b>cross-validation</b>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-notes="<b>6–8 min.</b> Why one test split is not enough: we repeated the 70/30 split with 50 different random seeds and retrained logistic regression each time. Test accuracy ranged from 75.8% to 81.3%; AUC from 0.680 to 0.781. Your one number could be lucky or unlucky. Cross-validation averages over several splits.">
+  <span class="tag">Validation</span>
+  <h2>One split is a <span class="k">noisy</span> measurement</h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:22px">Same model, same data,<br>50 different random 70/30 splits:</div>
+      <table style="font-size:22px">
+        <tr><th></th><th class="num">lowest</th><th class="num">highest</th><th class="num">mean ± sd</th></tr>
+        <tr><td>test accuracy</td><td class="num">0.758</td><td class="num">0.813</td><td class="num">0.780 ± 0.013</td></tr>
+        <tr><td>test AUC</td><td class="num">0.680</td><td class="num">0.781</td><td class="num">0.730 ± 0.019</td></tr>
+      </table>
+    </div>
+    <div class="box" style="font-size:22px">If you compare two models on one split, a difference of 0.02 AUC could be <b>pure luck</b> of which customers landed in the test set.<br><br>→ Use <b>k-fold cross-validation</b>, and keep the test set for one final check.</div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-notes="<b>8–11 min.</b> MATHS · k-fold. 1,050 training customers ÷ 5 = 210 per fold. Five rounds: train on 840, validate on 210, rotate. Report mean ± sd: 0.715 ± 0.037. Stratified k-fold keeps 22.7% churners in every fold. LOOCV = k = n (1,050 models!). Time-series data: always train on the past, validate on the future. Preprocessing must be inside the loop (sklearn Pipeline), otherwise leakage.">
+  <span class="tag">Cross-validation · maths</span>
+  <h2>k-fold <span class="k">cross-validation</span></h2>
+  <svg viewBox="0 0 1140 250" id="bKfold"></svg>
+  <div class="cols" style="margin-top:8px">
+    <div class="math" style="font-size:21px">1,050 ÷ 5 = 210 per fold · train on 840 each time<br>AUC: 0.726, 0.715, 0.778, 0.673, 0.681<br>mean = <b>0.715</b> · sd = <b>0.037</b></div>
+    <ul style="font-size:20px">
+      <li><b>Stratified</b>: 22.7% churners in every fold</li>
+      <li><b>LOOCV</b>: k = n, accurate but slow</li>
+      <li><b>Time series</b>: train on past, validate on future</li>
+      <li>Fit scaling/imputation <b>inside</b> each fold (Pipeline)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-notes="<b>11–13 min.</b> MATHS · tuning. Parameters are learned from data (coefficients, split thresholds). Hyperparameters are set before training (max_depth, k, n_estimators, learning rate). Grid search: 2 × 4 × 3 = 24 combinations × 5 folds = 120 forests. Best: max_depth 5, min_samples_leaf 20, 100 trees: CV AUC 0.692. Random search samples combinations, good when the grid is large. KNN: CV picks k = 101 (AUC 0.674) over k = 1 (0.567).">
+  <span class="tag">Hyperparameter tuning · maths</span>
+  <h2>Hyperparameter <span class="k">tuning</span></h2>
+  <div class="cols">
+    <div>
+      <table style="font-size:20px">
+        <tr><th></th><th>Learned from data?</th><th>Examples</th></tr>
+        <tr><td><b>Parameter</b></td><td>yes, during training</td><td>coefficients, split thresholds</td></tr>
+        <tr><td><b>Hyperparameter</b></td><td>no, set before training</td><td>max_depth, k, n_estimators, learning rate</td></tr>
+      </table>
+      <div class="math" style="font-size:20px">Grid: n_estimators {100, 300} × max_depth {3, 5, 8, None}<br>× min_samples_leaf {1, 5, 20}<br>= 2 × 4 × 3 = <b>24</b> combinations × 5 folds = <b>120</b> fits</div>
+    </div>
+    <div>
+      <div class="box" style="font-size:20px;margin-bottom:12px;border-color:var(--good)">Best: depth 5, leaf ≥ 20, 100 trees → CV AUC <b>0.692</b><br>Worst: no depth limit, leaf 1 → 0.661</div>
+      <table style="font-size:20px;width:auto">
+        <tr><th>KNN k</th><td>1</td><td>5</td><td>15</td><td>51</td><td>101</td></tr>
+        <tr><th>CV AUC</th><td>0.567</td><td>0.608</td><td>0.647</td><td>0.673</td><td><b>0.674</b></td></tr>
+      </table>
+      <p class="sub" style="font-size:18px">Random search: try a random sample of combinations; better for big grids.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-notes="<b>13–15 min.</b> MATHS · why ensembles work. Five independent models, each 70% correct, majority vote: P(at least 3 correct) = C(5,3)0.7³0.3² + C(5,4)0.7⁴0.3 + 0.7⁵ = 0.3087 + 0.3602 + 0.1681 = 0.837. With 25 such models: 0.983. The catch: models must make DIFFERENT mistakes (independence). Bagging/random forests create diversity with random data and random features; boosting with sequential correction.">
+  <span class="tag">Ensembles · maths</span>
+  <h2>Why many models beat <span class="k">one</span></h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:21px">5 independent models, each 70% right; majority vote:<br>P(≥ 3 right) = C(5,3)·0.7³·0.3² + C(5,4)·0.7⁴·0.3 + 0.7⁵<br>= 0.309 + 0.360 + 0.168 = <b>0.837</b></div>
+      <div class="math" style="font-size:21px">25 such models → <b>0.983</b></div>
+    </div>
+    <div style="font-size:21px">
+      <div class="box" style="margin-bottom:12px"><b>The catch:</b> it only works if the models make <b>different</b> mistakes. 25 identical trees = 1 tree.</div>
+      <div class="box" style="margin-bottom:12px"><b>Bagging / random forest</b>: diversity from random rows + random features, trees in <b>parallel</b> → lower variance</div>
+      <div class="box"><b>Boosting</b>: each new model fixes the previous ones’ errors, in <b>sequence</b> → lower bias</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-notes="<b>15–17 min.</b> MATHS · bootstrap and random forest. A bootstrap sample draws n rows WITH replacement. Chance a given row is never picked: (1 − 1/n)ⁿ → 1/e = 0.368. So each tree sees about 63.2% of distinct customers; the other 36.8% are 'out-of-bag' (OOB): a free validation set. OOB accuracy 0.779. At each split, a random forest considers only a random subset of features (often √p = √9 = 3), which decorrelates the trees. Importance: tenure 0.30, support calls 0.25. Note data_gb and age rank above autopay: impurity importance favours numeric features with many values (Unit 5: permutation importance).">
+  <span class="tag">Random forest · maths</span>
+  <h2>Bagging and <span class="k">random forest</span></h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:21px">Bootstrap: draw n rows <b>with replacement</b><br>P(row never drawn) = (1 − 1/n)ⁿ → 1/e = 0.368<br>n = 1,050: unique rows ≈ <b>63.2%</b>, out-of-bag ≈ <b>36.8%</b></div>
+      <div class="math" style="font-size:21px">Each split tries only √p features: √9 = 3<br>OOB accuracy (free validation) = <b>0.779</b></div>
+    </div>
+    <div>
+      <table style="font-size:20px">
+        <tr><th>Feature</th><th class="num">RF importance</th></tr>
+        <tr><td>tenure_months</td><td class="num">0.302</td></tr>
+        <tr><td>support_calls</td><td class="num">0.249</td></tr>
+        <tr><td>data_gb</td><td class="num">0.101</td></tr>
+        <tr><td>age</td><td class="num">0.099</td></tr>
+        <tr><td>satisfaction</td><td class="num">0.094</td></tr>
+        <tr><td>autopay</td><td class="num">0.059</td></tr>
+      </table>
+      <p class="sub" style="font-size:18px">⚠ Impurity importance favours numeric features with many values.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-notes="<b>17–19 min.</b> MATHS · boosting. AdaBoost: weak learner with error ε = 0.30 gets vote weight α = ½ ln((1−ε)/ε) = ½ ln(2.333) = 0.424. Misclassified rows have their weight multiplied by e^α = 1.53; correct rows by e^−α = 0.65; then normalise. The next learner focuses on the hard cases. Gradient boosting: each new small tree predicts the RESIDUALS of the current model, added with a learning rate (0.05). Our run: test AUC 0.673 after 1 tree, 0.738 after 50, 0.728 after 150: too many rounds overfit → early stopping. XGBoost and LightGBM are fast gradient-boosting libraries.">
+  <span class="tag">Boosting · maths</span>
+  <h2>Boosting: learn from the <span class="k">mistakes</span></h2>
+  <div class="cols">
+    <div>
+      <p style="margin:0 0 6px;font-size:22px"><b>AdaBoost</b></p>
+      <div class="math" style="font-size:20px">weak learner error ε = 0.30<br>vote weight α = ½ ln((1 − ε)/ε) = ½ ln(2.33) = <b>0.424</b><br>wrong rows × e<sup>α</sup> = 1.53 · right rows × e<sup>−α</sup> = 0.65<br>then normalise → next learner focuses on hard cases</div>
+    </div>
+    <div>
+      <p style="margin:0 0 6px;font-size:22px"><b>Gradient boosting</b></p>
+      <div class="math" style="font-size:20px">F₁ = F₀ + η · tree fitted to the residuals<br>learning rate η = 0.05, depth-2 trees</div>
+      <table style="font-size:20px;width:auto">
+        <tr><th>trees</th><td>1</td><td>10</td><td>50</td><td>100</td><td>150</td></tr>
+        <tr><th>test AUC</th><td>0.673</td><td>0.711</td><td><b>0.738</b></td><td>0.735</td><td>0.728</td></tr>
+      </table>
+      <p class="sub" style="font-size:18px">More rounds → overfit. Use <b>early stopping</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-notes="<b>19–20 min.</b> Honest results. Choose the model by CV AUC on the training data: logistic regression wins (0.715). The tuned forest is slightly higher on the test set (0.750 vs 0.747), but choosing by the test set would be cheating; the difference is far smaller than the split-to-split noise (sd 0.019). Lesson: ensembles are not magic; when the pattern is close to linear, logistic regression is hard to beat, and it is easier to explain.">
+  <span class="tag">Results</span>
+  <h2>Five models, <span class="k">honestly</span> compared</h2>
+  <table style="font-size:22px">
+    <tr><th>Model</th><th class="num">CV AUC (train)</th><th class="num">Test AUC</th></tr>
+    <tr><td><b>Logistic regression</b></td><td class="num"><b>0.715</b> ✔ chosen</td><td class="num">0.747</td></tr>
+    <tr><td>Decision tree (depth 4)</td><td class="num">0.658</td><td class="num">0.698</td></tr>
+    <tr><td>Random forest (tuned)</td><td class="num">0.692</td><td class="num">0.750</td></tr>
+    <tr><td>Gradient boosting</td><td class="num">0.683</td><td class="num">0.728</td></tr>
+    <tr><td>AdaBoost</td><td class="num">0.698</td><td class="num">0.744</td></tr>
+  </table>
+  <p class="sub" style="font-size:20px;margin-top:12px">Choose by <b>cross-validation</b>, then report the test score once. A 0.003 test difference is noise (split-to-split sd 0.019).</p>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-notes="<b>20–23 min.</b> MATHS · confusion matrix at threshold 0.25 (logistic, 450 test customers, 102 churners). TP 71, FP 100, FN 31, TN 248. Accuracy = 319/450 = 0.709. Precision = 71/171 = 0.415: of those we call, 41.5% would really leave. Recall (sensitivity, TPR) = 71/102 = 0.696: we catch 70% of leavers. Specificity = 248/348 = 0.713. F1 = harmonic mean = 2PR/(P+R) = 0.520. Compare threshold 0.5: recall only 0.127.">
+  <span class="tag">Metrics · maths</span>
+  <h2>The confusion matrix and its <span class="k">metrics</span></h2>
+  <div class="cols">
+    <div>
+      <table style="font-size:24px;width:auto">
+        <tr><th>threshold 0.25</th><th class="num">pred: churn</th><th class="num">pred: stay</th></tr>
+        <tr><td><b>actual: churn</b> (102)</td><td class="num" style="color:var(--good);font-weight:700">TP 71</td><td class="num" style="color:var(--bad)">FN 31</td></tr>
+        <tr><td><b>actual: stay</b> (348)</td><td class="num" style="color:var(--bad)">FP 100</td><td class="num" style="color:var(--good);font-weight:700">TN 248</td></tr>
+      </table>
+      <p class="sub" style="font-size:19px">At 0.5: TP 13, FN 89 → recall 0.127</p>
+    </div>
+    <div class="math" style="font-size:20px;line-height:1.75">Accuracy = (TP+TN)/N = 319/450 = <b>0.709</b><br>Precision = TP/(TP+FP) = 71/171 = <b>0.415</b><br>Recall = TP/(TP+FN) = 71/102 = <b>0.696</b><br>Specificity = TN/(TN+FP) = 248/348 = <b>0.713</b><br>F1 = 2PR/(P+R) = <b>0.520</b></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-notes="<b>23–25 min.</b> MATHS · choosing the threshold with costs. Missing a churner (FN) loses about 6 months of revenue ≈ ₹2,800. A wasted call + voucher (FP) ≈ ₹300. Cost = 2800·FN + 300·FP. Threshold 0.5: 89×2800 + 11×300 = ₹2,52,500. Threshold 0.25: 31×2800 + 100×300 = ₹1,16,800. Threshold 0.10: 4×2800 + 256×300 = ₹88,000 (lowest). Calling nobody: ₹2,85,600; calling everyone: ₹1,04,400. The best threshold depends on costs, not on 0.5. Best F1 threshold is 0.26.">
+  <span class="tag">Metrics · maths</span>
+  <h2>Choosing the threshold: <span class="k">costs</span>, not 0.5</h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:21px">FN (missed leaver) ≈ 6 months’ revenue ≈ ₹2,800<br>FP (wasted call + voucher) ≈ ₹300<br>cost = 2,800 × FN + 300 × FP</div>
+      <table style="font-size:20px">
+        <tr><th class="num">threshold</th><th class="num">FN</th><th class="num">FP</th><th class="num">cost</th></tr>
+        <tr><td class="num">0.50</td><td class="num">89</td><td class="num">11</td><td class="num">₹2,52,500</td></tr>
+        <tr><td class="num">0.25</td><td class="num">31</td><td class="num">100</td><td class="num">₹1,16,800</td></tr>
+        <tr><td class="num"><b>0.10</b></td><td class="num">4</td><td class="num">256</td><td class="num" style="color:var(--good);font-weight:700">₹88,000</td></tr>
+      </table>
+    </div>
+    <div style="font-size:21px">
+      <div class="box" style="margin-bottom:12px">Call nobody: ₹2,85,600 · call all 450: ₹1,04,400</div>
+      <div class="box" style="margin-bottom:12px">Cheap calls, expensive misses → <b>low threshold</b>, high recall</div>
+      <div class="box">Expensive false alarms (e.g. blocking a card) → <b>high threshold</b>, high precision</div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-notes="<b>25–27 min.</b> ROC curve: plot TPR (recall) against FPR (1 − specificity) for every possible threshold. Bottom-left = threshold 1 (flag nobody), top-right = threshold 0 (flag everyone). Points: threshold 0.5 → (0.03, 0.13); 0.25 → (0.29, 0.70); 0.10 → (0.74, 0.96). AUC = area under the curve = 0.747 = probability that a random churner gets a higher score than a random stayer (we checked: exactly 0.747). 0.5 = random guessing, 1.0 = perfect ranking. AUC is threshold-free, so it is good for comparing models.">
+  <span class="tag">ROC · AUC</span>
+  <h2>The ROC curve and <span class="k">AUC</span></h2>
+  <div class="cols" style="grid-template-columns:1fr 1fr">
+    <svg viewBox="0 0 470 420" id="bRoc"></svg>
+    <div style="font-size:21px">
+      <div class="math" style="font-size:20px">TPR = recall = TP/(TP+FN)<br>FPR = FP/(FP+TN) = 1 − specificity</div>
+      <table style="font-size:19px">
+        <tr><th class="num">threshold</th><th class="num">FPR</th><th class="num">TPR</th></tr>
+        <tr><td class="num">0.50</td><td class="num">0.032</td><td class="num">0.127</td></tr>
+        <tr><td class="num">0.25</td><td class="num">0.287</td><td class="num">0.696</td></tr>
+        <tr><td class="num">0.10</td><td class="num">0.736</td><td class="num">0.961</td></tr>
+      </table>
+      <div class="box" style="font-size:20px">AUC = <b>0.747</b> = chance a random churner scores higher than a random stayer. 0.5 = coin toss; 1 = perfect.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-notes="<b>27–28 min.</b> Which metric when? Accuracy only when classes are balanced and errors cost the same. Precision when false alarms are costly (spam filter hiding real mail, blocking a genuine card). Recall when misses are costly (cancer screening, fraud, churn with cheap calls). F1 balances both. AUC to compare models across all thresholds. Regression: MAE, RMSE, R² (Unit 3).">
+  <span class="tag">Metrics</span>
+  <h2>Which metric, <span class="k">when</span>?</h2>
+  <table style="font-size:21px">
+    <tr><th>Metric</th><th>Use when</th><th>Example</th></tr>
+    <tr><td><b>Accuracy</b></td><td>classes balanced, errors cost the same</td><td>handwritten digit recognition</td></tr>
+    <tr><td><b>Precision</b></td><td>false alarms are expensive</td><td>spam filter; blocking a card</td></tr>
+    <tr><td><b>Recall</b></td><td>misses are expensive</td><td>cancer screening; fraud; churn with cheap calls</td></tr>
+    <tr><td><b>F1</b></td><td>need one number balancing P and R</td><td>imbalanced classes</td></tr>
+    <tr><td><b>Specificity</b></td><td>correctly clearing negatives matters</td><td>not alarming healthy patients</td></tr>
+    <tr><td><b>ROC AUC</b></td><td>compare models across all thresholds</td><td>model selection</td></tr>
+    <tr><td><b>MAE / RMSE / R²</b></td><td>regression targets</td><td>car prices (Unit 3)</td></tr>
+  </table>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-notes="<b>28–29 min.</b> Checklist for avoiding over/underfitting. Read both columns and give one SwiftTel example each.">
+  <span class="tag">Over / underfitting</span>
+  <h2>Avoiding overfitting and <span class="k">underfitting</span></h2>
+  <div class="cols">
+    <div style="font-size:21px">
+      <p style="margin:0 0 6px"><b style="color:var(--bad)">Overfitting? (train ≫ test)</b></p>
+      <ul><li>Simpler model: limit depth, raise min leaf size</li><li>Regularisation (L1/L2, smaller C)</li><li>More training data</li><li>Fewer, better features (Unit 2)</li><li>Bagging / random forest</li><li>Early stopping in boosting</li><li>Prune trees</li></ul>
+    </div>
+    <div style="font-size:21px">
+      <p style="margin:0 0 6px"><b style="color:var(--accent)">Underfitting? (both low)</b></p>
+      <ul><li>More flexible model (deeper tree, boosting)</li><li>Better features (derived features, interactions)</li><li>Less regularisation</li><li>Train longer (more boosting rounds)</li></ul>
+      <div class="box" style="margin-top:14px;font-size:20px">Always: choose with <b>cross-validation</b>, test <b>once</b>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-notes="<b>29–30 min.</b> Recap, then break → study guide and labs (threshold slider, overfitting explorer, k-fold, bootstrap).">
+  <span class="tag">Recap</span>
+  <h2>Today in <span class="k">one slide</span></h2>
+  <div class="grid g2" style="font-size:20px">
+    <div class="box"><b>Fit</b>: underfit = high bias; overfit = high variance; best depth 4 by CV</div>
+    <div class="box"><b>CV</b>: k folds, mean ± sd (0.715 ± 0.037); stratify; preprocess inside folds</div>
+    <div class="box"><b>Tuning</b>: hyperparameters by grid/random search; 24 × 5 = 120 fits</div>
+    <div class="box"><b>Ensembles</b>: bagging/RF (63.2% bootstrap, OOB), boosting (α, residuals, early stop)</div>
+    <div class="box"><b>Metrics</b>: TP FP FN TN; precision 0.415, recall 0.696, F1 0.520; AUC 0.747</div>
+    <div class="box"><b>Threshold</b>: set by costs (₹88,000 at 0.10 vs ₹2,52,500 at 0.5)</div>
+  </div>
+  <div class="ask">Next: 5-minute break → open <b>Study guide</b> on your screen → quiz at the end</div>
+</section>
+
+<canvas id="ink" width="1280" height="720"></canvas>
+</div>
+
+<div id="notes"></div>
+<div id="hud">
+  <button onclick="go(-1)" title="Previous (←)">◀</button>
+  <span id="count">1 / 16</span>
+  <button onclick="go(1)" title="Next (→ or space)">▶</button>
+  <button id="drawBtn" onclick="toggleDraw()" title="Draw (D)">✏️ Draw</button>
+  <button class="sw" style="background:#d64545" onclick="pen='#d64545'"></button>
+  <button class="sw" style="background:#2a6fdb" onclick="pen='#2a6fdb'"></button>
+  <button class="sw" style="background:#1f9d6b" onclick="pen='#1f9d6b'"></button>
+  <button class="sw" style="background:#18202f" onclick="pen='#18202f'"></button>
+  <button onclick="clearInk()" title="Clear drawing (C)">Clear</button>
+  <button onclick="toggleNotes()" title="Teacher notes (N)">Notes</button>
+  <button onclick="fullscreen()" title="Full screen (F)">⛶</button>
+  <a href="./" style="color:inherit;padding:0 6px">Exit</a>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide'), cur = 0, pen = '#d64545';
+var stage = document.getElementById('stage'), ink = document.getElementById('ink'), ctx = ink.getContext('2d');
+var strokes = {};  // per-slide drawings, kept while you move between slides
+
+function fit() {
+  var s = Math.min(innerWidth / 1280, innerHeight / 720);
+  stage.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+}
+addEventListener('resize', fit); fit();
+
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach(function (s, k) { s.classList.toggle('on', k === cur); });
+  document.getElementById('count').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('notes').innerHTML = '<div style="font-size:12px;color:#8a7a40;margin-bottom:6px">SLIDE ' + (cur + 1) + ' · TEACHER NOTES</div>' + (slides[cur].dataset.notes || '');
+  redraw();
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) {}
+}
+function go(d) { show(cur + d); }
+function toggleNotes() { document.getElementById('notes').classList.toggle('on'); }
+function toggleDraw() { document.body.classList.toggle('drawing'); document.getElementById('drawBtn').classList.toggle('on'); }
+function fullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+function clearInk() { strokes[cur] = []; redraw(); }
+
+function redraw() {
+  ctx.clearRect(0, 0, 1280, 720);
+  (strokes[cur] || []).forEach(function (st) {
+    ctx.strokeStyle = st.c; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); st.p.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+  });
+}
+function pos(e) { var r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * 1280 / r.width, (e.clientY - r.top) * 720 / r.height]; }
+var active = null;
+ink.addEventListener('pointerdown', function (e) { active = { c: pen, p: [pos(e)] }; (strokes[cur] = strokes[cur] || []).push(active); ink.setPointerCapture(e.pointerId); });
+ink.addEventListener('pointermove', function (e) { if (active) { active.p.push(pos(e)); redraw(); } });
+addEventListener('pointerup', function () { active = null; });
+
+addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(slides.length - 1);
+  else if (e.key === 'n' || e.key === 'N') toggleNotes();
+  else if (e.key === 'd' || e.key === 'D') toggleDraw();
+  else if (e.key === 'c' || e.key === 'C') clearInk();
+  else if (e.key === 'f' || e.key === 'F') fullscreen();
+});
+stage.addEventListener('click', function (e) { if (!document.body.classList.contains('drawing') && e.target.closest('.slide')) go(e.clientX > innerWidth / 2 ? 1 : -1); });
+
+(function () {   // depth vs AUC, real numbers from lab/depth_results.json
+  var svg = document.getElementById('bOver');
+  var d = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  var tr = [0.58, 0.681, 0.713, 0.737, 0.773, 0.82, 0.87, 0.909, 0.937, 0.961, 0.977, 0.984, 0.99, 0.994, 0.997];
+  var cv = [0.567, 0.645, 0.657, 0.658, 0.64, 0.619, 0.616, 0.612, 0.609, 0.598, 0.599, 0.594, 0.58, 0.58, 0.596];
+  var X = function (v) { return 60 + (v - 1) * 40; }, Y = function (v) { return 330 - (v - 0.5) * 560; };
+  svgEl('line', { x1: 60, y1: 330, x2: 620, y2: 330, style: 'stroke:var(--ink-3);stroke-width:1.5' }, svg);
+  svgEl('line', { x1: 60, y1: 330, x2: 60, y2: 40, style: 'stroke:var(--ink-3);stroke-width:1.5' }, svg);
+  [0.5, 0.6, 0.7, 0.8, 0.9, 1.0].forEach(function (v) { svgText(svg, 38, Y(v) + 5, v.toFixed(1), 'font-size:14px;fill:var(--ink-3)'); });
+  [1, 4, 8, 12, 15].forEach(function (v) { svgText(svg, X(v), 352, String(v), 'font-size:14px;fill:var(--ink-3)'); });
+  svgText(svg, 340, 376, 'tree max_depth', 'font-size:15px;fill:var(--ink-3)');
+  svgEl('rect', { x: X(3.5), y: 40, width: X(4.5) - X(3.5), height: 290, style: 'fill:var(--good-soft)' }, svg);
+  [[tr, 'var(--brand)', 'training AUC'], [cv, 'var(--good)', 'cross-validated AUC']].forEach(function (s, k) {
+    svgEl('path', { d: s[0].map(function (v, i) { return (i ? 'L' : 'M') + X(d[i]) + ',' + Y(v); }).join(' '), style: 'fill:none;stroke:' + s[1] + ';stroke-width:3' }, svg);
+    s[0].forEach(function (v, i) { svgEl('circle', { cx: X(d[i]), cy: Y(v), r: 4, style: 'fill:' + s[1] }, svg); });
+    svgText(svg, 500, k ? 290 : 70, s[2], 'font-size:16px;font-weight:700;fill:' + s[1]);
+  });
+  svgText(svg, 110, 316, 'underfit', 'font-size:15px;font-weight:700;fill:var(--bad)');
+  svgText(svg, 520, 316, 'overfit', 'font-size:15px;font-weight:700;fill:var(--bad)');
+  svgText(svg, X(4), 58, 'best', 'font-size:14px;font-weight:700;fill:var(--good)');
+})();
+
+(function () {   // 5 folds, validation fold rotates
+  var svg = document.getElementById('bKfold');
+  var auc = [0.726, 0.715, 0.778, 0.673, 0.681];
+  for (var r = 0; r < 5; r++) {
+    svgText(svg, 60, 36 + r * 44, 'Round ' + (r + 1), 'font-size:16px;font-weight:700;fill:var(--ink-2)');
+    for (var f = 0; f < 5; f++) {
+      var val = f === r;
+      svgEl('rect', { x: 120 + f * 172, y: 14 + r * 44, width: 166, height: 34, rx: 6, style: 'fill:' + (val ? 'var(--accent)' : 'var(--brand-soft)') + ';stroke:' + (val ? 'var(--accent)' : 'var(--brand)') }, svg);
+      svgText(svg, 203 + f * 172, 36 + r * 44, val ? 'validate · 210' : 'train', 'font-size:14px;font-weight:' + (val ? 700 : 400) + ';fill:' + (val ? '#fff' : 'var(--brand-ink)'));
+    }
+    svgText(svg, 1050, 36 + r * 44, 'AUC ' + auc[r].toFixed(3), 'font-size:16px;font-weight:700;fill:var(--ink)');
+  }
+})();
+
+(function () {   // ROC curve of the chosen logistic model (test set)
+  var svg = document.getElementById('bRoc');
+  var pts = [[0, 0], [0.02, 0.108], [0.049, 0.157], [0.075, 0.225], [0.095, 0.284], [0.118, 0.373], [0.141, 0.422], [0.172, 0.48], [0.187, 0.529], [0.213, 0.578], [0.25, 0.637], [0.27, 0.676], [0.307, 0.706], [0.371, 0.755], [0.457, 0.794], [0.529, 0.814], [0.575, 0.843], [0.635, 0.873], [0.678, 0.931], [0.727, 0.961], [0.784, 0.971], [1, 1]];
+  var X = function (v) { return 60 + v * 380; }, Y = function (v) { return 380 - v * 350; };
+  svgEl('path', { d: 'M' + X(0) + ',' + Y(0) + ' ' + pts.map(function (p) { return 'L' + X(p[0]) + ',' + Y(p[1]); }).join(' ') + ' L' + X(1) + ',' + Y(0) + ' Z', style: 'fill:var(--brand-soft)' }, svg);
+  svgEl('line', { x1: X(0), y1: Y(0), x2: X(1), y2: Y(1), style: 'stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:6 5' }, svg);
+  svgEl('path', { d: pts.map(function (p, i) { return (i ? 'L' : 'M') + X(p[0]) + ',' + Y(p[1]); }).join(' '), style: 'fill:none;stroke:var(--brand);stroke-width:3' }, svg);
+  svgEl('rect', { x: X(0), y: Y(1), width: 380, height: 350, style: 'fill:none;stroke:var(--ink-3)' }, svg);
+  [[0.032, 0.127, '0.5'], [0.287, 0.696, '0.25'], [0.736, 0.961, '0.10']].forEach(function (p) {
+    svgEl('circle', { cx: X(p[0]), cy: Y(p[1]), r: 7, style: 'fill:var(--bad)' }, svg);
+    svgText(svg, X(p[0]) + 30, Y(p[1]) + 18, 't = ' + p[2], 'font-size:15px;font-weight:700;fill:var(--bad)');
+  });
+  svgText(svg, 280, 300, 'AUC = 0.747', 'font-size:20px;font-weight:800;fill:var(--brand-ink)');
+  svgText(svg, 330, 360, 'random = 0.5', 'font-size:14px;fill:var(--ink-3)');
+  svgText(svg, 250, 410, 'false positive rate', 'font-size:14px;fill:var(--ink-3)');
+  var t = svgText(svg, 0, 0, 'true positive rate (recall)', 'font-size:14px;fill:var(--ink-3)'); t.setAttribute('transform', 'translate(28,210) rotate(-90)');
+})();
+
+addEventListener('hashchange', function () { var k = (parseInt(location.hash.slice(1), 10) || 1) - 1; if (k !== cur) show(k); });
+show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

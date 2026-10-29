@@ -1,0 +1,601 @@
+order_id,order_date,city,partner,route_app,customer_type,payment_mode,items,order_value,delivery_min,rating
+KD20014,2026-03-02,Pune,SwiftShip,Old,New,UPI,3,460.0,27.8,4
+KD20054,2026-03-02,Mumbai,SwiftShip,New,New,UPI,4,760.0,34.8,4
+KD20067,2026-03-02,Delhi,ExpressGo,New,Returning,Card,4,1440.0,29.5,5
+KD20117,2026-03-02,Mumbai,SwiftShip,Old,Returning,Cash on Delivery,3,390.0,37.8,4
+KD20147,2026-03-02,Delhi,ExpressGo,Old,New,UPI,6,980.0,33.2,4
+KD20182,2026-03-02,Bengaluru,QuickDrop,New,Returning,UPI,5,1200.0,30.4,4
+KD20263,2026-03-02,Mumbai,QuickDrop,Old,Returning,UPI,3,570.0,43.7,4
+KD20264,2026-03-02,Pune,SwiftShip,Old,Returning,UPI,5,640.0,23.4,4
+KD20278,2026-03-02,Bengaluru,SwiftShip,New,New,Card,2,700.0,22.9,4
+KD20292,2026-03-02,Delhi,QuickDrop,New,Returning,UPI,7,900.0,40.5,3
+KD20306,2026-03-02,Bengaluru,ExpressGo,New,Returning,Card,3,710.0,44.6,4
+KD20319,2026-03-02,Mumbai,ExpressGo,New,New,Cash on Delivery,1,640.0,35.1,2
+KD20337,2026-03-02,Delhi,QuickDrop,Old,New,UPI,7,390.0,34.0,5
+KD20374,2026-03-02,Bengaluru,SwiftShip,Old,Returning,Cash on Delivery,3,1530.0,28.9,3
+KD20377,2026-03-02,Bengaluru,SwiftShip,New,New,UPI,4,900.0,39.9,4
+KD20378,2026-03-02,Pune,SwiftShip,New,Returning,UPI,4,430.0,20.4,4
+KD20466,2026-03-02,Delhi,ExpressGo,Old,New,UPI,4,500.0,36.9,2
+KD20496,2026-03-02,Delhi,ExpressGo,Old,Returning,UPI,5,490.0,29.7,3
+KD20554,2026-03-02,Mumbai,ExpressGo,Old,Returning,UPI,4,720.0,41.2,3
+KD20018,2026-03-03,Bengaluru,SwiftShip,Old,New,UPI,3,540.0,36.7,3
+KD20021,2026-03-03,Mumbai,QuickDrop,Old,New,Cash on Delivery,3,470.0,28.0,3
+KD20028,2026-03-03,Pune,SwiftShip,Old,Returning,Card,4,350.0,27.1,5
+KD20088,2026-03-03,Bengaluru,SwiftShip,Old,New,UPI,3,630.0,35.9,3
+KD20144,2026-03-03,Bengaluru,SwiftShip,New,Returning,UPI,5,660.0,23.9,2
+KD20164,2026-03-03,Bengaluru,QuickDrop,Old,Returning,UPI,4,1060.0,25.0,5
+KD20167,2026-03-03,Bengaluru,QuickDrop,New,Returning,Card,5,840.0,21.5,4
+KD20171,2026-03-03,Delhi,ExpressGo,New,New,UPI,2,860.0,25.4,4
+KD20205,2026-03-03,Delhi,SwiftShip,New,New,Cash on Delivery,3,560.0,34.5,3
+KD20226,2026-03-03,Delhi,ExpressGo,Old,New,Cash on Delivery,4,460.0,31.9,4
+KD20253,2026-03-03,Delhi,QuickDrop,Old,Returning,UPI,3,1600.0,38.4,3
+KD20288,2026-03-03,Mumbai,SwiftShip,New,New,Cash on Delivery,3,190.0,33.0,3
+KD20332,2026-03-03,Pune,SwiftShip,New,Returning,UPI,1,420.0,31.8,4
+KD20346,2026-03-03,Mumbai,SwiftShip,New,New,Cash on Delivery,4,490.0,39.7,5
+KD20471,2026-03-03,Delhi,ExpressGo,Old,New,UPI,5,500.0,30.8,4
+KD20481,2026-03-03,Delhi,SwiftShip,Old,New,Card,1,450.0,30.2,3
+KD20495,2026-03-03,Bengaluru,SwiftShip,Old,Returning,UPI,3,570.0,31.4,4
+KD20516,2026-03-03,Pune,SwiftShip,Old,New,UPI,2,540.0,33.7,3
+KD20517,2026-03-03,Mumbai,SwiftShip,Old,New,Card,4,610.0,33.5,5
+KD20537,2026-03-03,Delhi,ExpressGo,Old,Returning,Card,3,600.0,43.8,2
+KD20592,2026-03-03,Pune,ExpressGo,Old,Returning,UPI,2,410.0,53.9,3
+KD20002,2026-03-04,Bengaluru,SwiftShip,New,Returning,UPI,3,640.0,23.5,4
+KD20007,2026-03-04,Delhi,ExpressGo,New,Returning,UPI,2,630.0,30.9,4
+KD20037,2026-03-04,Mumbai,ExpressGo,Old,Returning,UPI,9,680.0,33.4,5
+KD20053,2026-03-04,Pune,ExpressGo,New,Returning,UPI,4,480.0,34.4,4
+KD20058,2026-03-04,Delhi,QuickDrop,Old,New,Cash on Delivery,4,470.0,35.4,4
+KD20059,2026-03-04,Bengaluru,ExpressGo,New,Returning,UPI,3,940.0,42.5,3
+KD20077,2026-03-04,Mumbai,SwiftShip,Old,New,Card,5,460.0,17.6,5
+KD20109,2026-03-04,Mumbai,SwiftShip,New,Returning,Card,2,530.0,28.5,5
+KD20165,2026-03-04,Delhi,SwiftShip,Old,Returning,Card,4,820.0,21.9,3
+KD20169,2026-03-04,Bengaluru,QuickDrop,Old,Returning,UPI,4,1010.0,21.3,5
+KD20194,2026-03-04,Bengaluru,ExpressGo,New,Returning,UPI,2,740.0,24.7,5
+KD20207,2026-03-04,Pune,QuickDrop,Old,Returning,UPI,3,310.0,29.6,5
+KD20225,2026-03-04,Bengaluru,SwiftShip,New,New,Cash on Delivery,1,350.0,30.6,4
+KD20330,2026-03-04,Pune,SwiftShip,Old,New,UPI,3,1100.0,36.5,5
+KD20388,2026-03-04,Bengaluru,SwiftShip,Old,New,Cash on Delivery,3,340.0,37.5,2
+KD20401,2026-03-04,Mumbai,SwiftShip,New,Returning,UPI,4,900.0,28.6,3
+KD20410,2026-03-04,Pune,SwiftShip,New,Returning,UPI,6,570.0,26.7,4
+KD20412,2026-03-04,Mumbai,ExpressGo,Old,New,UPI,5,1360.0,38.6,3
+KD20415,2026-03-04,Mumbai,SwiftShip,New,Returning,Cash on Delivery,3,410.0,25.8,3
+KD20434,2026-03-04,Bengaluru,ExpressGo,Old,Returning,Card,3,450.0,35.2,3
+KD20475,2026-03-04,Bengaluru,QuickDrop,New,Returning,Card,3,410.0,27.7,4
+KD20512,2026-03-04,Pune,ExpressGo,Old,Returning,UPI,3,350.0,36.8,4
+KD20025,2026-03-05,Pune,QuickDrop,New,New,Cash on Delivery,3,510.0,24.9,4
+KD20027,2026-03-05,Bengaluru,ExpressGo,Old,New,UPI,4,460.0,31.9,4
+KD20097,2026-03-05,Bengaluru,ExpressGo,Old,Returning,UPI,3,480.0,41.5,4
+KD20196,2026-03-05,Bengaluru,SwiftShip,Old,Returning,Cash on Delivery,2,360.0,38.7,2
+KD20200,2026-03-05,Bengaluru,QuickDrop,Old,Returning,UPI,3,600.0,29.0,4
+KD20254,2026-03-05,Bengaluru,QuickDrop,New,New,UPI,5,670.0,27.7,4
+KD20262,2026-03-05,Mumbai,ExpressGo,New,New,UPI,2,330.0,38.7,4
+KD20290,2026-03-05,Delhi,QuickDrop,Old,Returning,UPI,3,300.0,36.4,5
+KD20303,2026-03-05,Mumbai,QuickDrop,Old,New,Card,3,270.0,28.9,5
+KD20309,2026-03-05,Bengaluru,QuickDrop,New,Returning,Cash on Delivery,2,410.0,29.4,4
+KD20334,2026-03-05,Pune,SwiftShip,Old,New,UPI,2,750.0,29.1,3
+KD20355,2026-03-05,Bengaluru,QuickDrop,New,Returning,Cash on Delivery,2,740.0,37.6,3
+KD20396,2026-03-05,Delhi,QuickDrop,Old,Returning,UPI,1,420.0,18.4,5
+KD20425,2026-03-05,Delhi,SwiftShip,Old,Returning,UPI,2,610.0,33.4,4
+KD20522,2026-03-05,Pune,QuickDrop,New,New,Cash on Delivery,4,940.0,38.6,3
+KD20530,2026-03-05,Pune,QuickDrop,New,Returning,UPI,5,770.0,40.0,3
+KD20593,2026-03-05,Delhi,SwiftShip,New,Returning,Card,2,1440.0,32.5,4
+KD20099,2026-03-06,Mumbai,SwiftShip,Old,Returning,UPI,7,1230.0,34.7,3
+KD20148,2026-03-06,Bengaluru,SwiftShip,New,Returning,UPI,6,450.0,27.3,5
+KD20186,2026-03-06,Bengaluru,QuickDrop,New,Returning,Card,5,1090.0,40.7,4
+KD20193,2026-03-06,Mumbai,QuickDrop,New,Returning,Cash on Delivery,3,250.0,22.1,4
+KD20197,2026-03-06,Bengaluru,QuickDrop,Old,Returning,UPI,3,530.0,42.0,3
+KD20212,2026-03-06,Mumbai,ExpressGo,New,Returning,UPI,2,950.0,31.9,4
+KD20271,2026-03-06,Delhi,QuickDrop,New,Returning,UPI,3,710.0,28.3,4
+KD20277,2026-03-06,Mumbai,ExpressGo,New,New,Cash on Delivery,3,360.0,23.4,5
+KD20307,2026-03-06,Pune,ExpressGo,Old,New,Cash on Delivery,5,340.0,32.8,2
+KD20322,2026-03-06,Bengaluru,SwiftShip,New,Returning,Cash on Delivery,2,630.0,34.2,5
+KD20344,2026-03-06,Bengaluru,ExpressGo,New,Returning,Card,4,470.0,31.9,4
+KD20371,2026-03-06,Mumbai,QuickDrop,New,New,UPI,5,420.0,35.8,3
+KD20391,2026-03-06,Mumbai,QuickDrop,Old,Returning,Card,3,710.0,29.0,5
+KD20406,2026-03-06,Mumbai,SwiftShip,New,New,UPI,3,530.0,12.5,3
+KD20455,2026-03-06,Mumbai,ExpressGo,New,New,Cash on Delivery,5,370.0,33.4,3
+KD20497,2026-03-06,Mumbai,SwiftShip,New,New,Cash on Delivery,4,650.0,28.8,4
+KD20561,2026-03-06,Bengaluru,SwiftShip,Old,New,UPI,3,1430.0,29.7,5
+KD20569,2026-03-06,Mumbai,SwiftShip,New,Returning,Card,1,230.0,29.3,2
+KD20039,2026-03-07,Bengaluru,SwiftShip,Old,New,Cash on Delivery,2,470.0,30.4,4
+KD20073,2026-03-07,Delhi,SwiftShip,New,Returning,Cash on Delivery,4,290.0,27.1,4
+KD20086,2026-03-07,Pune,QuickDrop,Old,New,Cash on Delivery,5,790.0,26.8,4
+KD20118,2026-03-07,Bengaluru,QuickDrop,Old,New,UPI,5,1490.0,30.4,3
+KD20143,2026-03-07,Pune,ExpressGo,Old,New,Cash on Delivery,5,730.0,47.4,1
+KD20158,2026-03-07,Delhi,QuickDrop,New,Returning,UPI,2,920.0,24.8,3
+KD20192,2026-03-07,Bengaluru,SwiftShip,New,New,UPI,4,330.0,36.7,3
+KD20232,2026-03-07,Delhi,QuickDrop,New,New,UPI,2,290.0,37.3,5
+KD20343,2026-03-07,Bengaluru,SwiftShip,Old,Returning,Card,2,540.0,26.9,4
+KD20360,2026-03-07,Pune,SwiftShip,Old,Returning,UPI,5,1160.0,36.2,4
+KD20408,2026-03-07,Bengaluru,QuickDrop,New,New,UPI,1,460.0,29.5,4
+KD20450,2026-03-07,Bengaluru,ExpressGo,New,New,Cash on Delivery,4,410.0,22.9,4
+KD20479,2026-03-07,Bengaluru,SwiftShip,New,Returning,Cash on Delivery,3,490.0,28.2,3
+KD20494,2026-03-07,Mumbai,SwiftShip,New,New,Card,3,760.0,35.7,4
+KD20528,2026-03-07,Pune,ExpressGo,New,New,UPI,3,720.0,31.4,4
+KD20532,2026-03-07,Pune,QuickDrop,New,Returning,UPI,3,600.0,29.6,4
+KD20544,2026-03-07,Pune,QuickDrop,Old,Returning,UPI,2,430.0,33.6,4
+KD20003,2026-03-08,Mumbai,SwiftShip,Old,Returning,UPI,5,490.0,30.9,4
+KD20041,2026-03-08,Delhi,QuickDrop,Old,New,UPI,2,500.0,22.0,4
+KD20046,2026-03-08,Bengaluru,SwiftShip,Old,New,Card,3,370.0,28.6,5
+KD20056,2026-03-08,Bengaluru,QuickDrop,Old,New,UPI,5,760.0,28.6,5
+KD20078,2026-03-08,Pune,SwiftShip,Old,New,Cash on Delivery,3,1050.0,35.5,3
+KD20180,2026-03-08,Delhi,QuickDrop,Old,New,Card,3,510.0,32.2,5
+KD20229,2026-03-08,Pune,QuickDrop,New,New,Cash on Delivery,5,1470.0,35.1,3
+KD20269,2026-03-08,Delhi,ExpressGo,Old,Returning,UPI,4,750.0,24.9,4
+KD20296,2026-03-08,Mumbai,SwiftShip,Old,New,Cash on Delivery,6,840.0,27.7,4
+KD20372,2026-03-08,Bengaluru,SwiftShip,Old,Returning,Cash on Delivery,3,1310.0,28.2,5
+KD20404,2026-03-08,Delhi,QuickDrop,New,New,Cash on Delivery,2,430.0,18.6,4
+KD20477,2026-03-08,Bengaluru,ExpressGo,Old,Returning,Cash on Delivery,3,480.0,34.0,3
+KD20506,2026-03-08,Mumbai,SwiftShip,Old,Returning,Card,2,820.0,30.2,4
+KD20518,2026-03-08,Pune,ExpressGo,New,Returning,UPI,7,660.0,39.5,3
+KD20538,2026-03-08,Mumbai,SwiftShip,Old,Returning,Card,3,670.0,32.5,3
+KD20558,2026-03-08,Pune,SwiftShip,Old,Returning,UPI,2,230.0,29.7,3
+KD20571,2026-03-08,Pune,QuickDrop,Old,Returning,Cash on Delivery,3,350.0,23.8,3
+KD20573,2026-03-08,Bengaluru,SwiftShip,New,New,Card,6,730.0,41.8,4
+KD20016,2026-03-09,Delhi,QuickDrop,Old,Returning,Card,2,620.0,37.9,2
+KD20050,2026-03-09,Mumbai,SwiftShip,Old,Returning,UPI,5,600.0,28.5,3
+KD20052,2026-03-09,Bengaluru,ExpressGo,New,Returning,Card,4,690.0,33.4,4
+KD20068,2026-03-09,Mumbai,QuickDrop,New,New,UPI,2,480.0,21.7,5
+KD20100,2026-03-09,Bengaluru,ExpressGo,New,New,Card,3,1100.0,36.9,3
+KD20111,2026-03-09,Delhi,QuickDrop,New,New,Cash on Delivery,3,530.0,22.9,5
+KD20122,2026-03-09,Delhi,ExpressGo,New,Returning,UPI,6,310.0,25.2,5
+KD20133,2026-03-09,Delhi,ExpressGo,Old,New,UPI,4,390.0,34.7,4
+KD20198,2026-03-09,Bengaluru,SwiftShip,New,New,Cash on Delivery,8,530.0,42.9,3
+KD20221,2026-03-09,Mumbai,SwiftShip,Old,New,Cash on Delivery,3,510.0,29.1,5
+KD20223,2026-03-09,Mumbai,QuickDrop,Old,Returning,UPI,5,1160.0,39.5,3
+KD20224,2026-03-09,Delhi,QuickDrop,New,Returning,Card,7,540.0,24.6,2
+KD20247,2026-03-09,Bengaluru,ExpressGo,Old,Returning,Card,2,490.0,44.3,5
+KD20256,2026-03-09,Pune,SwiftShip,Old,Returning,Card,1,1710.0,26.7,5
+KD20282,2026-03-09,Pune,QuickDrop,New,Returning,UPI,5,830.0,40.3,4
+KD20349,2026-03-09,Pune,QuickDrop,Old,New,Cash on Delivery,3,770.0,31.2,5
+KD20367,2026-03-09,Delhi,SwiftShip,New,New,Cash on Delivery,2,330.0,13.9,5
+KD20400,2026-03-09,Bengaluru,QuickDrop,New,Returning,Cash on Delivery,4,520.0,22.4,4
+KD20433,2026-03-09,Bengaluru,ExpressGo,Old,New,Card,6,750.0,26.2,5
+KD20551,2026-03-09,Bengaluru,ExpressGo,New,Returning,UPI,3,620.0,33.7,4
+KD20008,2026-03-10,Mumbai,SwiftShip,Old,New,UPI,4,790.0,20.9,4
+KD20045,2026-03-10,Mumbai,QuickDrop,New,Returning,Card,3,2270.0,26.0,4
+KD20066,2026-03-10,Delhi,SwiftShip,New,New,Cash on Delivery,2,1110.0,34.6,4
+KD20123,2026-03-10,Pune,ExpressGo,Old,New,Cash on Delivery,2,1290.0,42.4,4
+KD20231,2026-03-10,Mumbai,QuickDrop,Old,Returning,Card,3,620.0,35.5,4
+KD20244,2026-03-10,Delhi,SwiftShip,New,Returning,UPI,3,500.0,27.6,3
+KD20287,2026-03-10,Pune,ExpressGo,New,New,UPI,2,530.0,33.6,4
+KD20291,2026-03-10,Delhi,QuickDrop,Old,Returning,UPI,5,240.0,25.6,5
+KD20298,2026-03-10,Mumbai,ExpressGo,New,New,Card,5,1430.0,51.0,3
+KD20304,2026-03-10,Pune,ExpressGo,New,Returning,UPI,3,790.0,36.0,3
+KD20347,2026-03-10,Delhi,ExpressGo,Old,Returning,UPI,3,1000.0,39.7,4
+KD20418,2026-03-10,Mumbai,ExpressGo,New,Returning,Cash on Delivery,3,560.0,24.7,3
+KD20467,2026-03-10,Mumbai,SwiftShip,Old,Returning,UPI,2,460.0,23.6,4
+KD20546,2026-03-10,Bengaluru,ExpressGo,Old,Returning,UPI,3,660.0,35.1,4
+KD20547,2026-03-10,Pune,ExpressGo,Old,Returning,UPI,5,1200.0,33.9,3
+KD20559,2026-03-10,Pune,SwiftShip,New,New,UPI,4,340.0,28.1,3
+KD20584,2026-03-10,Mumbai,SwiftShip,New,Returning,Card,1,320.0,30.5,4
+KD20032,2026-03-11,Bengaluru,QuickDrop,New,Returning,UPI,3,510.0,29.2,5
+KD20047,2026-03-11,Delhi,ExpressGo,New,New,Card,2,780.0,36.7,3
+KD20055,2026-03-11,Delhi,SwiftShip,New,Returning,Cash on Delivery,4,970.0,28.8,4
+KD20063,2026-03-11,Delhi,ExpressGo,Old,Returning,Cash on Delivery,1,310.0,31.6,5
+KD20095,2026-03-11,Mumbai,SwiftShip,New,Returning,UPI,2,550.0,23.4,4
+KD20176,2026-03-11,Delhi,ExpressGo,Old,Returning,UPI,3,540.0,34.4,3
+KD20233,2026-03-11,Pune,QuickDrop,New,Returning,Card,3,550.0,21.9,5
+KD20279,2026-03-11,Pune,QuickDrop,New,New,UPI,4,710.0,18.7,3
+KD20294,2026-03-11,Delhi,QuickDrop,New,New,UPI,3,770.0,30.5,4
+KD20305,2026-03-11,Delhi,QuickDrop,Old,New,UPI,2,650.0,38.7,2
+KD20310,2026-03-11,Delhi,QuickDrop,Old,Returning,Card,3,580.0,23.3,4
+KD20351,2026-03-11,Mumbai,QuickDrop,Old,New,Cash on Delivery,3,980.0,35.5,4
+KD20397,2026-03-11,Bengaluru,SwiftShip,New,Returning,Card,3,510.0,40.0,3
+KD20416,2026-03-11,Delhi,QuickDrop,New,New,UPI,8,830.0,32.9,3
+KD20448,2026-03-11,Bengaluru,ExpressGo,New,Returning,UPI,3,350.0,37.7,3
+KD20485,2026-03-11,Mumbai,ExpressGo,New,Returning,Cash on Delivery,2,350.0,27.8,3
+KD20514,2026-03-11,Pune,ExpressGo,Old,Returning,Cash on Delivery,1,440.0,30.2,4
+KD20560,2026-03-11,Bengaluru,QuickDrop,New,Returning,Card,1,190.0,38.7,4
+KD20562,2026-03-11,Bengaluru,SwiftShip,Old,Returning,UPI,2,470.0,30.3,4
+KD20013,2026-03-12,Bengaluru,ExpressGo,New,New,Cash on Delivery,1,590.0,29.8,5
+KD20062,2026-03-12,Pune,ExpressGo,Old,New,UPI,3,990.0,27.0,4
+KD20072,2026-03-12,Mumbai,ExpressGo,New,Returning,UPI,1,910.0,36.1,4
+KD20119,2026-03-12,Pune,ExpressGo,New,Returning,UPI,3,720.0,24.9,3
+KD20137,2026-03-12,Bengaluru,ExpressGo,Old,Returning,UPI,3,860.0,38.2,3
+KD20151,2026-03-12,Mumbai,SwiftShip,Old,Returning,UPI,3,330.0,32.6,4
+KD20189,2026-03-12,Bengaluru,QuickDrop,New,New,Cash on Delivery,4,390.0,37.2,3
+KD20201,2026-03-12,Pune,SwiftShip,Old,Returning,UPI,3,790.0,31.9,4
+KD20214,2026-03-12,Pune,QuickDrop,New,Returning,UPI,4,610.0,30.4,3
+KD20227,2026-03-12,Bengaluru,SwiftShip,New,New,Card,2,740.0,25.2,5
+KD20235,2026-03-12,Pune,QuickDrop,Old,Returning,Card,2,680.0,34.3,3
+KD20252,2026-03-12,Pune,SwiftShip,Old,Returning,UPI,5,720.0,39.1,4
+KD20299,2026-03-12,Mumbai,ExpressGo,Old,New,Cash on Delivery,6,640.0,32.8,4
+KD20323,2026-03-12,Mumbai,SwiftShip,Old,New,Card,3,660.0,36.5,3
+KD20354,2026-03-12,Bengaluru,SwiftShip,New,Returning,UPI,4,1100.0,24.3,5
+KD20361,2026-03-12,Pune,QuickDrop,Old,Returning,UPI,2,740.0,32.3,4
+KD20402,2026-03-12,Pune,ExpressGo,Old,New,Cash on Delivery,3,470.0,32.4,5
+KD20442,2026-03-12,Delhi,ExpressGo,New,Returning,UPI,5,540.0,35.7,3
+KD20461,2026-03-12,Bengaluru,SwiftShip,Old,New,Cash on Delivery,2,430.0,32.4,3
+KD20472,2026-03-12,Pune,ExpressGo,New,New,Cash on Delivery,3,470.0,35.8,4
+KD20523,2026-03-12,Bengaluru,QuickDrop,Old,Returning,UPI,1,400.0,35.5,4
+KD20553,2026-03-12,Delhi,SwiftShip,New,New,Cash on Delivery,2,300.0,28.1,4
+KD20011,2026-03-13,Delhi,ExpressGo,Old,Returning,Card,3,630.0,32.9,3
+KD20015,2026-03-13,Pune,SwiftShip,New,Returning,Card,2,730.0,41.9,2
+KD20036,2026-03-13,Delhi,ExpressGo,New,Returning,Card,3,750.0,29.8,4
+KD20040,2026-03-13,Mumbai,ExpressGo,New,Returning,UPI,4,540.0,35.0,4
+KD20080,2026-03-13,Bengaluru,QuickDrop,New,Returning,Cash on Delivery,4,960.0,27.9,5
+KD20130,2026-03-13,Mumbai,SwiftShip,Old,Returning,Card,3,250.0,34.6,3
+KD20145,2026-03-13,Mumbai,SwiftShip,Old,New,UPI,4,320.0,32.7,4
+KD20168,2026-03-13,Pune,SwiftShip,New,Returning,UPI,2,530.0,41.1,4
+KD20178,2026-03-13,Pune,SwiftShip,New,Returning,UPI,2,600.0,28.0,5
+KD20210,2026-03-13,Pune,SwiftShip,Old,Returning,Card,2,570.0,21.6,3
+KD20219,2026-03-13,Bengaluru,SwiftShip,New,New,Cash on Delivery,6,460.0,20.3,5
+KD20240,2026-03-13,Pune,QuickDrop,New,Returning,Card,2,1360.0,36.0,5
+KD20284,2026-03-13,Delhi,SwiftShip,New,Returning,Card,2,580.0,33.5,3
+KD20313,2026-03-13,Bengaluru,SwiftShip,New,New,Card,2,230.0,25.3,4
+KD20327,2026-03-13,Pune,ExpressGo,Old,Returning,Cash on Delivery,3,530.0,38.0,3
+KD20375,2026-03-13,Pune,SwiftShip,Old,New,UPI,6,990.0,34.0,3
+KD20394,2026-03-13,Pune,QuickDrop,Old,New,Cash on Delivery,5,380.0,37.4,4
+KD20409,2026-03-13,Bengaluru,ExpressGo,Old,Returning,Card,5,3890.0,31.6,4
+KD20424,2026-03-13,Bengaluru,ExpressGo,Old,New,UPI,2,870.0,29.9,4
+KD20429,2026-03-13,Bengaluru,QuickDrop,Old,Returning,UPI,4,510.0,14.2,5
+KD20441,2026-03-13,Delhi,QuickDrop,Old,New,Cash on Delivery,6,750.0,36.6,4
+KD20453,2026-03-13,Mumbai,ExpressGo,New,New,UPI,1,680.0,29.2,3
+KD20473,2026-03-13,Pune,QuickDrop,New,New,UPI,5,430.0,24.4,2
+KD20527,2026-03-13,Pune,ExpressGo,Old,New,Card,4,550.0,43.4,4
+KD20535,2026-03-13,Mumbai,ExpressGo,New,New,Cash on Delivery,3,670.0,41.6,5
+KD20542,2026-03-13,Bengaluru,SwiftShip,New,New,Card,1,680.0,27.0,5
+KD20565,2026-03-13,Mumbai,SwiftShip,Old,Returning,Card,3,260.0,32.7,5
+KD20575,2026-03-13,Delhi,QuickDrop,Old,Returning,UPI,4,950.0,40.4,2
+KD20070,2026-03-14,Pune,QuickDrop,New,Returning,UPI,5,700.0,27.7,3
+KD20129,2026-03-14,Delhi,SwiftShip,New,New,Card,3,1070.0,34.0,4
+KD20136,2026-03-14,Bengaluru,ExpressGo,Old,Returning,UPI,3,500.0,38.8,2
+KD20138,2026-03-14,Bengaluru,QuickDrop,New,New,Cash on Delivery,5,1580.0,32.8,5
+KD20163,2026-03-14,Bengaluru,QuickDrop,New,New,Cash on Delivery,2,1110.0,35.4,3
+KD20261,2026-03-14,Pune,SwiftShip,New,Returning,UPI,3,280.0,29.5,4
+KD20358,2026-03-14,Delhi,QuickDrop,Old,Returning,UPI,4,1620.0,25.2,3
+KD20376,2026-03-14,Pune,SwiftShip,Old,Returning,Card,4,890.0,34.4,4
+KD20444,2026-03-14,Delhi,SwiftShip,New,Returning,Card,2,830.0,19.3,5
+KD20459,2026-03-14,Bengaluru,SwiftShip,Old,New,Card,4,510.0,30.2,5
+KD20470,2026-03-14,Mumbai,SwiftShip,Old,Returning,Cash on Delivery,5,1460.0,36.3,3
+KD20482,2026-03-14,Bengaluru,QuickDrop,New,New,Cash on Delivery,3,620.0,23.8,4
+KD20491,2026-03-14,Pune,ExpressGo,Old,New,Cash on Delivery,2,200.0,33.5,5
+KD20500,2026-03-14,Pune,QuickDrop,Old,New,Card,1,660.0,35.0,3
+KD20510,2026-03-14,Delhi,ExpressGo,New,Returning,UPI,1,680.0,25.8,5
+KD20079,2026-03-15,Pune,ExpressGo,New,New,Card,2,510.0,24.3,5
+KD20081,2026-03-15,Mumbai,QuickDrop,New,Returning,UPI,2,300.0,27.7,3
+KD20153,2026-03-15,Mumbai,ExpressGo,Old,Returning,UPI,2,440.0,45.8,2
+KD20170,2026-03-15,Mumbai,SwiftShip,Old,New,Card,6,890.0,36.5,3
+KD20172,2026-03-15,Bengaluru,QuickDrop,Old,Returning,UPI,5,370.0,39.2,4
+KD20175,2026-03-15,Pune,ExpressGo,Old,New,Cash on Delivery,7,550.0,30.5,5
+KD20177,2026-03-15,Delhi,SwiftShip,Old,Returning,UPI,2,280.0,32.8,3
+KD20181,2026-03-15,Mumbai,SwiftShip,Old,New,Card,3,470.0,30.4,4
+KD20183,2026-03-15,Bengaluru,QuickDrop,New,New,Cash on Delivery,1,640.0,16.9,4
+KD20184,2026-03-15,Delhi,QuickDrop,New,Returning,UPI,3,930.0,30.7,4
+KD20188,2026-03-15,Mumbai,ExpressGo,New,Returning,UPI,3,630.0,38.6,5
+KD20195,2026-03-15,Pune,QuickDrop,New,New,UPI,3,440.0,38.0,2
+KD20209,2026-03-15,Mumbai,SwiftShip,New,Returning,UPI,3,500.0,33.9,4
+KD20302,2026-03-15,Bengaluru,QuickDrop,New,New,UPI,2,440.0,27.0,4
+KD20352,2026-03-15,Mumbai,ExpressGo,Old,Returning,UPI,1,430.0,37.8,4
+KD20370,2026-03-15,Delhi,QuickDrop,New,New,UPI,4,550.0,29.8,4
+KD20386,2026-03-15,Mumbai,ExpressGo,New,Returning,Cash on Delivery,3,710.0,33.0,3
+KD20395,2026-03-15,Delhi,ExpressGo,Old,New,UPI,5,330.0,28.4,3
+KD20439,2026-03-15,Delhi,SwiftShip,New,New,UPI,2,530.0,27.5,3
+KD20456,2026-03-15,Delhi,ExpressGo,Old,Returning,Card,5,690.0,38.9,2
+KD20486,2026-03-15,Bengaluru,QuickDrop,New,Returning,UPI,4,440.0,29.6,4
+KD20549,2026-03-15,Delhi,SwiftShip,New,Returning,UPI,5,950.0,19.5,5
+KD20555,2026-03-15,Mumbai,ExpressGo,New,Returning,UPI,3,1360.0,38.8,4
+KD20580,2026-03-15,Delhi,ExpressGo,New,New,Card,2,400.0,25.1,5
+KD20589,2026-03-15,Mumbai,SwiftShip,Old,Returning,UPI,1,480.0,34.2,4
+KD20048,2026-03-16,Mumbai,QuickDrop,Old,New,Cash on Delivery,5,630.0,30.3,4
+KD20057,2026-03-16,Delhi,ExpressGo,New,Returning,Card,2,290.0,31.5,3
+KD20089,2026-03-16,Bengaluru,SwiftShip,Old,New,Cash on Delivery,4,690.0,32.5,3
+KD20090,2026-03-16,Mumbai,ExpressGo,Old,New,Cash on Delivery,4,600.0,38.6,3
+KD20114,2026-03-16,Bengaluru,ExpressGo,New,New,Card,3,720.0,23.0,5
+KD20116,2026-03-16,Mumbai,ExpressGo,Old,Returning,UPI,3,1250.0,27.9,4
+KD20127,2026-03-16,Bengaluru,SwiftShip,Old,New,UPI,2,610.0,24.3,5
+KD20132,2026-03-16,Pune,SwiftShip,New,New,Card,1,420.0,35.9,3
+KD20141,2026-03-16,Mumbai,ExpressGo,New,New,UPI,3,780.0,30.0,4
+KD20152,2026-03-16,Pune,ExpressGo,New,Returning,UPI,3,810.0,20.0,4
+KD20157,2026-03-16,Delhi,SwiftShip,Old,New,UPI,7,800.0,28.2,3
+KD20162,2026-03-16,Delhi,QuickDrop,Old,New,Card,2,450.0,25.9,5
+KD20185,2026-03-16,Delhi,SwiftShip,Old,Returning,Cash on Delivery,4,690.0,36.3,4
+KD20203,2026-03-16,Pune,SwiftShip,Old,New,Cash on Delivery,3,1060.0,30.1,3
+KD20257,2026-03-16,Mumbai,ExpressGo,Old,Returning,UPI,4,620.0,39.0,2
+KD20301,2026-03-16,Mumbai,ExpressGo,Old,Returning,Card,3,1060.0,39.2,3
+KD20318,2026-03-16,Bengaluru,SwiftShip,Old,Returning,Card,3,990.0,26.4,4
+KD20366,2026-03-16,Bengaluru,SwiftShip,New,Returning,UPI,3,1360.0,25.0,5
+KD20387,2026-03-16,Mumbai,QuickDrop,Old,Returning,UPI,4,300.0,25.0,4
+KD20405,2026-03-16,Mumbai,SwiftShip,New,New,Cash on Delivery,2,870.0,21.3,4
+KD20423,2026-03-16,Mumbai,ExpressGo,New,New,Cash on Delivery,1,140.0,48.7,4
+KD20431,2026-03-16,Pune,SwiftShip,New,Returning,UPI,2,170.0,29.1,3
+KD20437,2026-03-16,Mumbai,ExpressGo,Old,New,Cash on Delivery,2,680.0,38.6,3
+KD20457,2026-03-16,Mumbai,SwiftShip,New,New,UPI,4,270.0,39.4,4
+KD20462,2026-03-16,Bengaluru,SwiftShip,New,Returning,UPI,3,840.0,32.4,4
+KD20464,2026-03-16,Pune,QuickDrop,Old,New,UPI,2,410.0,42.5,3
+KD20480,2026-03-16,Mumbai,SwiftShip,New,Returning,UPI,4,1190.0,25.9,3
+KD20529,2026-03-16,Bengaluru,ExpressGo,Old,Returning,UPI,4,300.0,45.8,3
+KD20577,2026-03-16,Mumbai,QuickDrop,Old,Returning,Cash on Delivery,1,140.0,49.0,2
+KD20010,2026-03-17,Mumbai,ExpressGo,Old,Returning,UPI,3,580.0,42.6,2
+KD20038,2026-03-17,Delhi,SwiftShip,New,New,UPI,8,620.0,26.4,4
+KD20096,2026-03-17,Delhi,SwiftShip,New,Returning,UPI,4,530.0,30.0,4
+KD20140,2026-03-17,Pune,ExpressGo,New,Returning,UPI,3,760.0,33.3,5
+KD20208,2026-03-17,Delhi,ExpressGo,Old,Returning,UPI,6,510.0,37.2,3
+KD20236,2026-03-17,Mumbai,ExpressGo,Old,New,Card,2,600.0,38.6,3
+KD20238,2026-03-17,Mumbai,ExpressGo,Old,Returning,UPI,1,500.0,36.7,3
+KD20281,2026-03-17,Delhi,ExpressGo,New,New,Card,7,1500.0,26.9,4
+KD20369,2026-03-17,Mumbai,QuickDrop,Old,Returning,UPI,1,670.0,32.1,3
+KD20422,2026-03-17,Bengaluru,SwiftShip,New,Returning,UPI,3,360.0,26.8,4
+KD20465,2026-03-17,Delhi,ExpressGo,Old,New,UPI,3,820.0,34.9,4
+KD20476,2026-03-17,Bengaluru,QuickDrop,New,New,Cash on Delivery,4,1620.0,24.9,3
+KD20478,2026-03-17,Mumbai,ExpressGo,New,Returning,UPI,4,530.0,25.7,4
+KD20509,2026-03-17,Pune,QuickDrop,Old,Returning,Cash on Delivery,1,550.0,30.4,5
+KD20521,2026-03-17,Bengaluru,ExpressGo,New,Returning,UPI,2,700.0,35.6,3
+KD20536,2026-03-17,Bengaluru,SwiftShip,New,New,Card,3,440.0,37.3,2
+KD20557,2026-03-17,Bengaluru,QuickDrop,New,New,UPI,6,460.0,25.7,4
+KD20588,2026-03-17,Pune,SwiftShip,Old,Returning,Card,5,450.0,36.9,4
+KD20591,2026-03-17,Bengaluru,SwiftShip,New,New,Card,2,580.0,22.1,4
+KD20061,2026-03-18,Pune,ExpressGo,New,New,UPI,1,710.0,35.2,2
+KD20075,2026-03-18,Delhi,SwiftShip,New,New,Cash on Delivery,6,780.0,28.9,4
+KD20092,2026-03-18,Pune,QuickDrop,Old,Returning,UPI,5,820.0,32.3,4
+KD20093,2026-03-18,Bengaluru,ExpressGo,New,New,UPI,3,470.0,37.9,3
+KD20102,2026-03-18,Mumbai,SwiftShip,New,New,Card,7,500.0,36.4,4
+KD20246,2026-03-18,Delhi,QuickDrop,New,Returning,Cash on Delivery,8,380.0,21.0,5
+KD20270,2026-03-18,Bengaluru,SwiftShip,New,Returning,Cash on Delivery,3,220.0,27.3,4
+KD20275,2026-03-18,Pune,SwiftShip,New,New,Card,3,1570.0,20.0,5
+KD20300,2026-03-18,Delhi,SwiftShip,New,Returning,UPI,4,1270.0,23.4,4
+KD20312,2026-03-18,Pune,SwiftShip,New,Returning,Card,1,630.0,25.5,4
+KD20329,2026-03-18,Mumbai,SwiftShip,Old,Returning,UPI,8,850.0,30.4,3
+KD20363,2026-03-18,Mumbai,ExpressGo,Old,New,Cash on Delivery,4,500.0,27.9,4
+KD20393,2026-03-18,Bengaluru,QuickDrop,Old,Returning,Card,2,410.0,30.9,4
+KD20420,2026-03-18,Bengaluru,QuickDrop,New,New,UPI,2,510.0,31.9,4
+KD20430,2026-03-18,Pune,QuickDrop,New,Returning,Cash on Delivery,2,550.0,30.9,3
+KD20526,2026-03-18,Bengaluru,QuickDrop,New,Returning,UPI,6,1980.0,28.2,4
+KD20564,2026-03-18,Pune,ExpressGo,Old,Returning,UPI,2,610.0,27.7,5
+KD20566,2026-03-18,Pune,ExpressGo,Old,New,UPI,4,980.0,49.3,3
+KD20568,2026-03-18,Delhi,QuickDrop,New,New,UPI,3,720.0,36.1,4
+KD20579,2026-03-18,Mumbai,ExpressGo,New,Returning,Cash on Delivery,3,440.0,36.9,4
+KD20585,2026-03-18,Bengaluru,ExpressGo,New,New,UPI,1,1230.0,31.8,4
+KD20006,2026-03-19,Delhi,QuickDrop,Old,New,Card,2,790.0,30.7,4
+KD20020,2026-03-19,Mumbai,SwiftShip,New,New,UPI,3,590.0,25.6,4
+KD20094,2026-03-19,Bengaluru,SwiftShip,New,New,Cash on Delivery,1,310.0,22.2,5
+KD20108,2026-03-19,Delhi,SwiftShip,Old,Returning,Cash on Delivery,3,500.0,27.9,5
+KD20237,2026-03-19,Pune,ExpressGo,Old,Returning,UPI,4,840.0,25.0,4
+KD20243,2026-03-19,Delhi,ExpressGo,Old,Returning,UPI,4,720.0,38.0,3
+KD20274,2026-03-19,Pune,QuickDrop,Old,New,UPI,6,460.0,29.6,3
+KD20293,2026-03-19,Pune,SwiftShip,New,Returning,UPI,2,500.0,29.9,5
+KD20389,2026-03-19,Delhi,QuickDrop,New,Returning,Cash on Delivery,1,590.0,25.6,4
+KD20435,2026-03-19,Delhi,SwiftShip,Old,Returning,UPI,1,900.0,30.0,4
+KD20581,2026-03-19,Pune,QuickDrop,New,New,Cash on Delivery,3,710.0,28.7,4
+KD20594,2026-03-19,Delhi,ExpressGo,New,Returning,UPI,1,1270.0,42.1,4
+KD20022,2026-03-20,Pune,ExpressGo,Old,Returning,Cash on Delivery,5,690.0,50.6,2
+KD20085,2026-03-20,Delhi,ExpressGo,Old,New,UPI,2,310.0,33.3,4
+KD20101,2026-03-20,Bengaluru,ExpressGo,New,New,Cash on Delivery,3,670.0,37.4,3
+KD20115,2026-03-20,Pune,ExpressGo,Old,Returning,UPI,3,360.0,38.8,3
+KD20128,2026-03-20,Pune,QuickDrop,Old,Returning,UPI,3,980.0,34.0,4
+KD20131,2026-03-20,Bengaluru,QuickDrop,Old,Returning,UPI,6,1470.0,35.1,4
+KD20155,2026-03-20,Bengaluru,QuickDrop,Old,Returning,UPI,3,700.0,24.3,5
+KD20222,2026-03-20,Delhi,SwiftShip,Old,New,Card,5,700.0,27.1,5
+KD20234,2026-03-20,Pune,ExpressGo,Old,Returning,Cash on Delivery,1,1060.0,36.1,3
+KD20241,2026-03-20,Pune,QuickDrop,Old,New,Cash on Delivery,4,610.0,31.2,5
+KD20251,2026-03-20,Bengaluru,ExpressGo,Old,New,UPI,2,740.0,30.0,4
+KD20255,2026-03-20,Delhi,SwiftShip,New,Returning,UPI,7,1130.0,26.6,3
+KD20265,2026-03-20,Delhi,QuickDrop,New,Returning,UPI,6,650.0,33.4,4
+KD20267,2026-03-20,Bengaluru,ExpressGo,New,New,Cash on Delivery,3,1040.0,34.7,3
+KD20272,2026-03-20,Bengaluru,ExpressGo,Old,New,UPI,3,800.0,31.6,4
+KD20286,2026-03-20,Bengaluru,ExpressGo,Old,New,Cash on Delivery,3,740.0,28.1,5
+KD20295,2026-03-20,Pune,SwiftShip,New,New,UPI,3,1060.0,27.9,3
+KD20383,2026-03-20,Bengaluru,SwiftShip,Old,Returning,Card,3,800.0,29.6,4
+KD20392,2026-03-20,Delhi,SwiftShip,Old,Returning,UPI,1,650.0,26.2,5
+KD20398,2026-03-20,Delhi,SwiftShip,New,New,UPI,4,570.0,23.5,3
+KD20436,2026-03-20,Pune,SwiftShip,New,Returning,UPI,4,970.0,21.8,5
+KD20440,2026-03-20,Delhi,QuickDrop,Old,New,Cash on Delivery,4,1180.0,22.4,4
+KD20445,2026-03-20,Pune,SwiftShip,New,Returning,Cash on Delivery,3,910.0,27.2,4
+KD20446,2026-03-20,Bengaluru,QuickDrop,Old,Returning,UPI,3,980.0,31.6,5
+KD20454,2026-03-20,Bengaluru,QuickDrop,New,Returning,Cash on Delivery,2,750.0,30.0,5
+KD20484,2026-03-20,Pune,SwiftShip,Old,Returning,Card,5,1040.0,28.4,4
+KD20501,2026-03-20,Bengaluru,SwiftShip,New,New,Cash on Delivery,3,680.0,32.1,4
+KD20507,2026-03-20,Delhi,ExpressGo,Old,New,UPI,3,300.0,40.2,3
+KD20576,2026-03-20,Pune,SwiftShip,Old,New,UPI,1,590.0,34.5,4
+KD20031,2026-03-21,Pune,ExpressGo,Old,New,UPI,2,370.0,34.6,5
+KD20051,2026-03-21,Bengaluru,SwiftShip,Old,New,Cash on Delivery,4,680.0,26.7,5
+KD20098,2026-03-21,Bengaluru,QuickDrop,Old,New,UPI,9,850.0,36.3,3
+KD20124,2026-03-21,Pune,QuickDrop,New,Returning,Card,2,2410.0,22.7,5
+KD20134,2026-03-21,Mumbai,QuickDrop,Old,New,UPI,4,480.0,33.7,3
+KD20142,2026-03-21,Delhi,QuickDrop,Old,Returning,UPI,3,1170.0,18.4,5
+KD20149,2026-03-21,Mumbai,ExpressGo,New,Returning,Cash on Delivery,2,390.0,29.8,4
+KD20150,2026-03-21,Pune,ExpressGo,New,New,UPI,3,330.0,38.5,3
+KD20179,2026-03-21,Mumbai,ExpressGo,Old,New,Cash on Delivery,4,590.0,30.7,3
+KD20191,2026-03-21,Bengaluru,QuickDrop,Old,Returning,UPI,3,260.0,21.1,4
+KD20216,2026-03-21,Bengaluru,ExpressGo,Old,Returning,UPI,1,920.0,26.0,5
+KD20218,2026-03-21,Delhi,SwiftShip,Old,Returning,Cash on Delivery,2,370.0,33.5,4
+KD20258,2026-03-21,Pune,ExpressGo,New,Returning,Cash on Delivery,2,940.0,40.5,3
+KD20259,2026-03-21,Delhi,QuickDrop,New,Returning,Card,3,680.0,24.2,4
+KD20364,2026-03-21,Mumbai,SwiftShip,New,New,UPI,3,850.0,25.6,4
+KD20421,2026-03-21,Pune,QuickDrop,New,Returning,UPI,4,190.0,35.8,4
+KD20492,2026-03-21,Bengaluru,SwiftShip,New,Returning,UPI,4,1250.0,24.3,4
+KD20504,2026-03-21,Mumbai,SwiftShip,Old,Returning,UPI,4,600.0,41.3,3
+KD20539,2026-03-21,Mumbai,QuickDrop,New,New,Card,3,1100.0,31.5,4
+KD20596,2026-03-21,Pune,SwiftShip,New,New,UPI,3,350.0,26.1,3
+KD20004,2026-03-22,Delhi,SwiftShip,Old,New,UPI,2,390.0,22.0,5
+KD20030,2026-03-22,Mumbai,SwiftShip,New,Returning,Cash on Delivery,2,660.0,25.2,3
+KD20071,2026-03-22,Pune,QuickDrop,Old,Returning,UPI,5,660.0,21.8,4
+KD20105,2026-03-22,Delhi,ExpressGo,New,New,Cash on Delivery,1,280.0,46.2,2
+KD20139,2026-03-22,Pune,ExpressGo,New,New,UPI,2,370.0,34.5,3
+KD20173,2026-03-22,Pune,QuickDrop,New,Returning,UPI,3,510.0,27.1,3
+KD20215,2026-03-22,Delhi,SwiftShip,New,New,Cash on Delivery,2,890.0,27.5,5
+KD20239,2026-03-22,Pune,QuickDrop,Old,Returning,UPI,4,430.0,26.5,3
+KD20242,2026-03-22,Bengaluru,SwiftShip,New,New,Cash on Delivery,3,970.0,39.8,2
+KD20273,2026-03-22,Mumbai,SwiftShip,New,Returning,Card,2,800.0,35.9,3
+KD20338,2026-03-22,Delhi,SwiftShip,New,New,UPI,4,850.0,35.1,4
+KD20382,2026-03-22,Mumbai,SwiftShip,New,New,UPI,3,850.0,27.0,5
+KD20399,2026-03-22,Bengaluru,ExpressGo,New,New,UPI,2,830.0,35.4,2
+KD20403,2026-03-22,Bengaluru,SwiftShip,Old,Returning,Card,3,520.0,42.4,4
+KD20414,2026-03-22,Mumbai,ExpressGo,Old,Returning,UPI,3,1130.0,41.4,3
+KD20428,2026-03-22,Pune,QuickDrop,New,New,UPI,3,850.0,30.3,4
+KD20447,2026-03-22,Bengaluru,SwiftShip,Old,New,Cash on Delivery,2,580.0,36.7,4
+KD20460,2026-03-22,Bengaluru,QuickDrop,New,Returning,UPI,8,810.0,33.8,4
+KD20489,2026-03-22,Mumbai,QuickDrop,New,Returning,UPI,2,390.0,31.8,3
+KD20499,2026-03-22,Mumbai,QuickDrop,New,Returning,Card,5,1340.0,22.9,5
+KD20503,2026-03-22,Pune,SwiftShip,New,New,UPI,1,550.0,36.2,3
+KD20531,2026-03-22,Bengaluru,SwiftShip,New,Returning,UPI,4,2260.0,31.9,4
+KD20590,2026-03-22,Delhi,QuickDrop,New,Returning,Card,4,830.0,34.5,4
+KD20598,2026-03-22,Delhi,QuickDrop,New,New,Cash on Delivery,2,400.0,29.1,4
+KD20599,2026-03-22,Delhi,ExpressGo,New,Returning,UPI,2,800.0,34.2,4
+KD20600,2026-03-22,Delhi,QuickDrop,Old,New,Cash on Delivery,2,940.0,34.6,3
+KD20044,2026-03-23,Pune,SwiftShip,Old,New,Card,3,670.0,26.8,4
+KD20084,2026-03-23,Pune,QuickDrop,Old,New,Cash on Delivery,4,870.0,27.9,4
+KD20113,2026-03-23,Bengaluru,SwiftShip,Old,Returning,Card,5,540.0,36.3,4
+KD20154,2026-03-23,Pune,ExpressGo,New,Returning,Card,8,980.0,25.1,5
+KD20187,2026-03-23,Mumbai,QuickDrop,New,Returning,UPI,2,530.0,21.9,5
+KD20211,2026-03-23,Mumbai,QuickDrop,Old,New,UPI,2,870.0,28.7,5
+KD20248,2026-03-23,Bengaluru,QuickDrop,New,Returning,Card,2,590.0,31.0,5
+KD20297,2026-03-23,Bengaluru,ExpressGo,Old,Returning,Cash on Delivery,1,470.0,35.9,4
+KD20317,2026-03-23,Mumbai,QuickDrop,New,New,Card,2,580.0,27.4,4
+KD20341,2026-03-23,Bengaluru,SwiftShip,Old,Returning,UPI,7,710.0,27.2,4
+KD20356,2026-03-23,Pune,ExpressGo,Old,Returning,UPI,6,2140.0,31.0,2
+KD20373,2026-03-23,Bengaluru,QuickDrop,Old,New,UPI,3,280.0,29.7,4
+KD20384,2026-03-23,Bengaluru,QuickDrop,Old,New,Cash on Delivery,6,800.0,30.5,4
+KD20438,2026-03-23,Delhi,SwiftShip,Old,Returning,UPI,3,760.0,25.8,2
+KD20469,2026-03-23,Mumbai,SwiftShip,New,New,Cash on Delivery,3,610.0,33.6,3
+KD20502,2026-03-23,Bengaluru,QuickDrop,New,New,Card,2,380.0,22.0,4
+KD20520,2026-03-23,Bengaluru,ExpressGo,New,Returning,UPI,3,680.0,36.8,4
+KD20525,2026-03-23,Mumbai,ExpressGo,Old,Returning,UPI,5,800.0,30.0,5
+KD20548,2026-03-23,Mumbai,QuickDrop,Old,New,Card,1,690.0,33.0,5
+KD20552,2026-03-23,Mumbai,SwiftShip,Old,Returning,Cash on Delivery,4,640.0,34.4,4
+KD20572,2026-03-23,Pune,SwiftShip,New,Returning,UPI,5,740.0,20.7,5
+KD20005,2026-03-24,Bengaluru,QuickDrop,Old,New,UPI,4,390.0,46.8,4
+KD20064,2026-03-24,Pune,SwiftShip,New,Returning,UPI,2,500.0,28.9,4
+KD20103,2026-03-24,Bengaluru,SwiftShip,New,Returning,Card,4,650.0,36.7,3
+KD20126,2026-03-24,Pune,SwiftShip,Old,Returning,UPI,2,490.0,33.2,3
+KD20202,2026-03-24,Delhi,ExpressGo,Old,Returning,Card,4,710.0,40.7,4
+KD20213,2026-03-24,Delhi,QuickDrop,Old,Returning,UPI,7,630.0,19.5,4
+KD20249,2026-03-24,Bengaluru,ExpressGo,Old,New,Card,4,290.0,30.4,3
+KD20266,2026-03-24,Pune,SwiftShip,New,Returning,UPI,1,450.0,29.2,3
+KD20289,2026-03-24,Mumbai,SwiftShip,Old,Returning,Cash on Delivery,2,960.0,35.7,2
+KD20335,2026-03-24,Pune,ExpressGo,New,New,Card,4,460.0,23.2,5
+KD20362,2026-03-24,Pune,ExpressGo,New,New,Cash on Delivery,3,600.0,35.0,4
+KD20390,2026-03-24,Mumbai,QuickDrop,Old,Returning,Card,2,270.0,34.9,3
+KD20407,2026-03-24,Delhi,ExpressGo,Old,Returning,UPI,6,500.0,36.9,4
+KD20413,2026-03-24,Mumbai,ExpressGo,Old,Returning,Cash on Delivery,4,570.0,33.7,4
+KD20417,2026-03-24,Delhi,QuickDrop,Old,New,Cash on Delivery,2,370.0,21.1,3
+KD20508,2026-03-24,Pune,SwiftShip,Old,New,Cash on Delivery,4,580.0,28.6,3
+KD20519,2026-03-24,Mumbai,ExpressGo,New,Returning,UPI,3,630.0,28.5,5
+KD20534,2026-03-24,Pune,QuickDrop,Old,Returning,Card,3,830.0,36.5,5
+KD20556,2026-03-24,Delhi,SwiftShip,New,New,Card,8,1430.0,25.9,5
+KD20001,2026-03-25,Delhi,ExpressGo,Old,Returning,UPI,4,690.0,36.6,3
+KD20023,2026-03-25,Mumbai,QuickDrop,Old,Returning,UPI,4,830.0,37.7,5
+KD20034,2026-03-25,Pune,SwiftShip,New,Returning,UPI,5,360.0,29.8,4
+KD20035,2026-03-25,Bengaluru,SwiftShip,Old,Returning,Card,2,1100.0,40.8,4
+KD20042,2026-03-25,Pune,SwiftShip,Old,Returning,UPI,2,1220.0,21.8,5
+KD20060,2026-03-25,Mumbai,SwiftShip,New,New,Cash on Delivery,4,790.0,29.6,5
+KD20082,2026-03-25,Bengaluru,SwiftShip,Old,New,UPI,4,1210.0,31.2,3
+KD20112,2026-03-25,Pune,SwiftShip,New,Returning,UPI,4,760.0,31.9,4
+KD20160,2026-03-25,Delhi,QuickDrop,New,Returning,UPI,3,1010.0,21.3,4
+KD20245,2026-03-25,Mumbai,SwiftShip,Old,Returning,Card,3,350.0,32.4,4
+KD20285,2026-03-25,Delhi,SwiftShip,New,New,UPI,3,440.0,29.7,3
+KD20314,2026-03-25,Pune,ExpressGo,New,New,Cash on Delivery,4,540.0,24.8,4
+KD20328,2026-03-25,Bengaluru,SwiftShip,Old,Returning,UPI,2,410.0,33.6,3
+KD20331,2026-03-25,Delhi,ExpressGo,New,New,Cash on Delivery,5,860.0,20.4,4
+KD20333,2026-03-25,Pune,ExpressGo,Old,Returning,Card,4,370.0,31.7,2
+KD20345,2026-03-25,Pune,SwiftShip,Old,Returning,Card,1,410.0,26.3,4
+KD20368,2026-03-25,Pune,ExpressGo,Old,Returning,UPI,6,580.0,40.3,3
+KD20427,2026-03-25,Mumbai,QuickDrop,New,Returning,UPI,4,700.0,27.7,3
+KD20432,2026-03-25,Delhi,ExpressGo,Old,Returning,UPI,3,910.0,32.1,3
+KD20463,2026-03-25,Delhi,SwiftShip,New,Returning,UPI,2,260.0,18.8,4
+KD20498,2026-03-25,Delhi,QuickDrop,New,Returning,UPI,1,760.0,31.4,3
+KD20505,2026-03-25,Pune,SwiftShip,Old,New,UPI,6,830.0,26.8,4
+KD20515,2026-03-25,Bengaluru,QuickDrop,New,Returning,UPI,4,470.0,26.4,4
+KD20524,2026-03-25,Mumbai,QuickDrop,Old,Returning,UPI,1,630.0,34.6,4
+KD20567,2026-03-25,Bengaluru,SwiftShip,New,Returning,UPI,3,460.0,29.6,4
+KD20574,2026-03-25,Mumbai,ExpressGo,New,New,UPI,3,440.0,24.1,3
+KD20012,2026-03-26,Delhi,QuickDrop,Old,New,UPI,3,630.0,40.7,3
+KD20017,2026-03-26,Pune,QuickDrop,Old,Returning,UPI,4,970.0,45.2,2
+KD20019,2026-03-26,Mumbai,QuickDrop,New,New,UPI,2,480.0,34.0,3
+KD20065,2026-03-26,Pune,QuickDrop,New,New,UPI,3,840.0,28.5,4
+KD20069,2026-03-26,Pune,ExpressGo,New,Returning,UPI,4,940.0,39.1,4
+KD20083,2026-03-26,Pune,ExpressGo,Old,Returning,Cash on Delivery,6,400.0,27.1,4
+KD20087,2026-03-26,Delhi,ExpressGo,Old,New,Card,5,790.0,38.2,4
+KD20106,2026-03-26,Delhi,ExpressGo,New,Returning,UPI,1,840.0,34.7,4
+KD20121,2026-03-26,Pune,SwiftShip,New,New,Cash on Delivery,6,680.0,22.0,5
+KD20174,2026-03-26,Delhi,QuickDrop,Old,Returning,UPI,7,440.0,35.1,4
+KD20204,2026-03-26,Bengaluru,QuickDrop,New,Returning,Cash on Delivery,1,420.0,16.6,4
+KD20206,2026-03-26,Mumbai,SwiftShip,Old,New,Cash on Delivery,2,240.0,26.0,5
+KD20220,2026-03-26,Bengaluru,ExpressGo,New,Returning,Card,5,630.0,29.4,4
+KD20228,2026-03-26,Mumbai,SwiftShip,Old,New,Cash on Delivery,2,440.0,30.6,3
+KD20311,2026-03-26,Mumbai,ExpressGo,Old,New,UPI,7,600.0,26.5,3
+KD20315,2026-03-26,Pune,SwiftShip,Old,New,Card,2,1420.0,29.0,3
+KD20320,2026-03-26,Pune,QuickDrop,Old,Returning,UPI,3,570.0,36.6,3
+KD20326,2026-03-26,Bengaluru,ExpressGo,Old,Returning,UPI,6,750.0,33.4,3
+KD20339,2026-03-26,Bengaluru,ExpressGo,New,Returning,UPI,4,880.0,38.4,4
+KD20348,2026-03-26,Bengaluru,SwiftShip,New,New,UPI,7,600.0,33.1,4
+KD20357,2026-03-26,Bengaluru,ExpressGo,New,New,Card,3,450.0,29.5,3
+KD20443,2026-03-26,Bengaluru,QuickDrop,New,Returning,Cash on Delivery,2,830.0,22.3,5
+KD20452,2026-03-26,Delhi,ExpressGo,New,Returning,Cash on Delivery,4,360.0,40.6,3
+KD20468,2026-03-26,Delhi,ExpressGo,New,Returning,UPI,2,1100.0,31.9,3
+KD20487,2026-03-26,Pune,ExpressGo,Old,New,UPI,3,900.0,42.7,3
+KD20490,2026-03-26,Bengaluru,QuickDrop,New,Returning,Card,4,660.0,39.4,3
+KD20493,2026-03-26,Pune,SwiftShip,Old,Returning,UPI,1,510.0,32.3,4
+KD20570,2026-03-26,Mumbai,QuickDrop,New,New,UPI,1,270.0,31.5,3
+KD20578,2026-03-26,Mumbai,QuickDrop,New,Returning,UPI,4,650.0,31.1,3
+KD20074,2026-03-27,Pune,SwiftShip,New,New,Card,2,380.0,23.8,5
+KD20076,2026-03-27,Pune,SwiftShip,New,New,Cash on Delivery,4,840.0,23.1,4
+KD20104,2026-03-27,Bengaluru,SwiftShip,New,Returning,Card,4,1430.0,23.4,4
+KD20156,2026-03-27,Delhi,QuickDrop,Old,Returning,UPI,4,330.0,31.6,3
+KD20166,2026-03-27,Bengaluru,ExpressGo,Old,New,Cash on Delivery,4,440.0,43.1,2
+KD20190,2026-03-27,Bengaluru,QuickDrop,New,Returning,UPI,3,530.0,28.7,3
+KD20260,2026-03-27,Bengaluru,ExpressGo,New,Returning,UPI,5,380.0,42.8,2
+KD20268,2026-03-27,Pune,SwiftShip,Old,New,Cash on Delivery,2,610.0,32.4,5
+KD20276,2026-03-27,Pune,ExpressGo,Old,Returning,UPI,3,940.0,34.0,3
+KD20308,2026-03-27,Delhi,QuickDrop,Old,New,Card,5,690.0,26.7,4
+KD20316,2026-03-27,Pune,SwiftShip,Old,Returning,UPI,6,620.0,27.8,5
+KD20321,2026-03-27,Mumbai,SwiftShip,New,New,UPI,2,1290.0,28.9,4
+KD20324,2026-03-27,Mumbai,QuickDrop,New,New,UPI,1,260.0,29.8,4
+KD20336,2026-03-27,Pune,QuickDrop,New,New,UPI,3,380.0,28.3,4
+KD20340,2026-03-27,Pune,ExpressGo,New,New,UPI,3,300.0,41.4,2
+KD20342,2026-03-27,Bengaluru,QuickDrop,New,Returning,UPI,4,890.0,30.2,5
+KD20350,2026-03-27,Delhi,ExpressGo,New,Returning,UPI,3,810.0,34.8,5
+KD20353,2026-03-27,Bengaluru,SwiftShip,Old,New,UPI,7,450.0,26.6,4
+KD20365,2026-03-27,Delhi,SwiftShip,Old,Returning,Card,4,670.0,34.0,3
+KD20379,2026-03-27,Mumbai,QuickDrop,Old,New,Cash on Delivery,5,1000.0,34.1,3
+KD20381,2026-03-27,Bengaluru,ExpressGo,New,Returning,UPI,3,550.0,20.5,4
+KD20419,2026-03-27,Mumbai,SwiftShip,Old,New,Card,1,720.0,27.0,3
+KD20426,2026-03-27,Pune,ExpressGo,Old,Returning,UPI,3,570.0,39.3,3
+KD20488,2026-03-27,Pune,SwiftShip,Old,Returning,UPI,5,400.0,30.5,4
+KD20513,2026-03-27,Pune,SwiftShip,Old,New,Card,2,460.0,26.5,5
+KD20533,2026-03-27,Bengaluru,SwiftShip,Old,Returning,UPI,3,570.0,24.2,4
+KD20545,2026-03-27,Pune,SwiftShip,Old,New,UPI,5,450.0,22.2,5
+KD20550,2026-03-27,Mumbai,QuickDrop,New,Returning,UPI,2,380.0,31.7,4
+KD20597,2026-03-27,Bengaluru,ExpressGo,New,New,Cash on Delivery,7,420.0,36.3,3
+KD20009,2026-03-28,Delhi,SwiftShip,Old,New,Cash on Delivery,2,720.0,39.2,4
+KD20026,2026-03-28,Pune,SwiftShip,Old,Returning,UPI,5,500.0,21.4,4
+KD20033,2026-03-28,Delhi,ExpressGo,New,Returning,Card,4,1530.0,36.4,4
+KD20043,2026-03-28,Bengaluru,QuickDrop,New,Returning,UPI,2,750.0,37.4,4
+KD20049,2026-03-28,Pune,QuickDrop,New,New,Cash on Delivery,5,570.0,25.6,3
+KD20107,2026-03-28,Mumbai,QuickDrop,Old,Returning,UPI,2,610.0,33.3,3
+KD20110,2026-03-28,Pune,SwiftShip,New,Returning,Cash on Delivery,3,990.0,29.8,4
+KD20120,2026-03-28,Pune,SwiftShip,Old,Returning,Card,4,440.0,39.3,2
+KD20159,2026-03-28,Mumbai,QuickDrop,New,Returning,UPI,6,250.0,18.9,4
+KD20161,2026-03-28,Pune,ExpressGo,Old,New,Cash on Delivery,5,450.0,31.7,4
+KD20199,2026-03-28,Delhi,SwiftShip,Old,New,UPI,1,770.0,33.4,4
+KD20217,2026-03-28,Mumbai,SwiftShip,Old,Returning,UPI,4,570.0,32.2,3
+KD20280,2026-03-28,Mumbai,SwiftShip,New,Returning,UPI,2,460.0,25.9,3
+KD20325,2026-03-28,Mumbai,SwiftShip,Old,Returning,UPI,4,1080.0,34.6,3
+KD20359,2026-03-28,Delhi,ExpressGo,New,New,UPI,4,1090.0,30.0,3
+KD20411,2026-03-28,Delhi,SwiftShip,New,New,UPI,4,400.0,28.9,5
+KD20449,2026-03-28,Pune,ExpressGo,New,Returning,Card,3,840.0,28.7,4
+KD20483,2026-03-28,Delhi,SwiftShip,Old,Returning,UPI,4,330.0,33.3,4
+KD20540,2026-03-28,Pune,QuickDrop,Old,New,UPI,3,660.0,44.5,3
+KD20541,2026-03-28,Mumbai,QuickDrop,Old,Returning,UPI,5,790.0,29.1,4
+KD20543,2026-03-28,Delhi,QuickDrop,Old,Returning,UPI,3,510.0,43.8,4
+KD20582,2026-03-28,Bengaluru,SwiftShip,Old,Returning,Card,4,1080.0,40.9,3
+KD20583,2026-03-28,Bengaluru,SwiftShip,New,Returning,Card,3,1900.0,29.7,3
+KD20586,2026-03-28,Pune,SwiftShip,New,Returning,Card,5,470.0,39.6,5
+KD20024,2026-03-29,Delhi,ExpressGo,New,Returning,Card,4,690.0,38.9,3
+KD20029,2026-03-29,Bengaluru,QuickDrop,New,Returning,UPI,2,510.0,30.6,4
+KD20091,2026-03-29,Delhi,SwiftShip,New,Returning,Card,4,700.0,25.7,5
+KD20125,2026-03-29,Mumbai,QuickDrop,Old,Returning,UPI,2,620.0,41.0,3
+KD20135,2026-03-29,Pune,ExpressGo,New,New,UPI,2,820.0,25.4,3
+KD20146,2026-03-29,Delhi,SwiftShip,Old,New,Cash on Delivery,5,680.0,29.2,3
+KD20230,2026-03-29,Bengaluru,SwiftShip,Old,Returning,UPI,3,950.0,25.5,5
+KD20250,2026-03-29,Delhi,SwiftShip,Old,Returning,UPI,3,770.0,20.3,5
+KD20283,2026-03-29,Mumbai,QuickDrop,New,New,UPI,3,350.0,28.0,4
+KD20380,2026-03-29,Bengaluru,ExpressGo,New,New,UPI,1,380.0,25.3,3
+KD20385,2026-03-29,Pune,SwiftShip,New,New,UPI,4,530.0,28.0,5
+KD20451,2026-03-29,Mumbai,SwiftShip,New,New,Card,3,1040.0,23.6,4
+KD20458,2026-03-29,Pune,QuickDrop,Old,Returning,UPI,1,630.0,29.6,2
+KD20474,2026-03-29,Mumbai,SwiftShip,Old,Returning,UPI,1,690.0,30.4,5
+KD20511,2026-03-29,Bengaluru,QuickDrop,Old,New,UPI,2,770.0,26.5,4
+KD20563,2026-03-29,Mumbai,ExpressGo,New,New,Cash on Delivery,5,330.0,36.6,4
+KD20587,2026-03-29,Delhi,QuickDrop,New,Returning,Card,3,1240.0,23.1,4
+KD20595,2026-03-29,Bengaluru,SwiftShip,New,New,UPI,4,480.0,26.1,5

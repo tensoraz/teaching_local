@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 2 Board Slides</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  body { background: #11161f; margin: 0; }
+  #stage { position: absolute; width: 1280px; height: 720px; left: 50%; top: 50%; transform-origin: center center; }
+  .slide { position: absolute; inset: 0; background: var(--surface); border-radius: 6px; padding: 54px 70px; display: none; overflow: hidden; color: var(--ink); font-size: 27px; line-height: 1.45; }
+  .slide.on { display: block; }
+  .slide h1 { font-size: 58px; margin-bottom: 18px; }
+  .slide h2 { font-size: 42px; margin-bottom: 22px; color: var(--ink); }
+  .slide h2 .k { color: var(--brand); }
+  .slide .sub { font-size: 24px; color: var(--ink-3); }
+  .slide ul { margin: 0; padding-left: 32px; }
+  .slide li { margin: 8px 0; }
+  .slide .math { font-family: var(--mono); font-size: 25px; background: var(--surface-2); border-left: 5px solid var(--accent); padding: 14px 20px; border-radius: 8px; margin: 12px 0; line-height: 1.6; }
+  .slide .big { font-size: 34px; font-weight: 700; }
+  .slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+  .slide .box { border: 2px solid var(--line); border-radius: 14px; padding: 16px 20px; font-size: 23px; }
+  .slide table { font-size: 25px; }
+  .slide td { padding: 13px 16px; }
+  .slide th { font-size: 17px; }
+  .slide svg { width: 100%; height: auto; }
+  .slide .tag { position: absolute; top: 22px; right: 30px; font-size: 15px; font-weight: 700; color: var(--ink-3); letter-spacing: .08em; text-transform: uppercase; }
+  .slide .ask { position: absolute; left: 70px; right: 70px; bottom: 30px; background: var(--violet-soft); color: var(--violet); font-weight: 700; font-size: 22px; padding: 12px 20px; border-radius: 12px; }
+  .title-slide { background: linear-gradient(135deg, #1b4fa8, #2a6fdb 55%, #149c9c) !important; color: #fff !important; }
+  .title-slide .sub { color: rgba(255,255,255,.85); }
+  #ink { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+  body.drawing #ink { pointer-events: auto; cursor: crosshair; }
+  #hud { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 6px; align-items: center;
+    background: rgba(20,26,38,.88); color: #dfe6f2; padding: 6px 10px; border-radius: 12px; font: 14px var(--font); opacity: .25; transition: opacity .2s; }
+  #hud:hover, body.drawing #hud { opacity: 1; }
+  #hud button { background: transparent; color: inherit; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  #hud button.on { background: #2a6fdb; border-color: #2a6fdb; }
+  #hud .sw { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,.5); padding: 0; }
+  #notes { position: fixed; right: 12px; top: 12px; width: 380px; max-height: calc(100vh - 80px); overflow: auto; z-index: 15; background: #fffbe8; color: #3d3517;
+    border-radius: 12px; padding: 16px 18px; font: 15px/1.5 var(--font); box-shadow: 0 10px 30px rgba(0,0,0,.4); display: none; }
+  #notes.on { display: block; }
+  #notes b { color: #8a5a00; }
+  #notes ul { padding-left: 18px; margin: 6px 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 -->
+<section class="slide title-slide" data-notes="<b>0:00 · 1 min.</b> Welcome back. Same plan as Unit 1: 30 min board, 5 min break, 35 min study + lab, 10 min rest, 40 min quiz + review. Tell them: today there is more maths, so keep a notebook and a calculator ready. Every number on these slides comes from the dataset they will open in the lab.">
+  <div style="margin-top:110px">
+    <div class="sub" style="font-weight:700;letter-spacing:.12em;text-transform:uppercase">BCA Semester 5 · Data Science · Unit 2</div>
+    <h1 style="font-size:72px;margin-top:14px">Statistics for<br>Data Science</h1>
+    <div class="sub" style="font-size:26px">Descriptive stats · Normal distribution · Probability · Sampling · Hypothesis testing · Z · T · χ² · ANOVA</div>
+  </div>
+  <div style="position:absolute;left:70px;right:70px;bottom:50px;display:flex;gap:6px;font-size:18px;font-weight:700">
+    <div style="flex:30;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Board · 30</div>
+    <div style="flex:5;background:rgba(255,255,255,.1);padding:10px 4px;border-radius:8px">5</div>
+    <div style="flex:35;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Study + lab · 35</div>
+    <div style="flex:10;background:rgba(255,255,255,.1);padding:10px 4px;border-radius:8px">10</div>
+    <div style="flex:40;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Quiz + review · 40</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-notes="<b>1–3 min.</b> Hook. KiranaMart ran a 4-week delivery trial: 600 orders, 3 partners, an old and a new route app. Read each question and take quick votes. Most will say 'yes' to all three. Then: 'How do you KNOW it was not just a lucky week?' That question is what today is about. We answer all three by the end of the board session.">
+  <span class="tag">Warm-up</span>
+  <h2>KiranaMart’s manager asks…</h2>
+  <div class="grid g3" style="margin-top:30px">
+    <div class="box" style="font-size:25px">⚖️ Our atta packets average <b>995 g</b>, not 1000 g. Is the machine <b>really</b> under-filling?</div>
+    <div class="box" style="font-size:25px">📱 The new route app saved <b>2.5 minutes</b> this month. <b>Real</b> saving or a lucky month?</div>
+    <div class="box" style="font-size:25px">🛵 ExpressGo took <b>4 min</b> longer than SwiftShip. Are the partners <b>really</b> different?</div>
+  </div>
+  <p class="big" style="margin-top:56px;text-align:center">Every sample has some luck in it.<br><span style="color:var(--brand)">Statistics tells you how much.</span></p>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-notes="<b>3–5 min.</b> Two branches. Descriptive = summarise what you HAVE. Inferential = conclude about what you DON'T have (all packets ever made) from a sample. Write the symbol table: Greek letters for the population (usually unknown), Latin letters for the sample (what we compute). Ask: '995.4 g from 40 packets: parameter or statistic?' (statistic).">
+  <span class="tag">Introduction</span>
+  <h2>What is <span class="k">statistics</span>?</h2>
+  <div class="cols">
+    <div>
+      <p style="font-size:28px;border-left:6px solid var(--brand);padding-left:20px">The science of <b>collecting</b>, <b>summarising</b> and <b>drawing conclusions</b> from data, while measuring the <b>uncertainty</b>.</p>
+      <div class="box" style="margin:18px 0 12px"><b>Descriptive</b>: summarise the data you have<br><span class="sub" style="font-size:20px">“The 600 orders averaged 31.4 minutes.”</span></div>
+      <div class="box"><b>Inferential</b>: conclude about the whole population from a sample<br><span class="sub" style="font-size:20px">“All packets from this machine are under 1 kg.”</span></div>
+    </div>
+    <table style="font-size:23px">
+      <tr><th></th><th>Population</th><th>Sample</th></tr>
+      <tr><td>What</td><td>everyone / everything</td><td>the part we measure</td></tr>
+      <tr><td>Size</td><td>N</td><td>n</td></tr>
+      <tr><td>Mean</td><td>μ (mu)</td><td>x̄ (x-bar)</td></tr>
+      <tr><td>SD</td><td>σ (sigma)</td><td>s</td></tr>
+      <tr><td>Called</td><td><b>parameter</b></td><td><b>statistic</b></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-notes="<b>5–6 min.</b> Levels of measurement decide which statistics and tests are allowed. Memory trick NOIR. Ask for one example of each from the dataset: city (nominal), rating (ordinal), temperature (interval: 0 °C is not 'no heat'), delivery minutes / order value (ratio: 0 means none, and 40 min IS twice 20 min).">
+  <span class="tag">Introduction</span>
+  <h2>Types of data: <span class="k">NOIR</span></h2>
+  <table>
+    <tr><th>Level</th><th>Meaning</th><th>Example in the trial</th><th>Allowed</th></tr>
+    <tr><td><b>Nominal</b></td><td>names, no order</td><td>city, partner, payment mode</td><td>counts, mode</td></tr>
+    <tr><td><b>Ordinal</b></td><td>order, unequal gaps</td><td>rating 1★–5★</td><td>+ median</td></tr>
+    <tr><td><b>Interval</b></td><td>equal gaps, no true zero</td><td>temperature in °C</td><td>+ mean, SD</td></tr>
+    <tr><td><b>Ratio</b></td><td>equal gaps, true zero</td><td>delivery minutes, order value ₹</td><td>+ ratios (“twice as long”)</td></tr>
+  </table>
+  <p class="sub" style="margin-top:22px">Nominal + ordinal = <b>categorical</b> (qualitative) · interval + ratio = <b>numerical</b> (quantitative)</p>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-notes="<b>6–8 min.</b> MATHS. Work it on the board. Sorted: 1 2 2 2 3 5 6. Sum 21, n 7, mean 3. Median = 4th value = 2. Mode = 2 (three times). For even n, median = average of the two middle values. Ask: which one would you use for 'the usual basket size'? Mode or median: most baskets have 2 items, the 5 and 6 pull the mean up.">
+  <span class="tag">Descriptive · maths</span>
+  <h2>Measures of <span class="k">centre</span></h2>
+  <div class="cols">
+    <div>
+      <p>Items in 7 orders: <b>1, 2, 2, 3, 2, 5, 6</b></p>
+      <div class="math">Mean x̄ = Σx / n = 21 / 7 = <b>3</b></div>
+      <div class="math">Sorted: 1, 2, 2, <u>2</u>, 3, 5, 6<br>Median = middle value = <b>2</b></div>
+      <div class="math">Mode = most frequent = <b>2</b></div>
+    </div>
+    <table style="font-size:22px">
+      <tr><th>Measure</th><th>Best when</th></tr>
+      <tr><td><b>Mean</b></td><td>symmetric numbers, no outliers</td></tr>
+      <tr><td><b>Median</b></td><td>skewed data or outliers (incomes, prices)</td></tr>
+      <tr><td><b>Mode</b></td><td>categories (“most used payment: UPI”)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-notes="<b>8–11 min.</b> MATHS. Build the table on the board: x − μ, then squared. Deviations always sum to 0, which is why we square. Sum of squares 32. Population variance 32/8 = 4, σ = 2. Sample variance divides by n − 1: 32/7 = 4.57, s = 2.14. Why n − 1? A sample is less spread out than its population, so we correct upwards (Bessel's correction). pandas .std() uses n − 1; NumPy np.std() uses n unless ddof=1. Quiz question!">
+  <span class="tag">Descriptive · maths</span>
+  <h2>Measures of <span class="k">spread</span>: variance and SD</h2>
+  <div class="cols">
+    <table style="font-size:21px">
+      <tr><th>x</th><th class="num">x − μ</th><th class="num">(x − μ)²</th></tr>
+      <tr><td>2</td><td class="num">−3</td><td class="num">9</td></tr>
+      <tr><td>4, 4, 4</td><td class="num">−1 each</td><td class="num">1 + 1 + 1</td></tr>
+      <tr><td>5, 5</td><td class="num">0</td><td class="num">0</td></tr>
+      <tr><td>7</td><td class="num">2</td><td class="num">4</td></tr>
+      <tr><td>9</td><td class="num">4</td><td class="num">16</td></tr>
+      <tr><td><b>Σ, μ = 5</b></td><td class="num">0</td><td class="num"><b>32</b></td></tr>
+    </table>
+    <div>
+      <div class="math">Population: σ² = 32 / 8 = 4<br>σ = √4 = <b>2</b></div>
+      <div class="math">Sample: s² = 32 / (8 − 1) = 4.57<br>s = <b>2.14</b></div>
+      <div class="math" style="font-size:22px">Range = 9 − 2 = 7<br>IQR = Q3 − Q1 (middle 50%)</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-notes="<b>11–12 min.</b> Shape. Right (positive) skew: long tail to the right, mean > median. Order value: mean ₹685, median ₹620, skewness +2.47; a few big baskets (max ₹3,890) pull the mean. Left skew is the mirror: e.g. exam marks on an easy test. Rule of thumb: skewed → report the median.">
+  <span class="tag">Distribution</span>
+  <h2>Shape: <span class="k">skewness</span></h2>
+  <div class="cols" style="grid-template-columns:1.25fr 1fr">
+    <img src="img/order_value_skew.png" alt="Right-skewed order value histogram" style="width:100%;border-radius:10px;border:1px solid var(--line)">
+    <div style="font-size:24px">
+      <div class="box" style="margin-bottom:12px"><b>Right-skewed</b> (positive)<br>tail → right · <b>mean &gt; median</b><br><span class="sub" style="font-size:19px">order value: ₹685 &gt; ₹620</span></div>
+      <div class="box" style="margin-bottom:12px"><b>Symmetric</b><br>mean ≈ median ≈ mode<br><span class="sub" style="font-size:19px">delivery time: 31.4 ≈ 30.9</span></div>
+      <div class="box"><b>Left-skewed</b> (negative)<br>tail ← left · mean &lt; median</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-notes="<b>12–14 min.</b> Normal distribution. Draw the bell; mark μ, then ±1σ, ±2σ, ±3σ. Rule 68-95-99.7. Delivery: μ = 31.4, σ = 6.4 → 68% between 25.0 and 37.8, 95% between 18.6 and 44.2. Real data: 68.3%, 96.2%, 99.7%. Why it matters: many tests assume normality, and the CLT (in 4 slides) makes sample means normal.">
+  <span class="tag">Normal distribution</span>
+  <h2>The <span class="k">normal</span> curve: 68 · 95 · 99.7</h2>
+  <svg viewBox="0 0 1140 430">
+    <defs><marker id="bArw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--ink-2)"/></marker></defs>
+    <polygon points="153.3,340.0 153.3,336.7 163.8,335.8 174.2,334.8 184.6,333.6 195.0,332.2 205.4,330.4 215.8,328.4 226.2,326.0 236.7,323.2 247.1,319.9 257.5,316.1 267.9,311.8 278.3,306.9 288.8,301.4 299.2,295.2 309.6,288.3 320.0,280.6 330.4,272.2 340.8,263.1 351.3,253.2 361.7,242.6 372.1,231.3 382.5,219.4 392.9,206.9 403.3,194.0 413.8,180.7 424.2,167.1 434.6,153.5 445.0,139.9 455.4,126.5 465.8,113.5 476.2,101.1 486.7,89.4 497.1,78.6 507.5,68.9 517.9,60.4 528.3,53.2 538.8,47.5 549.2,43.4 559.6,40.8 570.0,40.0 580.4,40.8 590.8,43.4 601.2,47.5 611.7,53.2 622.1,60.4 632.5,68.9 642.9,78.6 653.3,89.4 663.8,101.1 674.2,113.5 684.6,126.5 695.0,139.9 705.4,153.5 715.8,167.1 726.2,180.7 736.7,194.0 747.1,206.9 757.5,219.4 767.9,231.3 778.3,242.6 788.8,253.2 799.2,263.1 809.6,272.2 820.0,280.6 830.4,288.3 840.8,295.2 851.2,301.4 861.7,306.9 872.1,311.8 882.5,316.1 892.9,319.9 903.3,323.2 913.7,326.0 924.2,328.4 934.6,330.4 945.0,332.2 955.4,333.6 965.8,334.8 976.2,335.8 986.7,336.7 986.7,340.0" style="fill:var(--good);fill-opacity:.10"/>
+    <polygon points="292.2,340.0 292.2,299.4 299.2,295.2 306.1,290.7 313.1,285.8 320.0,280.6 326.9,275.1 333.9,269.3 340.8,263.1 347.8,256.6 354.7,249.8 361.7,242.6 368.6,235.1 375.6,227.4 382.5,219.4 389.4,211.1 396.4,202.6 403.3,194.0 410.3,185.1 417.2,176.2 424.2,167.1 431.1,158.0 438.1,149.0 445.0,139.9 451.9,131.0 458.9,122.2 465.8,113.5 472.8,105.2 479.7,97.1 486.7,89.4 493.6,82.1 500.6,75.3 507.5,68.9 514.4,63.1 521.4,57.8 528.3,53.2 535.3,49.2 542.2,45.9 549.2,43.4 556.1,41.5 563.1,40.4 570.0,40.0 576.9,40.4 583.9,41.5 590.8,43.4 597.8,45.9 604.7,49.2 611.7,53.2 618.6,57.8 625.6,63.1 632.5,68.9 639.4,75.3 646.4,82.1 653.3,89.4 660.3,97.1 667.2,105.2 674.2,113.5 681.1,122.2 688.1,131.0 695.0,139.9 701.9,149.0 708.9,158.0 715.8,167.1 722.8,176.2 729.7,185.1 736.7,194.0 743.6,202.6 750.6,211.1 757.5,219.4 764.4,227.4 771.4,235.1 778.3,242.6 785.3,249.8 792.2,256.6 799.2,263.1 806.1,269.3 813.1,275.1 820.0,280.6 826.9,285.8 833.9,290.7 840.8,295.2 847.8,299.4 847.8,340.0" style="fill:var(--good);fill-opacity:.16"/>
+    <polygon points="431.1,340.0 431.1,158.0 434.6,153.5 438.1,149.0 441.5,144.4 445.0,139.9 448.5,135.4 451.9,131.0 455.4,126.5 458.9,122.2 462.4,117.8 465.8,113.5 469.3,109.3 472.8,105.2 476.2,101.1 479.7,97.1 483.2,93.2 486.7,89.4 490.1,85.7 493.6,82.1 497.1,78.6 500.6,75.3 504.0,72.0 507.5,68.9 511.0,65.9 514.4,63.1 517.9,60.4 521.4,57.8 524.9,55.4 528.3,53.2 531.8,51.1 535.3,49.2 538.8,47.5 542.2,45.9 545.7,44.6 549.2,43.4 552.6,42.3 556.1,41.5 559.6,40.8 563.1,40.4 566.5,40.1 570.0,40.0 573.5,40.1 576.9,40.4 580.4,40.8 583.9,41.5 587.4,42.3 590.8,43.4 594.3,44.6 597.8,45.9 601.2,47.5 604.7,49.2 608.2,51.1 611.7,53.2 615.1,55.4 618.6,57.8 622.1,60.4 625.6,63.1 629.0,65.9 632.5,68.9 636.0,72.0 639.4,75.3 642.9,78.6 646.4,82.1 649.9,85.7 653.3,89.4 656.8,93.2 660.3,97.1 663.8,101.1 667.2,105.2 670.7,109.3 674.2,113.5 677.6,117.8 681.1,122.2 684.6,126.5 688.1,131.0 691.5,135.4 695.0,139.9 698.5,144.4 701.9,149.0 705.4,153.5 708.9,158.0 708.9,340.0" style="fill:var(--brand);fill-opacity:.22"/>
+    <polyline points="70.0,339.5 75.0,339.5 80.0,339.4 85.0,339.3 90.0,339.2 95.0,339.1 100.0,339.0 105.0,338.9 110.0,338.8 115.0,338.6 120.0,338.4 125.0,338.2 130.0,338.0 135.0,337.8 140.0,337.5 145.0,337.2 150.0,336.9 155.0,336.5 160.0,336.2 165.0,335.7 170.0,335.3 175.0,334.7 180.0,334.2 185.0,333.6 190.0,332.9 195.0,332.2 200.0,331.4 205.0,330.5 210.0,329.6 215.0,328.6 220.0,327.5 225.0,326.3 230.0,325.0 235.0,323.6 240.0,322.2 245.0,320.6 250.0,318.9 255.0,317.1 260.0,315.1 265.0,313.1 270.0,310.9 275.0,308.6 280.0,306.1 285.0,303.5 290.0,300.7 295.0,297.8 300.0,294.7 305.0,291.4 310.0,288.0 315.0,284.4 320.0,280.6 325.0,276.7 330.0,272.6 335.0,268.3 340.0,263.9 345.0,259.2 350.0,254.4 355.0,249.5 360.0,244.3 365.0,239.1 370.0,233.6 375.0,228.0 380.0,222.3 385.0,216.4 390.0,210.5 395.0,204.4 400.0,198.2 405.0,191.9 410.0,185.5 415.0,179.1 420.0,172.6 425.0,166.0 430.0,159.5 435.0,152.9 440.0,146.4 445.0,139.9 450.0,133.5 455.0,127.1 460.0,120.8 465.0,114.6 470.0,108.5 475.0,102.6 480.0,96.8 485.0,91.2 490.0,85.9 495.0,80.7 500.0,75.8 505.0,71.1 510.0,66.7 515.0,62.6 520.0,58.8 525.0,55.3 530.0,52.2 535.0,49.4 540.0,46.9 545.0,44.8 550.0,43.1 555.0,41.7 560.0,40.8 565.0,40.2 570.0,40.0 575.0,40.2 580.0,40.8 585.0,41.7 590.0,43.1 595.0,44.8 600.0,46.9 605.0,49.4 610.0,52.2 615.0,55.3 620.0,58.8 625.0,62.6 630.0,66.7 635.0,71.1 640.0,75.8 645.0,80.7 650.0,85.9 655.0,91.2 660.0,96.8 665.0,102.6 670.0,108.5 675.0,114.6 680.0,120.8 685.0,127.1 690.0,133.5 695.0,139.9 700.0,146.4 705.0,152.9 710.0,159.5 715.0,166.0 720.0,172.6 725.0,179.1 730.0,185.5 735.0,191.9 740.0,198.2 745.0,204.4 750.0,210.5 755.0,216.4 760.0,222.3 765.0,228.0 770.0,233.6 775.0,239.1 780.0,244.3 785.0,249.5 790.0,254.4 795.0,259.2 800.0,263.9 805.0,268.3 810.0,272.6 815.0,276.7 820.0,280.6 825.0,284.4 830.0,288.0 835.0,291.4 840.0,294.7 845.0,297.8 850.0,300.7 855.0,303.5 860.0,306.1 865.0,308.6 870.0,310.9 875.0,313.1 880.0,315.1 885.0,317.1 890.0,318.9 895.0,320.6 900.0,322.2 905.0,323.6 910.0,325.0 915.0,326.3 920.0,327.5 925.0,328.6 930.0,329.6 935.0,330.5 940.0,331.4 945.0,332.2 950.0,332.9 955.0,333.6 960.0,334.2 965.0,334.7 970.0,335.3 975.0,335.7 980.0,336.2 985.0,336.5 990.0,336.9 995.0,337.2 1000.0,337.5 1005.0,337.8 1010.0,338.0 1015.0,338.2 1020.0,338.4 1025.0,338.6 1030.0,338.8 1035.0,338.9 1040.0,339.0 1045.0,339.1 1050.0,339.2 1055.0,339.3 1060.0,339.4 1065.0,339.5 1070.0,339.5" style="fill:none;stroke:var(--brand);stroke-width:3"/>
+    <line x1="70" y1="340" x2="1070" y2="340" style="stroke:var(--ink-3);stroke-width:2"/>
+    <line x1="153.3" y1="340" x2="153.3" y2="336.7" style="stroke:var(--ink-3);stroke-dasharray:4 4"/>
+    <text x="153.3" y="370" text-anchor="middle" style="font-size:20px;font-weight:700;fill:var(--ink)">μ−3σ</text>
+    <text x="153.3" y="396" text-anchor="middle" style="font-size:18px;fill:var(--ink-3)">12.2 min</text>
+    <line x1="292.2" y1="340" x2="292.2" y2="299.4" style="stroke:var(--ink-3);stroke-dasharray:4 4"/>
+    <text x="292.2" y="370" text-anchor="middle" style="font-size:20px;font-weight:700;fill:var(--ink)">μ−2σ</text>
+    <text x="292.2" y="396" text-anchor="middle" style="font-size:18px;fill:var(--ink-3)">18.6 min</text>
+    <line x1="431.1" y1="340" x2="431.1" y2="158.0" style="stroke:var(--ink-3);stroke-dasharray:4 4"/>
+    <text x="431.1" y="370" text-anchor="middle" style="font-size:20px;font-weight:700;fill:var(--ink)">μ−1σ</text>
+    <text x="431.1" y="396" text-anchor="middle" style="font-size:18px;fill:var(--ink-3)">25.0 min</text>
+    <line x1="570.0" y1="340" x2="570.0" y2="40.0" style="stroke:var(--ink-3);stroke-dasharray:4 4"/>
+    <text x="570.0" y="370" text-anchor="middle" style="font-size:20px;font-weight:700;fill:var(--ink)">μ</text>
+    <text x="570.0" y="396" text-anchor="middle" style="font-size:18px;fill:var(--ink-3)">31.4 min</text>
+    <line x1="708.9" y1="340" x2="708.9" y2="158.0" style="stroke:var(--ink-3);stroke-dasharray:4 4"/>
+    <text x="708.9" y="370" text-anchor="middle" style="font-size:20px;font-weight:700;fill:var(--ink)">μ+1σ</text>
+    <text x="708.9" y="396" text-anchor="middle" style="font-size:18px;fill:var(--ink-3)">37.8 min</text>
+    <line x1="847.8" y1="340" x2="847.8" y2="299.4" style="stroke:var(--ink-3);stroke-dasharray:4 4"/>
+    <text x="847.8" y="370" text-anchor="middle" style="font-size:20px;font-weight:700;fill:var(--ink)">μ+2σ</text>
+    <text x="847.8" y="396" text-anchor="middle" style="font-size:18px;fill:var(--ink-3)">44.2 min</text>
+    <line x1="986.7" y1="340" x2="986.7" y2="336.7" style="stroke:var(--ink-3);stroke-dasharray:4 4"/>
+    <text x="986.7" y="370" text-anchor="middle" style="font-size:20px;font-weight:700;fill:var(--ink)">μ+3σ</text>
+    <text x="986.7" y="396" text-anchor="middle" style="font-size:18px;fill:var(--ink-3)">50.6 min</text>
+    <line x1="431.1" y1="160" x2="708.9" y2="160" style="stroke:var(--brand-ink);stroke-width:2.5" marker-start="url(#bArw)" marker-end="url(#bArw)"/>
+    <rect x="508.0" y="143" width="124" height="32" rx="8" style="fill:var(--surface)"/>
+    <text x="570.0" y="168" text-anchor="middle" style="font-size:22px;font-weight:800;fill:var(--brand-ink)">68%</text>
+    <line x1="292.2" y1="250" x2="847.8" y2="250" style="stroke:var(--good);stroke-width:2.5" marker-start="url(#bArw)" marker-end="url(#bArw)"/>
+    <rect x="508.0" y="233" width="124" height="32" rx="8" style="fill:var(--surface)"/>
+    <text x="570.0" y="258" text-anchor="middle" style="font-size:22px;font-weight:800;fill:var(--good)">95%</text>
+    <line x1="153.3" y1="315" x2="986.7" y2="315" style="stroke:var(--ink-2);stroke-width:2.5" marker-start="url(#bArw)" marker-end="url(#bArw)"/>
+    <rect x="508.0" y="298" width="124" height="32" rx="8" style="fill:var(--surface)"/>
+    <text x="570.0" y="323" text-anchor="middle" style="font-size:22px;font-weight:800;fill:var(--ink-2)">99.7%</text>
+    <text x="1070" y="40" text-anchor="end" style="font-size:22px;fill:var(--ink-2)">Delivery time: μ = 31.4, σ = 6.4 min</text>
+    <text x="1070" y="70" text-anchor="end" style="font-size:19px;fill:var(--ink-3)">real data: 68.3% · 96.2% · 99.7%</text>
+  </svg>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-notes="<b>14–15 min.</b> MATHS. z = how many SDs from the mean. 45 min: (45 − 31.4) / 6.4 = 2.13. Area beyond z = 2.13 from the table (or norm.sf) ≈ 0.0166 → about 1.7% of deliveries. Real data: 12 of 600 = 2.0%. Close, so the normal model works. Also: z lets us compare different scales (a 45-min delivery vs a ₹2,000 order).">
+  <span class="tag">Normal distribution · maths</span>
+  <h2>The <span class="k">z-score</span></h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:30px">z = (x − μ) / σ</div>
+      <p>How many standard deviations a value is from the mean.</p>
+      <ul style="font-size:24px"><li>z = 0 → exactly average</li><li>z = +2 → 2 SD above</li><li>|z| &gt; 3 → very unusual (outlier?)</li></ul>
+    </div>
+    <div>
+      <p style="margin-top:0">How often does a delivery take <b>over 45 min</b>?</p>
+      <div class="math">z = (45 − 31.4) / 6.4 = <b>2.13</b></div>
+      <div class="math">P(Z &gt; 2.13) ≈ <b>0.017</b> → about <b>1.7%</b></div>
+      <div class="box" style="border-color:var(--good)">Real data: 12 of 600 = <b>2.0%</b>. The model works.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-notes="<b>15–17 min.</b> Probability basics. 0 = impossible, 1 = certain. Late = over 40 min: 52 of 600. Conditional: restrict to the group. P(late | ExpressGo) = 30/184 = 16.3% vs SwiftShip 8/231 = 3.5%. Independence: P(A and B) = P(A)·P(B) only if independent. Ask: 'Two packets, each 20% underweight, both underweight?' 0.04.">
+  <span class="tag">Probability · maths</span>
+  <h2>Probability <span class="k">basics</span></h2>
+  <div class="cols">
+    <div>
+      <div class="math">P(A) = favourable / total, 0 ≤ P ≤ 1<br>P(late) = 52 / 600 = <b>0.087</b></div>
+      <div class="math" style="font-size:22px">Complement: P(not A) = 1 − P(A)<br>Addition: P(A or B) = P(A) + P(B) − P(A and B)<br>Independent: P(A and B) = P(A) × P(B)</div>
+    </div>
+    <div>
+      <p style="margin:0 0 8px"><b>Conditional</b>: P(A | B) = P(A and B) / P(B)</p>
+      <table style="font-size:22px">
+        <tr><th>Partner</th><th class="num">Orders</th><th class="num">Late</th><th class="num">P(late | partner)</th></tr>
+        <tr><td>SwiftShip</td><td class="num">231</td><td class="num">8</td><td class="num">3.5%</td></tr>
+        <tr><td>QuickDrop</td><td class="num">185</td><td class="num">14</td><td class="num">7.6%</td></tr>
+        <tr><td>ExpressGo</td><td class="num">184</td><td class="num">30</td><td class="num" style="color:var(--bad);font-weight:700">16.3%</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-notes="<b>17–18 min.</b> Population vs sample. We can't weigh every packet ever made, so we sample. A sample is only useful if it REPRESENTS the population. Methods: simple random (lottery), stratified (random within groups: New / Returning), systematic (every 10th packet off the line), cluster (pick 3 whole stores, survey everyone). Convenience = whoever is easy, which is biased. Sampling error = natural difference between sample and population; it shrinks as n grows.">
+  <span class="tag">Sampling</span>
+  <h2>Population vs <span class="k">sample</span></h2>
+  <table style="font-size:23px">
+    <tr><th>Method</th><th>How</th><th>KiranaMart example</th></tr>
+    <tr><td><b>Simple random</b></td><td>everyone has an equal chance</td><td>random 40 packets from today’s batch</td></tr>
+    <tr><td><b>Stratified</b></td><td>split into groups, random from each</td><td>50 New + 50 Returning customers</td></tr>
+    <tr><td><b>Systematic</b></td><td>every k-th item</td><td>every 25th packet off the line</td></tr>
+    <tr><td><b>Cluster</b></td><td>pick whole groups at random</td><td>3 random stores, survey everyone there</td></tr>
+    <tr><td><b>Convenience</b> ⚠️</td><td>whoever is easiest</td><td>only customers who reply on WhatsApp</td></tr>
+  </table>
+  <p class="sub" style="margin-top:16px"><b>Sampling error</b> = sample statistic − population parameter. It is normal, and it shrinks as n grows.</p>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-notes="<b>18–20 min.</b> MATHS. CLT: take many samples of size n, the sample MEANS form a normal curve centred on μ with SD = σ/√n (the standard error), even when the data is skewed like order value. σ = 352, n = 30: SE = 352/5.48 = 64.3. The simulation of 2,000 samples gave 61–64. To halve the SE you need 4× the sample. This is why we can use z and t tests on means.">
+  <span class="tag">Sampling · maths</span>
+  <h2>Central Limit Theorem and <span class="k">standard error</span></h2>
+  <div class="cols" style="grid-template-columns:1.3fr 1fr">
+    <img src="img/clt_sample_means.png" alt="Skewed population and normal distribution of sample means" style="width:100%;border-radius:10px;border:1px solid var(--line)">
+    <div>
+      <p style="font-size:24px;margin-top:0">Means of samples (n ≥ 30) are <b>approximately normal</b>, whatever the shape of the data.</p>
+      <div class="math">SE = σ / √n<br>= 352 / √30 = <b>₹64.3</b></div>
+      <div class="math" style="font-size:22px">4 × the sample → ½ the SE<br>n = 120: 352 / √120 = ₹32</div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-notes="<b>20–22 min.</b> Courtroom analogy. The accused is presumed innocent (H0: no effect). The prosecutor must bring evidence 'beyond reasonable doubt' (p < α). If not enough evidence, verdict is 'not guilty', NOT 'innocent' (fail to reject, not accept). α is chosen BEFORE seeing the data, usually 0.05. p-value: if H0 were true, how likely is a result at least this extreme?">
+  <span class="tag">Hypothesis testing</span>
+  <h2>Hypothesis testing: a <span class="k">courtroom</span></h2>
+  <div class="cols">
+    <div style="font-size:24px">
+      <div class="box" style="margin-bottom:12px"><b>H₀ (null)</b>: no effect, no difference<br>“The app does not change delivery time.” μ<sub>old</sub> = μ<sub>new</sub></div>
+      <div class="box" style="margin-bottom:12px"><b>H₁ (alternative)</b>: the claim to prove<br>μ<sub>old</sub> ≠ μ<sub>new</sub></div>
+      <div class="box"><b>α (significance level)</b>: risk of a false alarm we accept, usually <b>0.05</b></div>
+    </div>
+    <div>
+      <div class="math" style="font-size:23px"><b>p-value</b> = P(result at least this extreme | H₀ true)</div>
+      <div class="box" style="border-color:var(--good);margin:12px 0">p &lt; α → <b>reject H₀</b> (significant)</div>
+      <div class="box" style="border-color:var(--accent)">p ≥ α → <b>fail to reject H₀</b><br><span class="sub" style="font-size:19px">“not guilty” ≠ “innocent”</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-notes="<b>22–23 min.</b> Two ways to be wrong. Type I = false alarm (stop a good machine), probability α. Type II = miss (let a bad machine run), probability β; power = 1 − β. Lowering α reduces Type I but raises Type II, a trade-off. Then the 5 steps: quiz has an ordering question on this. One-tailed vs two-tailed: two-tailed if you just ask 'different?'.">
+  <span class="tag">Hypothesis testing</span>
+  <h2>Errors and the <span class="k">5 steps</span></h2>
+  <div class="cols">
+    <table style="font-size:21px">
+      <tr><th></th><th>H₀ true<br>(machine OK)</th><th>H₀ false<br>(under-filling)</th></tr>
+      <tr><td><b>Reject H₀</b></td><td style="color:var(--bad)"><b>Type I error</b><br>false alarm, P = α</td><td style="color:var(--good)">✅ correct<br>power = 1 − β</td></tr>
+      <tr><td><b>Fail to reject</b></td><td style="color:var(--good)">✅ correct</td><td style="color:var(--bad)"><b>Type II error</b><br>missed it, P = β</td></tr>
+    </table>
+    <ol style="font-size:24px;padding-left:30px">
+      <li>State H₀ and H₁</li><li>Choose α (before the data!)</li><li>Pick the test, compute the statistic</li><li>Find the p-value</li><li>Decide and explain in business words</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-notes="<b>23–24 min.</b> The chooser: two questions. What kind of data? How many groups? Numeric + one group vs a known value: Z (σ known) or one-sample T. Numeric + 2 groups: T (independent or paired). Numeric + 3 or more groups: ANOVA. Two categorical variables: chi-square. Ask the three warm-up questions again: which test for each? (Z, T, ANOVA).">
+  <span class="tag">Statistical tests</span>
+  <h2>Which <span class="k">test</span>?</h2>
+  <table style="font-size:23px">
+    <tr><th>Question</th><th>Data</th><th>Test</th><th>SciPy</th></tr>
+    <tr><td>Is the mean 1000 g? (σ known)</td><td>numeric, 1 group</td><td><b>Z-test</b></td><td><code>norm.sf</code></td></tr>
+    <tr><td>Is the mean 30 min? (σ unknown)</td><td>numeric, 1 group</td><td><b>one-sample T</b></td><td><code>ttest_1samp</code></td></tr>
+    <tr><td>Old app vs new app?</td><td>numeric, 2 groups</td><td><b>two-sample T</b></td><td><code>ttest_ind</code></td></tr>
+    <tr><td>Same riders before / after?</td><td>numeric, paired</td><td><b>paired T</b></td><td><code>ttest_rel</code></td></tr>
+    <tr><td>3 partners equally fast?</td><td>numeric, 3+ groups</td><td><b>one-way ANOVA</b></td><td><code>f_oneway</code></td></tr>
+    <tr><td>Payment mode vs customer type?</td><td>2 categorical</td><td><b>Chi-square</b></td><td><code>chi2_contingency</code></td></tr>
+  </table>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-notes="<b>24–25 min.</b> MATHS. Z-test. The machine maker states σ = 12 g, so σ is known → Z. SE = 12/√40 = 1.897. z = (995.38 − 1000)/1.897 = −2.43. Critical value for α = 0.05 two-tailed: ±1.96. |−2.43| > 1.96 → reject. p = 0.015. Business: recalibrate the machine; under-filling also breaks legal-metrology rules.">
+  <span class="tag">Z-test · maths</span>
+  <h2>Z-test: is the machine <span class="k">under-filling</span>?</h2>
+  <div class="cols">
+    <div>
+      <div class="math" style="font-size:22px">H₀: μ = 1000 g &nbsp; H₁: μ ≠ 1000 g<br>n = 40, x̄ = 995.38 g, σ = 12 g (known), α = 0.05</div>
+      <div class="math">SE = σ / √n = 12 / √40 = 1.897</div>
+      <div class="math">z = (x̄ − μ₀) / SE<br>= (995.38 − 1000) / 1.897 = <b>−2.43</b></div>
+    </div>
+    <div>
+      <img src="img/atta_weights.png" alt="Atta packet weights" style="width:100%;border-radius:10px;border:1px solid var(--line);margin-bottom:14px">
+      <div class="box" style="border-color:var(--good)">|z| = 2.43 &gt; 1.96 · p = 0.015 &lt; 0.05<br><b>Reject H₀</b>: recalibrate the machine.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-notes="<b>25–26 min.</b> MATHS. Two-sample T (Welch). σ unknown, so use sample SDs. SE = √(6.26²/296 + 6.32²/304) = √(0.132 + 0.131) = 0.514. t = (32.64 − 30.15)/0.514 = 4.84. Critical t ≈ 1.96 (df ≈ 598). p ≈ 0.0000016. The 2.5 minute saving is real. Mention: with small samples the t critical value is bigger than 1.96 (e.g. 2.09 for df 19): the price of estimating σ.">
+  <span class="tag">T-test · maths</span>
+  <h2>T-test: does the new app <span class="k">save time</span>?</h2>
+  <div class="cols">
+    <div>
+      <table style="font-size:22px;width:auto;margin-bottom:12px">
+        <tr><th>App</th><th class="num">n</th><th class="num">mean</th><th class="num">SD</th></tr>
+        <tr><td>Old</td><td class="num">296</td><td class="num">32.64</td><td class="num">6.26</td></tr>
+        <tr><td>New</td><td class="num">304</td><td class="num">30.15</td><td class="num">6.32</td></tr>
+      </table>
+      <div class="math" style="font-size:22px">SE = √( s₁²/n₁ + s₂²/n₂ )<br>= √( 6.26²/296 + 6.32²/304 ) = 0.514</div>
+    </div>
+    <div>
+      <div class="math">t = (x̄₁ − x̄₂) / SE<br>= (32.64 − 30.15) / 0.514 = <b>4.84</b></div>
+      <div class="box" style="border-color:var(--good);margin-bottom:12px">p ≈ 0.000002 &lt; 0.05 → <b>reject H₀</b><br>The 2.5-min saving is real. Roll out the app.</div>
+      <div class="box" style="font-size:21px">Same test on <b>order value</b>: t = −0.49, p = 0.63 → no evidence of a difference.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-notes="<b>26–27 min.</b> MATHS. Chi-square. Expected = row total × column total / grand total. New + COD: 261 × 145 / 600 = 63.1, observed 96. Contribution (96 − 63.1)²/63.1 = 17.2. Add all six cells → 40.85. df = (2−1)(3−1) = 2. Critical value 5.99. 40.85 ≫ 5.99 → reject: payment mode depends on customer type. New customers use COD 37% vs 14%. Business: keep COD for first orders.">
+  <span class="tag">Chi-square · maths</span>
+  <h2>χ² test: do new customers <span class="k">pay differently</span>?</h2>
+  <div class="cols" style="grid-template-columns:1.1fr 1fr">
+    <div>
+      <table style="font-size:21px">
+        <tr><th>Observed (expected)</th><th class="num">UPI</th><th class="num">Card</th><th class="num">COD</th><th class="num">Total</th></tr>
+        <tr><td>New</td><td class="num">113 (140.5)</td><td class="num">52 (57.4)</td><td class="num"><b>96 (63.1)</b></td><td class="num">261</td></tr>
+        <tr><td>Returning</td><td class="num">210 (182.5)</td><td class="num">80 (74.6)</td><td class="num"><b>49 (81.9)</b></td><td class="num">339</td></tr>
+        <tr><td>Total</td><td class="num">323</td><td class="num">132</td><td class="num">145</td><td class="num">600</td></tr>
+      </table>
+      <div class="math" style="font-size:22px">E = row × column / total = 261 × 145 / 600 = 63.1</div>
+    </div>
+    <div>
+      <div class="math" style="font-size:23px">χ² = Σ (O − E)² / E<br>New·COD: (96 − 63.1)² / 63.1 = 17.2<br>all 6 cells → <b>χ² = 40.85</b></div>
+      <div class="math" style="font-size:22px">df = (2 − 1)(3 − 1) = 2 · critical = 5.99</div>
+      <div class="box" style="border-color:var(--good)">40.85 &gt; 5.99, p ≈ 10⁻⁹ → <b>reject H₀</b>: payment depends on customer type.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-notes="<b>27–28 min.</b> MATHS. ANOVA compares variation BETWEEN group means with variation WITHIN groups. F = MS between / MS within. SSB = 2,230.5 (df 2) → MSB 1,115.3. SSW = 22,363.8 (df 597) → MSW 37.46. F = 29.77, critical F(2, 597) = 3.01. Reject: at least one partner differs. ANOVA doesn't say which: look at the means or run Tukey's test. Control: by city, F = 1.24, p = 0.29 → no evidence, city doesn't matter.">
+  <span class="tag">ANOVA · maths</span>
+  <h2>One-way ANOVA: are the partners <span class="k">equally fast</span>?</h2>
+  <div class="cols">
+    <div>
+      <img src="img/partner_boxplot.png" alt="Delivery time by partner" style="width:100%;border-radius:10px;border:1px solid var(--line)">
+      <p class="sub" style="font-size:19px;margin-top:6px">Means: SwiftShip 29.8 · QuickDrop 30.4 · ExpressGo 34.3 min</p>
+    </div>
+    <div>
+      <div class="math" style="font-size:22px">F = <u>variation between groups</u> / <u>variation within groups</u></div>
+      <div class="math" style="font-size:22px">MSB = 2230.5 / 2 = 1115.3<br>MSW = 22363.8 / 597 = 37.46<br>F = 1115.3 / 37.46 = <b>29.77</b></div>
+      <div class="box" style="border-color:var(--good);font-size:22px">F &gt; 3.01, p &lt; 0.001 → <b>reject H₀</b>. At least one partner differs. By city: F = 1.24, p = 0.29 → no difference.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide" data-notes="<b>28–29 min.</b> Interpretation. Show the SciPy line: one line per test. Then three rules for writing results. Statistical vs practical: with 2 lakh orders, a 0.2-second difference can give p = 0.001, significant but useless. Always give the effect size (2.5 minutes) and a business sentence.">
+  <span class="tag">Python · interpretation</span>
+  <h2>Reading results like a <span class="k">data scientist</span></h2>
+  <div class="cols">
+    <pre class="math" style="font-size:19px;white-space:pre;line-height:1.5;margin:0">from scipy import stats
+stats.ttest_ind(old, new, equal_var=False)
+# t = 4.84, p = 1.6e-06
+stats.f_oneway(swift, quick, express)
+# F = 29.77, p = 4.7e-13
+stats.chi2_contingency(table)
+# chi2 = 40.85, p = 1.3e-09, dof = 2</pre>
+    <ul style="font-size:23px">
+      <li>Report the <b>test</b>, the <b>statistic</b>, the <b>p-value</b> and the <b>effect size</b></li>
+      <li>“Fail to reject” ≠ “proved equal”</li>
+      <li>Significant ≠ <b>important</b>: 0.2 s with p = 0.001 is useless</li>
+      <li>End with a <b>business sentence</b>: “Roll out the app: it saves 2.5 min per order (p &lt; 0.001).”</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 21 -->
+<section class="slide" data-notes="<b>29–30 min.</b> Recap, answer the three warm-up questions (all three: reject H0, the effects are real). Announce: 5-minute break, then open the Study guide. Calculators out for the quiz.">
+  <span class="tag">Recap</span>
+  <h2>Today in <span class="k">one slide</span></h2>
+  <div class="grid g2" style="font-size:20px;gap:12px">
+    <div class="box" style="padding:12px 18px"><b>Centre</b>: mean, median (skew-proof), mode · <b>Spread</b>: variance, SD (n − 1 for samples)</div>
+    <div class="box" style="padding:12px 18px"><b>Normal</b>: 68 · 95 · 99.7 · z = (x − μ)/σ</div>
+    <div class="box" style="padding:12px 18px"><b>Probability</b>: P(A|B), independence · <b>Sampling</b>: random, stratified, systematic, cluster</div>
+    <div class="box" style="padding:12px 18px"><b>CLT</b>: sample means are normal · SE = σ/√n</div>
+    <div class="box" style="padding:12px 18px"><b>Testing</b>: H₀, H₁, α, p-value · reject if p &lt; α · Type I / II</div>
+    <div class="box" style="padding:12px 18px"><b>Z</b> σ known · <b>T</b> σ unknown, 2 groups · <b>ANOVA</b> 3+ groups · <b>χ²</b> categories</div>
+  </div>
+  <div class="ask">Atta: z = −2.43 ✔ · App: t = 4.84 ✔ · Partners: F = 29.8 ✔ · Next: break → <b>Study guide</b> → quiz</div>
+</section>
+
+<canvas id="ink" width="1280" height="720"></canvas>
+</div>
+
+<div id="notes"></div>
+<div id="hud">
+  <button onclick="go(-1)" title="Previous (←)">◀</button>
+  <span id="count">1 / 21</span>
+  <button onclick="go(1)" title="Next (→ or space)">▶</button>
+  <button id="drawBtn" onclick="toggleDraw()" title="Draw (D)">✏️ Draw</button>
+  <button class="sw" style="background:#d64545" onclick="pen='#d64545'"></button>
+  <button class="sw" style="background:#2a6fdb" onclick="pen='#2a6fdb'"></button>
+  <button class="sw" style="background:#1f9d6b" onclick="pen='#1f9d6b'"></button>
+  <button class="sw" style="background:#18202f" onclick="pen='#18202f'"></button>
+  <button onclick="clearInk()" title="Clear drawing (C)">Clear</button>
+  <button onclick="toggleNotes()" title="Teacher notes (N)">Notes</button>
+  <button onclick="fullscreen()" title="Full screen (F)">⛶</button>
+  <a href="./" style="color:inherit;padding:0 6px">Exit</a>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide'), cur = 0, pen = '#d64545';
+var stage = document.getElementById('stage'), ink = document.getElementById('ink'), ctx = ink.getContext('2d');
+var strokes = {};  // per-slide drawings, kept while you move between slides
+
+function fit() {
+  var s = Math.min(innerWidth / 1280, innerHeight / 720);
+  stage.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+}
+addEventListener('resize', fit); fit();
+
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach(function (s, k) { s.classList.toggle('on', k === cur); });
+  document.getElementById('count').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('notes').innerHTML = '<div style="font-size:12px;color:#8a7a40;margin-bottom:6px">SLIDE ' + (cur + 1) + ' · TEACHER NOTES</div>' + (slides[cur].dataset.notes || '');
+  redraw();
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) {}
+}
+function go(d) { show(cur + d); }
+function toggleNotes() { document.getElementById('notes').classList.toggle('on'); }
+function toggleDraw() { document.body.classList.toggle('drawing'); document.getElementById('drawBtn').classList.toggle('on'); }
+function fullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+function clearInk() { strokes[cur] = []; redraw(); }
+
+function redraw() {
+  ctx.clearRect(0, 0, 1280, 720);
+  (strokes[cur] || []).forEach(function (st) {
+    ctx.strokeStyle = st.c; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); st.p.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+  });
+}
+function pos(e) { var r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * 1280 / r.width, (e.clientY - r.top) * 720 / r.height]; }
+var active = null;
+ink.addEventListener('pointerdown', function (e) { active = { c: pen, p: [pos(e)] }; (strokes[cur] = strokes[cur] || []).push(active); ink.setPointerCapture(e.pointerId); });
+ink.addEventListener('pointermove', function (e) { if (active) { active.p.push(pos(e)); redraw(); } });
+addEventListener('pointerup', function () { active = null; });
+
+addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(slides.length - 1);
+  else if (e.key === 'n' || e.key === 'N') toggleNotes();
+  else if (e.key === 'd' || e.key === 'D') toggleDraw();
+  else if (e.key === 'c' || e.key === 'C') clearInk();
+  else if (e.key === 'f' || e.key === 'F') fullscreen();
+});
+stage.addEventListener('click', function (e) { if (!document.body.classList.contains('drawing') && e.target.closest('.slide')) go(e.clientX > innerWidth / 2 ? 1 : -1); });
+
+addEventListener('hashchange', function () { var k = (parseInt(location.hash.slice(1), 10) || 1) - 1; if (k !== cur) show(k); });
+show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

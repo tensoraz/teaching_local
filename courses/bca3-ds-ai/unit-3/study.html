@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 3 Study Guide</title>
+<meta name="description" content="Predictive modeling techniques: simple and multiple linear regression, logistic regression, decision trees, k-nearest neighbours and Naive Bayes, the model-building process and training/testing datasets, with used-car prices and telecom churn.">
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  .pace { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 18px 0 4px; }
+  .pace a { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; color: var(--ink); font-size: 14px; }
+  .pace a:hover { border-color: var(--brand); text-decoration: none; }
+  .pace b { display: block; font-size: 12px; color: var(--accent); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .lab-ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: end; }
+  .lab-ctrl label, .sl label { font-size: 13px; font-weight: 600; color: var(--ink-3); display: block; margin-bottom: 4px; }
+  .sl input[type=range] { width: 100%; }
+  .chart svg { width: 100%; height: auto; }
+  .toggle { display: flex; gap: 8px; align-items: center; font-weight: 600; font-size: 14.5px; cursor: pointer; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  .toggle input { width: 18px; height: 18px; flex: none; }
+  .task { display: grid; grid-template-columns: 28px 1fr; gap: 8px; margin: 10px 0; font-size: 15.5px; }
+  .task input { width: 18px; height: 18px; margin-top: 4px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  .path { font-family: var(--mono); font-size: 14.5px; line-height: 1.9; background: var(--surface-2); border-radius: 10px; padding: 12px 16px; }
+  .path .on { color: var(--brand-ink); font-weight: 700; }
+  .path .off { color: var(--ink-3); opacity: .55; }
+  .big-v { font-size: 46px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .ok { color: var(--good); font-weight: 700; } .bad { color: var(--bad); font-weight: 700; }
+  #knnSvg { cursor: crosshair; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Predictive Analytics</a> › <a href="./">Unit 3</a> › <b>Study guide</b></div>
+  <a class="icon-btn" href="quiz.html">Quiz →</a>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+  <div class="progress"></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 3 · Study guide · 35 minutes</span>
+    <h1>Predictive Modeling Techniques</h1>
+    <p class="lead">Units 1 and 2 got the data ready. Now you build the models. You will predict a <b>number</b> (the price of 1,200 used cars) with simple and multiple linear regression, then predict a <b>category</b> (will a SwiftTel customer churn?) with four classic classifiers: logistic regression, a decision tree, k-nearest neighbours and Naïve Bayes. Every result below comes from code you can run.</p>
+    <div class="pace">
+      <a href="#types"><b>0–2 min</b>Two kinds of prediction</a>
+      <a href="#slr"><b>2–7 min</b>Linear regression</a>
+      <a href="#mlr"><b>7–12 min</b>Multiple regression</a>
+      <a href="#logit"><b>12–16 min</b>Logistic regression</a>
+      <a href="#tree"><b>16–20 min</b>Decision tree</a>
+      <a href="#knn"><b>20–23 min</b>KNN</a>
+      <a href="#nb"><b>23–26 min</b>Naïve Bayes</a>
+      <a href="#lab"><b>26–35 min</b>Hands-on lab</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc">
+      <div class="t">On this page</div>
+      <a href="#types">1. Regression vs classification</a>
+      <a href="#slr">2. Simple linear regression</a>
+      <a href="#mlr">3. Multiple regression</a>
+      <a href="#logit">4. Logistic regression</a>
+      <a href="#tree">5. Decision tree</a>
+      <a href="#knn">6. K-nearest neighbours</a>
+      <a href="#nb">7. Naïve Bayes</a>
+      <a href="#process">8. Building process, train/test</a>
+      <a href="#compare">9. Comparing the models</a>
+      <a href="#lab">10. Hands-on lab</a>
+      <a href="#summary">11. Summary and revision</a>
+    </nav>
+
+    <main>
+<!-- ================================================================ 1 -->
+<section class="block" id="types">
+  <div class="sec-no">Section 1</div>
+  <h2>Regression vs classification</h2>
+  <p>All models in this unit are <b>supervised learning</b>: they learn from past examples where the answer (the <b>target</b> or <b>label</b>) is known, then predict it for new cases. What kind of target you have decides the family of model.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Regression</th><th>Classification</th></tr>
+    <tr><td><b>Target</b></td><td>a number (continuous)</td><td>a category (often yes/no)</td></tr>
+    <tr><td><b>Question</b></td><td>How much? How many?</td><td>Which group? Will it happen?</td></tr>
+    <tr><td><b>Output</b></td><td>₹10.42 lakh</td><td>“churn” with probability 0.71</td></tr>
+    <tr><td><b>Models here</b></td><td>simple and multiple linear regression</td><td>logistic regression, decision tree, KNN, Naïve Bayes</td></tr>
+    <tr><td><b>Judged by</b></td><td>R², RMSE, MAE</td><td>accuracy, precision, recall (more in Unit 4)</td></tr>
+    <tr><td><b>Examples</b></td><td>house rent, sales next month, delivery time, crop yield</td><td>spam or not, loan default, disease present, churn</td></tr>
+  </table></div>
+  <div class="callout warn"><b>Watch the name</b><b>Logistic regression is a classification model</b>, despite its name. It predicts the probability of a category. And a decision tree can do both: classification trees predict a class, regression trees predict a number.</div>
+</section>
+
+<!-- ================================================================ 2 -->
+<section class="block" id="slr">
+  <div class="sec-no">Section 2</div>
+  <h2>Simple linear regression</h2>
+  <div class="definition">Simple linear regression fits a straight line <b>ŷ = a + b·x</b> through the data, choosing the intercept <b>a</b> and slope <b>b</b> that make the <b>sum of squared errors</b> Σ(y − ŷ)² as small as possible: the <b>least-squares</b> line.</div>
+  <div class="two">
+    <div class="callout warn" style="margin-top:0"><b>Do the maths: five cars by hand</b>
+      Age x = 1, 2, 3, 4, 5 · price y = 8.0, 7.1, 6.5, 5.4, 4.9 (₹ lakh)<br>
+      x̄ = 3, ȳ = 6.38<br>
+      <code>b = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)² = −7.90 / 10 = −0.79</code><br>
+      <code>a = ȳ − b·x̄ = 6.38 + 0.79 × 3 = 8.75</code><br>
+      Line: <b>price = 8.75 − 0.79 × age</b>. Every extra year costs ₹0.79 lakh.<br>
+      SSE = Σ(y − ŷ)² = 0.067 · SST = Σ(y − ȳ)² = 6.308 · <b>R² = 1 − 0.067/6.308 = 0.989</b>
+    </div>
+    <div>
+      <p><b>Reading the numbers</b></p>
+      <ul>
+        <li><b>Slope b</b>: change in y for each +1 in x. Negative here: older cars are cheaper.</li>
+        <li><b>Intercept a</b>: predicted y when x = 0. Sometimes meaningful (a new car), sometimes not.</li>
+        <li><b>Residual</b> y − ŷ: how far one point is from the line.</li>
+        <li><b>R²</b>: the share of the variation in y that the line explains (0 = nothing, 1 = everything).</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>On the real data: 1,200 used cars</h3>
+<pre class="code" data-lang="py">cars = pd.read_csv("used_cars.csv")
+train, test = train_test_split(cars, test_size=0.3, random_state=42)
+simple = LinearRegression().fit(train[["age_years"]], train["price_lakh"])
+pred = simple.predict(test[["age_years"]])</pre>
+<pre class="out">price = 9.202 + (-0.574) x age
+test R2 0.142   RMSE 4.095   MAE 2.995</pre>
+  <div class="two">
+    <figure class="shot"><img src="img/car_scatter_line.png" alt="Scatter of price against age coloured by brand tier with one orange line through all of them" loading="lazy"><figcaption>One line for three very different kinds of car: it cannot fit well.</figcaption></figure>
+    <div>
+      <p>On the five hand-picked cars, R² was 0.989. On 360 real test cars it is only <b>0.142</b>, with typical errors of ₹3–4 lakh. The chart shows why: at any age, Premium cars (violet) sit far above Budget cars (grey). Age matters, but it is not the main story.</p>
+      <p>The cure is to give the model more information: <b>multiple regression</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ 3 -->
+<section class="block" id="mlr">
+  <div class="sec-no">Section 3</div>
+  <h2>Multiple linear regression</h2>
+  <div class="definition">Multiple regression uses several predictors: <b>ŷ = b₀ + b₁x₁ + b₂x₂ + … + bₖxₖ</b>. Each coefficient bᵢ is the change in ŷ for a one-unit increase in xᵢ <b>with every other predictor held constant</b>.</div>
+
+  <h3>Categories become dummy variables</h3>
+  <p>A regression needs numbers, so brand tier (Budget / Mid / Premium) becomes two 0/1 columns, <code>tier_Mid</code> and <code>tier_Premium</code>. <b>Budget is the baseline</b>: a Budget car has both set to 0. We always leave one category out (Unit 2’s dummy-variable trap). The same is done for fuel, with Petrol as the baseline.</p>
+<pre class="code" data-lang="py">def features(d):
+    X = pd.DataFrame({"age_years": d["age_years"], "km_thousand": d["km_driven"] / 1000, "owners": d["owners"]})
+    X = X.join(pd.get_dummies(d["brand_tier"], prefix="tier", dtype=int).drop(columns="tier_Budget", errors="ignore"))
+    X = X.join(pd.get_dummies(d["fuel"], prefix="fuel", dtype=int).drop(columns="fuel_Petrol", errors="ignore"))
+    X["automatic"] = (d["transmission"] == "Automatic").astype(int)
+    return X
+multi = LinearRegression().fit(features(train), train["price_lakh"])</pre>
+<pre class="out">intercept 5.993
+  age_years      -0.4620
+  km_thousand    -0.0074
+  owners         -0.3102
+  tier_Mid       +3.1249
+  tier_Premium   +11.4286
+  fuel_CNG       -0.0555
+  fuel_Diesel    +0.6935
+  fuel_Electric  +2.5140
+  automatic      +0.9878
+train R2 0.957   adjusted R2 0.956
+test  R2 0.960   RMSE 0.885   MAE 0.697</pre>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Coefficient</th><th>Plain-language meaning (everything else the same)</th></tr>
+    <tr><td>age_years −0.462</td><td>Each extra year of age lowers the price by ₹0.46 lakh</td></tr>
+    <tr><td>km_thousand −0.0074</td><td>Every 1,000 km lowers it by ₹740, so 1,00,000 km costs about ₹0.74 lakh</td></tr>
+    <tr><td>owners −0.310</td><td>Each previous owner lowers it by ₹0.31 lakh</td></tr>
+    <tr><td>tier_Premium +11.43</td><td>A Premium car is worth ₹11.43 lakh more than an otherwise identical <b>Budget</b> car</td></tr>
+    <tr><td>fuel_Electric +2.51</td><td>Electric is worth ₹2.51 lakh more than <b>Petrol</b>; CNG (−0.06) is about the same as Petrol</td></tr>
+    <tr><td>automatic +0.99</td><td>An automatic gearbox adds about ₹1 lakh</td></tr>
+  </table></div>
+  <div class="callout warn"><b>Do the maths: price one car</b>
+    A Premium, 12-year-old petrol automatic with 1,62,000 km and 4 owners (it actually sold for ₹10.0 lakh):<br>
+    <code>5.993 − 0.462×12 − 0.0074×162 − 0.310×4 + 11.429 + 0.988 = 10.42</code> → predicted <b>₹10.42 lakh</b>, ₹0.42 lakh off.
+  </div>
+
+  <h3>Judging a regression</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Measure</th><th>Formula</th><th>Car model (test)</th><th>Read it as</th></tr>
+    <tr><td><b>R²</b></td><td>1 − SSE/SST</td><td>0.960</td><td>96% of price variation explained</td></tr>
+    <tr><td><b>Adjusted R²</b></td><td>1 − (1 − R²)(n − 1)/(n − k − 1)</td><td>0.956 (train, n = 840, k = 9)</td><td>R² with a penalty for each extra feature</td></tr>
+    <tr><td><b>RMSE</b></td><td>√(Σ(y − ŷ)² / n)</td><td>₹0.885 lakh</td><td>typical error; big misses count extra</td></tr>
+    <tr><td><b>MAE</b></td><td>Σ|y − ŷ| / n</td><td>₹0.697 lakh</td><td>average absolute error</td></tr>
+  </table></div>
+  <p>Plain R² can only go up when you add features, even useless ones. <b>Adjusted R²</b> goes down if a new feature does not earn its place, so use it to compare models with different numbers of features.</p>
+  <figure class="shot"><img src="img/car_fit_residuals.png" alt="Left: predicted vs actual close to the diagonal. Right: residuals scattered evenly around zero" loading="lazy"><figcaption>Left: points hug the diagonal. Right: residuals form a shapeless band around 0, which is what we want.</figcaption></figure>
+
+  <h3>Assumptions behind linear regression</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Assumption</th><th>Meaning</th><th>How to check</th><th>If broken</th></tr>
+    <tr><td><b>Linearity</b></td><td>effects add up in straight lines</td><td>residual plot shows no curve</td><td>transform (log), add terms</td></tr>
+    <tr><td><b>Independence</b></td><td>errors don’t depend on each other</td><td>think about how data was collected</td><td>time-series models</td></tr>
+    <tr><td><b>Equal variance</b></td><td>errors have the same spread everywhere</td><td>no funnel shape in residuals</td><td>log the target</td></tr>
+    <tr><td><b>Normal residuals</b></td><td>errors roughly bell-shaped</td><td>histogram of residuals</td><td>matters most for p-values</td></tr>
+    <tr><td><b>No multicollinearity</b></td><td>predictors not near-copies</td><td>correlations, VIF</td><td>drop one of the pair (Unit 2)</td></tr>
+  </table></div>
+</section>
+
+<!-- ================================================================ 4 -->
+<section class="block" id="logit">
+  <div class="sec-no">Section 4</div>
+  <h2>Logistic regression</h2>
+  <p>Could we fit a straight line to churn (0 or 1)? The line would predict values like −0.2 or 1.3, which are impossible as probabilities. Logistic regression solves this: it models the <b>log-odds</b> as a straight line, then squashes the result into 0–1 with the <b>sigmoid</b> function.</p>
+  <div class="two">
+    <div class="callout warn" style="margin-top:0"><b>The maths</b>
+      Odds = p / (1 − p). If p = 0.8, the odds are 0.8/0.2 = 4 (“4 to 1”).<br>
+      <code>log(p / (1 − p)) = b₀ + b₁x₁ + … + bₖxₖ = z</code><br>
+      <code>p = 1 / (1 + e<sup>−z</sup>)</code><br>
+      Each coefficient changes the <b>log-odds</b>. Its exponent <b>e<sup>b</sup></b> is the <b>odds ratio</b>: how the odds are multiplied when that feature rises by 1.
+    </div>
+    <figure class="shot" style="margin-top:0"><img src="img/logistic_curve.png" alt="Churn probability rises in an S shape from 0.25 at zero calls to 0.92 at nine calls" loading="lazy"><figcaption>A 12-month prepaid customer on ₹399 with satisfaction 3: each support call pushes them up the S-curve.</figcaption></figure>
+  </div>
+<pre class="out">Logistic regression: coefficient and odds ratio e^b
+  tenure_months   b = -0.0350   odds ratio = 0.966
+  monthly_charge  b = +0.0012   odds ratio = 1.001
+  support_calls   b = +0.3986   odds ratio = 1.490
+  prepaid         b = +0.6345   odds ratio = 1.886
+  autopay         b = -0.5841   odds ratio = 0.558
+  satisfaction    b = -0.2428   odds ratio = 0.784</pre>
+  <div class="tbl-wrap"><table>
+    <tr><th>Odds ratio</th><th>Interpretation</th></tr>
+    <tr><td>support_calls 1.490</td><td>Each extra support call multiplies the odds of churning by 1.49 (+49%)</td></tr>
+    <tr><td>prepaid 1.886</td><td>Prepaid customers have 1.89 times the odds of a postpaid customer with the same other values</td></tr>
+    <tr><td>autopay 0.558</td><td>Autopay lowers the odds by 44% (×0.558)</td></tr>
+    <tr><td>tenure 0.966</td><td>Each month with SwiftTel lowers the odds by 3.4%; over a year: 0.966¹² ≈ 0.66</td></tr>
+  </table></div>
+  <div class="callout tip"><b>Odds are not probabilities</b> “Odds ×1.49” does not mean “probability +49%”. At the bottom of the S-curve a call moves p from 0.25 to 0.33; in the middle, from 0.52 to 0.62. The same odds ratio moves the probability by different amounts depending on where you start.</div>
+</section>
+
+<!-- ================================================================ 5 -->
+<section class="block" id="tree">
+  <div class="sec-no">Section 5</div>
+  <h2>Decision tree</h2>
+  <p>A decision tree asks a sequence of yes/no questions: “support calls ≤ 2.5?”, “tenure ≤ 17.5?”. Each question splits the customers into purer groups. To choose a question, the tree tries every feature and every threshold, and keeps the split that most reduces <b>impurity</b>.</p>
+  <div class="two">
+    <div class="callout warn" style="margin-top:0"><b>Do the maths: Gini impurity</b>
+      <code>Gini = 1 − Σ pᵢ²</code> (0 = pure, 0.5 = a 50/50 mix for two classes)<br>
+      Root: 238 churners of 1,050 → p = 0.227 → 1 − (0.227² + 0.773²) = <b>0.351</b><br>
+      Split “support_calls ≤ 2.5”: left 907 customers (Gini 0.313), right 143 (Gini 0.491)<br>
+      Weighted Gini = (907 × 0.313 + 143 × 0.491) / 1050 = <b>0.337</b> → impurity drops by 0.014. No other split does better, so it becomes the root.<br>
+      <i>Entropy</i> −Σ pᵢ log₂ pᵢ is an alternative measure (ID3 and C4.5 use it).
+    </div>
+    <div class="tbl-wrap" style="margin-top:0"><table>
+      <tr><th>Algorithm</th><th>Split criterion</th><th>Notes</th></tr>
+      <tr><td><b>CART</b></td><td>Gini (or variance for regression trees)</td><td>always binary splits; scikit-learn, SPSS “CRT”</td></tr>
+      <tr><td><b>ID3 / C4.5</b></td><td>information gain (ratio) from entropy</td><td>classic textbook algorithms</td></tr>
+      <tr><td><b>CHAID</b></td><td>chi-square test</td><td>multi-way splits; SPSS default</td></tr>
+    </table></div>
+  </div>
+  <figure class="shot"><img src="img/tree_plot.png" alt="Depth-3 decision tree splitting on support calls, tenure and autopay" loading="lazy"><figcaption>value = [stayed, churned] at each node. Blue boxes predict churn. (scikit-learn colours class 0 orange, class 1 blue.)</figcaption></figure>
+  <div class="two">
+    <div class="callout idea" style="margin-top:0"><b>Rules a manager can use</b>
+      <ul style="margin:6px 0 0;padding-left:20px">
+        <li><b>3+ calls, tenure ≤ 37, no autopay:</b> 51 of 85 churned (60%): call them first.</li>
+        <li><b>≤ 2 calls, tenure &gt; 17, autopay:</b> 11 of 175 (6%): leave them alone.</li>
+        <li>Feature importance: tenure 0.43, support calls 0.42, autopay 0.15; price, plan and satisfaction were never used.</li>
+      </ul></div>
+    <div class="tbl-wrap" style="margin-top:0"><table>
+      <tr><th>✔ Strengths</th><th>✘ Weaknesses</th></tr>
+      <tr><td>readable if/then rules</td><td>deep trees memorise noise (overfit)</td></tr>
+      <tr><td>no scaling needed</td><td>unstable: small data changes → new tree</td></tr>
+      <tr><td>captures interactions automatically</td><td>predictions are step-shaped</td></tr>
+      <tr><td>numbers and categories together</td><td>greedy: best split now, not best tree</td></tr>
+    </table></div>
+  </div>
+  <p>Controls against overfitting: <code>max_depth</code>, <code>min_samples_leaf</code>, <code>min_samples_split</code> and <b>pruning</b> (cutting back branches that don’t help on validation data). Unit 4’s random forests combine many trees to fix the instability.</p>
+</section>
+
+<!-- ================================================================ 6 -->
+<section class="block" id="knn">
+  <div class="sec-no">Section 6</div>
+  <h2>K-nearest neighbours (KNN)</h2>
+  <p>KNN has almost no training: it simply stores the training data. To classify a new customer it (1) measures the distance to every stored customer, (2) picks the <b>k</b> closest, and (3) lets them vote. The share of churners among the k neighbours is the predicted probability.</p>
+  <div class="two">
+    <div class="callout warn" style="margin-top:0"><b>Do the maths: Euclidean distance</b>
+      <code>d(p, q) = √((p₁ − q₁)² + (p₂ − q₂)² + …)</code><br>
+      New customer (tenure 6, calls 3) vs A (5, 3): √(1² + 0²) = 1.00<br>
+      vs B (8, 2): √(2² + 1²) = 2.24 · vs D (30, 0): √(24² + 3²) = 24.2<br>
+      With k = 3, the three nearest vote. If two of them churned, P(churn) = 2/3.
+    </div>
+    <div class="tbl-wrap" style="margin-top:0"><table>
+      <tr><th class="num">k</th><th class="num">train accuracy</th><th class="num">test accuracy</th><th>What happens</th></tr>
+      <tr><td class="num">1</td><td class="num">0.984</td><td class="num bad">0.698</td><td>copies the single nearest point: memorises noise</td></tr>
+      <tr><td class="num">5</td><td class="num">0.829</td><td class="num">0.742</td><td></td></tr>
+      <tr><td class="num">15</td><td class="num">0.787</td><td class="num">0.767</td><td>a good balance</td></tr>
+      <tr><td class="num">51</td><td class="num">0.781</td><td class="num">0.773</td><td>so smooth it nearly always says “No”</td></tr>
+    </table></div>
+  </div>
+  <figure class="shot"><img src="img/knn_regions.png" alt="Regions of high churn probability for short tenure and many support calls" loading="lazy"><figcaption>KNN using only tenure and support calls: orange regions predict churn. The boundary bends to follow the data.</figcaption></figure>
+  <div class="callout warn"><b>KNN must be scaled</b>Distances add up raw differences. Monthly charge differs by hundreds of rupees between customers, support calls by 1 or 2, so without scaling the “nearest” customers are simply those with the same price. Real run: unscaled KNN caught <b>4.9%</b> of churners, scaled KNN <b>8.8%</b>. Always fit the scaler on the training data only.</div>
+</section>
+
+<!-- ================================================================ 7 -->
+<section class="block" id="nb">
+  <div class="sec-no">Section 7</div>
+  <h2>Naïve Bayes</h2>
+  <div class="definition"><b>Bayes’ theorem:</b> P(C | E) = P(E | C) · P(C) / P(E). Naïve Bayes assumes the features are <b>independent given the class</b>, so P(E | C) is just the product of one probability per feature: P(C | e₁, …, eₙ) ∝ P(C) · P(e₁ | C) · … · P(eₙ | C).</div>
+  <div class="callout warn"><b>Do the maths with SwiftTel counts</b>
+    Evidence: 3+ support calls, prepaid, no autopay, tenure ≤ 12 months. 340 customers churned, 1,160 stayed.<br>
+    Churn: 0.227 × (83/340) × (240/340) × (259/340) × (173/340) = 0.227 × 0.244 × 0.706 × 0.762 × 0.509 = <b>0.01514</b><br>
+    Stay: 0.773 × (119/1160) × (694/1160) × (699/1160) × (374/1160) = 0.773 × 0.103 × 0.598 × 0.603 × 0.322 = <b>0.00922</b><br>
+    Normalise: P(churn | evidence) = 0.01514 / (0.01514 + 0.00922) = <b>0.621</b>.<br>
+    Reality check: 50 customers match all four conditions, and <b>64%</b> of them churned. A good estimate from simple counting.
+  </div>
+  <div class="activity">
+    <span class="tag">Calculator · tick the evidence</span>
+    <div class="lab-ctrl" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      <label class="toggle"><input type="checkbox" class="nbE" value="calls3" checked> 3+ support calls</label>
+      <label class="toggle"><input type="checkbox" class="nbE" value="prepaid" checked> Prepaid</label>
+      <label class="toggle"><input type="checkbox" class="nbE" value="noauto" checked> No autopay</label>
+      <label class="toggle"><input type="checkbox" class="nbE" value="new" checked> Tenure ≤ 12 months</label>
+    </div>
+    <div class="kpis" id="nbOut"></div>
+    <p class="muted" style="font-size:14px;margin:0" id="nbWork"></p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Variant</th><th>Features</th><th>Typical use</th></tr>
+    <tr><td><b>Gaussian NB</b></td><td>numbers, assumed bell-shaped within each class</td><td>our lab model on SwiftTel</td></tr>
+    <tr><td><b>Multinomial NB</b></td><td>counts (words in a document)</td><td>spam filters, text classification</td></tr>
+    <tr><td><b>Bernoulli NB</b></td><td>yes/no features</td><td>the hand calculation above</td></tr>
+  </table></div>
+  <p><b>Strengths:</b> extremely fast, works with little data, handles many features (text). <b>Weakness:</b> features are rarely truly independent (support calls and satisfaction are correlated, r = −0.31), so evidence gets counted twice and probabilities become <b>over-confident</b>. For the new customer in the lab, Gaussian NB says 0.936 while the other three models say 0.60–0.73. Use NB’s <i>ranking</i>, and be careful with its exact probabilities.</p>
+</section>
+
+<!-- ================================================================ 8 -->
+<section class="block" id="process">
+  <div class="sec-no">Section 8</div>
+  <h2>The model-building process, and training/testing datasets</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>#</th><th>Step</th><th>SwiftTel churn</th></tr>
+    <tr><td>1</td><td>Define the target and how success is measured</td><td>churned (Yes/No); catch leavers for the retention team</td></tr>
+    <tr><td>2</td><td>Choose candidate features</td><td>tenure, charge, support calls, prepaid, autopay, satisfaction (Unit 2’s selection)</td></tr>
+    <tr><td>3</td><td><b>Split</b> into training and test sets</td><td>1,050 / 450, stratified, random_state = 42</td></tr>
+    <tr><td>4</td><td>Fit preprocessing on <b>training data only</b></td><td>satisfaction median = 4.0; scaler mean and sd for KNN</td></tr>
+    <tr><td>5</td><td>Train candidate models</td><td>logistic, tree, KNN, Naïve Bayes</td></tr>
+    <tr><td>6</td><td>Tune hyperparameters on validation data</td><td>tree depth, k (Unit 4: cross-validation)</td></tr>
+    <tr><td>7</td><td>Evaluate <b>once</b> on the test set</td><td>accuracy, precision, recall</td></tr>
+    <tr><td>8</td><td>Interpret, document, deploy, monitor</td><td>odds ratios, tree rules (Unit 5)</td></tr>
+  </table></div>
+<pre class="code" data-lang="py">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+median_sat = X_train["satisfaction"].median()                   # learned from TRAINING data only
+X_train = X_train.fillna({"satisfaction": median_sat})
+X_test = X_test.fillna({"satisfaction": median_sat})
+scaler = StandardScaler().fit(X_train)                           # also fitted on training data only</pre>
+<pre class="out">train 1050 customers (22.7% churn)   test 450 (22.7% churn)</pre>
+  <div class="tbl-wrap"><table>
+    <tr><th>Idea</th><th>What it means</th><th>Why it matters</th></tr>
+    <tr><td><b>Training set</b></td><td>data the model learns from (here 70%)</td><td>all fitting happens here</td></tr>
+    <tr><td><b>Test set</b></td><td>data held back until the very end (30%)</td><td>an honest estimate of performance on new customers</td></tr>
+    <tr><td><b>Validation set</b></td><td>a third part (e.g. 60/20/20) for choosing settings</td><td>keeps the test set untouched while tuning</td></tr>
+    <tr><td><b>Stratification</b></td><td>keep the class share equal in each part</td><td>with 22.7% churners, a random split could give 19% / 31%</td></tr>
+    <tr><td><b>random_state</b></td><td>fixes the random shuffle</td><td>anyone can reproduce your exact numbers</td></tr>
+    <tr><td><b>Time-based split</b></td><td>train on the past, test on the future</td><td>for forecasting; never let the model “see the future”</td></tr>
+  </table></div>
+  <div class="callout warn"><b>Data leakage: the silent score inflater</b>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li><b>Preprocessing leakage:</b> scaling or imputing with statistics from ALL rows lets test data shape the training.</li>
+      <li><b>Target leakage:</b> a feature only known after the outcome, e.g. “cancellation_reason” or “final_bill_date”: perfect in testing, useless in real life.</li>
+      <li><b>Duplicate leakage:</b> the same customer in train and test (Unit 2’s duplicates!).</li>
+    </ul></div>
+  <div class="callout tip"><b>A deployment gotcha we hit while writing the lab</b> Scoring <i>one</i> car, <code>pd.get_dummies</code> only creates columns for the categories present in that row, so the model received the wrong columns. The fix: build features with a fixed list of columns (<code>reindex(columns=..., fill_value=0)</code>), or use scikit-learn’s <code>OneHotEncoder</code> fitted on training data. Unit 5 returns to this: preprocessing must be saved together with the model.</div>
+</section>
+
+<!-- ================================================================ 9 -->
+<section class="block" id="compare">
+  <div class="sec-no">Section 9</div>
+  <h2>Comparing the four classifiers</h2>
+<pre class="out">Logistic regression       accuracy 0.782  precision 0.583  recall 0.137
+Decision tree (depth 3)   accuracy 0.760  precision 0.385  recall 0.098
+KNN (k = 15, scaled)      accuracy 0.767  precision 0.429  recall 0.088
+Naive Bayes (Gaussian)    accuracy 0.764  precision 0.468  recall 0.284
+Always predict No         accuracy 0.773</pre>
+  <div class="two">
+    <figure class="shot"><img src="img/model_compare.png" alt="All four models have accuracy near 76-78% but recall between 9 and 28%" loading="lazy"><figcaption>High accuracy, low recall: the classic sign of an imbalanced target.</figcaption></figure>
+    <div>
+      <p><b>Precision</b> = of the customers a model flags as churners, how many really churned. <b>Recall</b> = of the customers who really churned, how many the model flagged.</p>
+      <p>All four models hover around the 77.3% “always No” accuracy and catch only 9–28% of churners. That does <b>not</b> mean they are useless: Unit 1 showed the logistic model’s top 10% has a lift of 2.16. The problem is the default <b>0.5 cut-off</b>: with only 22.7% churners, few customers ever reach 50%. Unit 4 moves the threshold and uses better metrics.</p>
+    </div>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Logistic regression</th><th>Decision tree</th><th>KNN</th><th>Naïve Bayes</th></tr>
+    <tr><td><b>Learns</b></td><td>a weight per feature</td><td>if/then splits</td><td>nothing (stores data)</td><td>class-conditional probabilities</td></tr>
+    <tr><td><b>Explain it?</b></td><td>✔ odds ratios</td><td>✔✔ rules</td><td>✘ “your neighbours”</td><td>~ per-feature evidence</td></tr>
+    <tr><td><b>Needs scaling?</b></td><td>if regularised</td><td>no</td><td><b>yes</b></td><td>no</td></tr>
+    <tr><td><b>Speed to predict</b></td><td>very fast</td><td>very fast</td><td>slow on big data</td><td>very fast</td></tr>
+    <tr><td><b>Main risk</b></td><td>misses curved patterns</td><td>overfitting</td><td>bad k, unscaled data</td><td>over-confident probabilities</td></tr>
+    <tr><td><b>Good first choice for</b></td><td>baseline; regulated decisions</td><td>rule-based policies</td><td>small, low-dimensional data</td><td>text, many features, little data</td></tr>
+  </table></div>
+</section>
+
+<!-- ================================================================ 10 -->
+<section class="block" id="lab">
+  <div class="sec-no">Section 10</div>
+  <h2>Hands-on lab</h2>
+  <p><b>Parts A–D</b> run in this page on the real data. <b>Part E</b> is the full lab in Python, R and SPSS.</p>
+
+  <h3>Part A · Beat least squares: fit the line yourself</h3>
+  <div class="card">
+    <p class="muted" style="margin:0 0 8px;font-size:15px">40 Mid-tier cars. Move the sliders to make the sum of squared errors (SSE) as small as you can, then press “Least squares”.</p>
+    <div class="lab-ctrl">
+      <div class="sl"><label>Intercept a: <b id="aVal">8.0</b></label><input type="range" id="aSl" min="2" max="16" step="0.1" value="8"></div>
+      <div class="sl"><label>Slope b: <b id="bVal">-0.30</b></label><input type="range" id="bSl" min="-1.5" max="0.5" step="0.01" value="-0.3"></div>
+      <button class="btn ghost" onclick="bestFit()">Least squares</button>
+    </div>
+    <div class="kpis" id="fitKpi"></div>
+    <div class="chart" id="fitChart"></div>
+  </div>
+
+  <h3>Part B · Car price predictor (multiple regression)</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div><label for="cTier">Brand tier</label><select id="cTier"><option>Budget</option><option selected>Mid</option><option>Premium</option></select></div>
+      <div><label for="cFuel">Fuel</label><select id="cFuel"><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option></select></div>
+      <div><label for="cTrans">Transmission</label><select id="cTrans"><option>Manual</option><option>Automatic</option></select></div>
+      <div class="sl"><label>Age: <b id="cAgeV">5</b> years</label><input type="range" id="cAge" min="1" max="15" value="5"></div>
+      <div class="sl"><label>Km driven: <b id="cKmV">60,000</b></label><input type="range" id="cKm" min="3000" max="240000" step="1000" value="60000"></div>
+      <div class="sl"><label>Owners: <b id="cOwnV">1</b></label><input type="range" id="cOwn" min="1" max="4" value="1"></div>
+    </div>
+    <div class="two" style="margin-top:12px">
+      <div style="text-align:center"><div class="muted" style="font-size:14px;font-weight:600">Predicted price</div><div class="big-v" id="cPrice"></div><div class="muted" style="font-size:13px">± about ₹0.89 lakh (test RMSE)</div></div>
+      <div class="chart" id="cChart"></div>
+    </div>
+  </div>
+
+  <h3>Part C · KNN playground</h3>
+  <div class="card">
+    <p class="muted" style="margin:0 0 8px;font-size:15px">All 1,500 SwiftTel customers by tenure and support calls (scaled). <b>Click anywhere</b> to place a new customer.</p>
+    <div class="lab-ctrl"><div class="sl"><label>k (neighbours): <b id="kVal">15</b></label><input type="range" id="kSl" min="1" max="61" step="2" value="15"></div></div>
+    <div class="chart" id="knnBox"></div>
+    <div class="kpis" id="knnOut"></div>
+  </div>
+
+  <h3>Part D · Follow the decision tree</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div class="sl"><label>Support calls: <b id="tCallsV">3</b></label><input type="range" id="tCalls" min="0" max="9" value="3"></div>
+      <div class="sl"><label>Tenure: <b id="tTenV">20</b> months</label><input type="range" id="tTen" min="1" max="72" value="20"></div>
+      <label class="toggle"><input type="checkbox" id="tAuto"> Autopay</label>
+    </div>
+    <div class="two" style="margin-top:12px">
+      <div class="path" id="tPath"></div>
+      <div style="text-align:center"><div class="muted" style="font-size:14px;font-weight:600">Churn rate in this leaf</div><div class="big-v" id="tRate"></div><div class="muted" style="font-size:13px" id="tLeaf"></div></div>
+    </div>
+  </div>
+
+  <h3>Your tasks</h3>
+  <div class="card">
+    <label class="task"><input type="checkbox"><span><b>Task 1.</b> In Part A, get your SSE within 5 of the least-squares value without pressing the button. Then explain why no other line can have a smaller SSE than the least-squares line.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 2.</b> In Part B, price a 5-year-old Mid petrol manual with 60,000 km and 1 owner. Then change only the fuel to Electric, and only the tier to Premium. Which coefficients explain each change?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 3.</b> In Part B, can the model predict a negative price? Try an old Budget car with high km and 4 owners. What does this tell you about using a linear model outside the range of the training data?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 4.</b> In Part C, place a customer at tenure ≈ 6 months and 4 calls, and another at 60 months and 0 calls. Compare their probabilities with k = 1, k = 15 and k = 61. What happens to the predictions as k grows?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 5.</b> In Part D, find the leaf with the highest churn rate and write it as an if/then rule. How many training customers fall in it?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 6.</b> In the Naïve Bayes calculator (Section 7), untick evidence one item at a time. Which single piece of evidence changes the probability most, and does that agree with the logistic odds ratios?</span></label>
+    <details><summary>Check your answers</summary>
+      <p>1. The least-squares line (a = 10.082, b = −0.704) has SSE 49.59 and R² 0.794. By definition it is the line with the smallest possible SSE: calculus sets the derivatives of SSE with respect to a and b to zero, which gives exactly the formulas for a and b. 2. The base car comes to <b>₹6.05 lakh</b>. Changing only the fuel to Electric adds the fuel_Electric coefficient (+2.51) → <b>₹8.56 lakh</b>. Changing only the tier to Premium swaps tier_Mid (+3.12) for tier_Premium (+11.43), a difference of 8.30 → <b>₹14.35 lakh</b>. 3. Yes: a 15-year-old Budget petrol manual with 2,40,000 km and 4 owners comes out at <b>−₹3.97 lakh</b>. A straight line keeps falling forever, but real prices have a floor (no car in the data sold below ₹0.8 lakh). Linear models can give nonsense when you extrapolate to unusual combinations. 4. At k = 1 the answer is all-or-nothing: 100% for (6 months, 4 calls), 0% for (60 months, 0 calls), decided by one neighbour. At k = 15 they become 47% and 7%; at k = 61, 52% and 3%. Larger k gives smoother, steadier estimates. Notice the first customer sits right on the decision boundary: predicted STAY at k = 15 but CHURN at k = 61. Choosing k changes decisions, which is why Unit 4 tunes it with cross-validation. 5. Support calls &gt; 2.5 AND tenure ≤ 37.5 AND no autopay: 51 of 85 training customers churned (60%). 6. Unticking “3+ support calls” changes the probability most (62.1% → 40.8%). Its likelihood ratio, 0.244 ÷ 0.103 ≈ 2.4, is the largest of the four, consistent with support calls having one of the strongest effects in the logistic model (odds × 1.49 per call).</p>
+    </details>
+  </div>
+
+  <h3>Part E · The same lab in Python, R and SPSS</h3>
+  <div class="grid g3">
+    <a class="card tile" href="lab/used_cars.csv" download><div class="ic c-brand">🚗</div><h3>Used cars (CSV)</h3><p>used_cars.csv · 1,200 listings</p></a>
+    <a class="card tile" href="lab/swifttel_customers.csv" download><div class="ic c-teal">📱</div><h3>SwiftTel (CSV)</h3><p>swifttel_customers.csv · 1,500 customers</p></a>
+    <a class="card tile" href="lab/unit3_lab.ipynb" download><div class="ic c-accent">📓</div><h3>Jupyter notebook</h3><p>7 parts: regression → 4 classifiers</p></a>
+    <a class="card tile" href="lab/unit3_lab.py" download><div class="ic c-accent">🐍</div><h3>Python script</h3><p>python unit3_lab.py</p></a>
+    <a class="card tile" href="lab/unit3_lab.R" download><div class="ic c-violet">📊</div><h3>R script</h3><p>lm, glm, rpart, class::knn</p></a>
+  </div>
+  <h3>SPSS · Lab Experiments 5, 6, 7 and 8</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Experiment</th><th>Menu path</th><th>What to look at</th></tr>
+    <tr><td><b>5 · Linear regression</b></td><td>Analyze → Regression → Linear; Dependent: price_lakh; Independent: age_years</td><td>Coefficients table (B for constant and age), Model Summary (R²)</td></tr>
+    <tr><td><b>6 · Multiple regression</b></td><td>Same dialog with age_years, km_driven, owners and dummy variables (create with Transform → Create Dummy Variables)</td><td>R², adjusted R², each B and its Sig. value; Statistics → Collinearity diagnostics (VIF)</td></tr>
+    <tr><td><b>7 · Logistic regression</b></td><td>Analyze → Regression → Binary Logistic; Dependent: churned; Covariates: tenure, charge, calls, plan, autopay, satisfaction; mark categorical ones with “Categorical…”</td><td>Variables in the Equation: B and <b>Exp(B)</b> (= odds ratio); Classification Table (cut value 0.5)</td></tr>
+    <tr><td><b>8 · Decision tree</b></td><td>Analyze → Classify → Tree; Growing Method: <b>CRT</b> (CART); Criteria → maximum depth 3</td><td>The tree diagram, risk estimate, classification table; compare with CHAID</td></tr>
+  </table></div>
+  <p class="muted" style="font-size:14px">SPSS uses all rows unless you split the file yourself, so its numbers will differ slightly from the 70/30 Python results. The patterns (signs, odds ratios, first split) should match.</p>
+  <div class="callout tip"><b>Challenge (assignment)</b> Add <code>city</code> to the car model as dummy variables. Does adjusted R² go up or down? Explain what that says about whether city affects used-car prices in this dataset.</div>
+</section>
+
+<!-- ================================================================ 11 -->
+<section class="block" id="summary">
+  <div class="sec-no">Section 11</div>
+  <h2>Summary and revision</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Topic</th><th>Remember this</th></tr>
+    <tr><td>Regression vs classification</td><td>Number vs category; both supervised; logistic regression is a classifier</td></tr>
+    <tr><td>Simple linear regression</td><td>ŷ = a + bx; b = Σ(x−x̄)(y−ȳ)/Σ(x−x̄)²; a = ȳ − bx̄; minimises SSE</td></tr>
+    <tr><td>Multiple regression</td><td>Coefficient = effect with others held constant; dummies with a baseline; R² 0.14 → 0.96 with more features</td></tr>
+    <tr><td>Regression metrics</td><td>R² = 1 − SSE/SST; adjusted R² penalises extra features; RMSE and MAE in target units; check residuals</td></tr>
+    <tr><td>Logistic regression</td><td>Log-odds linear; p = 1/(1+e<sup>−z</sup>); odds ratio e<sup>b</sup> (calls 1.49, autopay 0.56)</td></tr>
+    <tr><td>Decision tree</td><td>Gini 1 − Σp² or entropy; greedy best split; readable rules; control depth to avoid overfitting</td></tr>
+    <tr><td>KNN</td><td>Distances to stored data; vote of k neighbours; scale first; small k overfits, large k underfits</td></tr>
+    <tr><td>Naïve Bayes</td><td>P(C)·ΠP(eᵢ|C), features independent given the class; fast; probabilities over-confident</td></tr>
+    <tr><td>Process</td><td>Target → features → split → preprocess on train → train → tune → test once → deploy; avoid leakage</td></tr>
+  </table></div>
+
+  <h3>Key terms (click a card to flip)</h3>
+  <div class="grid g4">
+    <div class="flip"><div class="inner"><div class="face"><b>Least squares</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Choose the line that makes the sum of squared residuals as small as possible.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Adjusted R²</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">R² with a penalty for extra predictors; falls if a new feature doesn’t help.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Dummy variable</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">A 0/1 column for one category; one category is left out as the baseline.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Odds ratio</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">e<sup>b</sup>: how the odds are multiplied when a feature rises by 1 (calls: ×1.49).</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Gini impurity</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">1 − Σp²: 0 for a pure node, 0.5 for a 50/50 mix of two classes.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>k in KNN</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Number of neighbours that vote. Small k overfits; large k smooths too much.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Naïve assumption</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Features are independent given the class, so their probabilities can be multiplied.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Data leakage</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Test or future information sneaking into training; inflates scores.</div></div></div>
+  </div>
+
+  <div class="callout tip" style="margin-top:22px"><b>Ready for the quiz?</b> You should be able to: tell regression from classification · compute a least-squares slope and intercept and an R² · interpret multiple-regression and dummy coefficients · compute adjusted R², RMSE and MAE · turn a logistic coefficient into an odds ratio and z into p · compute Gini and a weighted split · compute a Euclidean distance and explain the effect of k and scaling · do a Naïve Bayes calculation · list the model-building steps and explain stratification and leakage.</div>
+  <p style="text-align:center;margin-top:20px"><a class="btn accent" href="quiz.html">Go to the Unit 3 quiz →</a></p>
+</section>
+    </main>
+  </div>
+</div>
+<footer class="foot">Unit 3 · Predictive Modeling Techniques · BCA DS &amp; AI Semester 3</footer>
+
+<script>
+var $ = function (id) { return document.getElementById(id); };
+function parseCsv(txt) {
+  var lines = txt.replace(/^﻿/, '').trim().split(/\r?\n/), head = lines[0].split(',');
+  return lines.slice(1).map(function (l) { var v = l.split(','), o = {}; head.forEach(function (h, i) { o[h] = v[i]; }); return o; });
+}
+
+/* ---------- Naive Bayes calculator (counts from all 1,500 customers) ---------- */
+var NB = { churn: 340, stay: 1160, calls3: [83, 119], prepaid: [240, 694], noauto: [340 - 81, 1160 - 461], new: [173, 374] };
+var NBNAME = { calls3: '3+ calls', prepaid: 'prepaid', noauto: 'no autopay', new: 'tenure ≤ 12' };
+function naiveBayes() {
+  var pc = NB.churn / 1500, ps = NB.stay / 1500, work = ['P(churn) ' + pc.toFixed(3)], used = [];
+  document.querySelectorAll('.nbE').forEach(function (c) {
+    if (!c.checked) return;
+    var e = NB[c.value]; pc *= e[0] / NB.churn; ps *= e[1] / NB.stay; used.push(NBNAME[c.value]);
+    work.push('× ' + (e[0] / NB.churn).toFixed(3));
+  });
+  var post = pc / (pc + ps);
+  $('nbOut').innerHTML =
+    '<div class="kpi"><div class="v">' + pc.toFixed(5) + '</div><div class="l">churn score</div></div>' +
+    '<div class="kpi"><div class="v">' + ps.toFixed(5) + '</div><div class="l">stay score</div></div>' +
+    '<div class="kpi"><div class="v" style="color:' + (post >= .5 ? 'var(--bad)' : 'var(--good)') + '">' + (100 * post).toFixed(1) + '%</div><div class="l">P(churn | ' + (used.length ? used.join(', ') : 'no evidence') + ')</div></div>';
+  $('nbWork').textContent = 'Churn score = ' + work.join(' ') + ' = ' + pc.toFixed(5) + '. Posterior = churn score ÷ (churn + stay scores).';
+}
+document.querySelectorAll('.nbE').forEach(function (c) { c.addEventListener('change', naiveBayes); });
+naiveBayes();
+
+/* ---------- Part A: line fitting on 40 Mid-tier cars ---------- */
+var MID = [];
+function fitDraw() {
+  if (!MID.length) return;
+  var a = +$('aSl').value, b = +$('bSl').value;
+  $('aVal').textContent = a.toFixed(1); $('bVal').textContent = b.toFixed(2);
+  var ybar = MID.reduce(function (s, p) { return s + p.y; }, 0) / MID.length, sse = 0, sst = 0;
+  MID.forEach(function (p) { var r = p.y - (a + b * p.x); sse += r * r; sst += (p.y - ybar) * (p.y - ybar); });
+  $('fitKpi').innerHTML =
+    '<div class="kpi"><div class="v">' + sse.toFixed(2) + '</div><div class="l">your SSE (least squares: 49.59)</div></div>' +
+    '<div class="kpi"><div class="v">' + (1 - sse / sst).toFixed(3) + '</div><div class="l">your R² (best: 0.794)</div></div>' +
+    '<div class="kpi"><div class="v">' + a.toFixed(2) + ' ' + (b < 0 ? '−' : '+') + ' ' + Math.abs(b).toFixed(3) + '·age</div><div class="l">your line</div></div>';
+  var W = 760, H = 300, X = function (x) { return 50 + (x - 0) * (W - 70) / 16; }, Y = function (y) { return H - 30 - y * (H - 50) / 16; };
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Scatter of 40 cars with your line">';
+  [0, 4, 8, 12, 16].forEach(function (v) {
+    s += '<line x1="50" y1="' + Y(v) + '" x2="' + (W - 20) + '" y2="' + Y(v) + '" style="stroke:var(--line)"/><text x="40" y="' + (Y(v) + 4) + '" text-anchor="end" style="font-size:12px;fill:var(--ink-3)">' + v + '</text>';
+    s += '<text x="' + X(v) + '" y="' + (H - 12) + '" text-anchor="middle" style="font-size:12px;fill:var(--ink-3)">' + v + '</text>';
+  });
+  MID.forEach(function (p) {
+    var yh = a + b * p.x;
+    s += '<line x1="' + X(p.x) + '" y1="' + Y(p.y) + '" x2="' + X(p.x) + '" y2="' + Y(yh) + '" style="stroke:var(--bad);stroke-opacity:.5"/>';
+    s += '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="4.5" style="fill:var(--brand)"/>';
+  });
+  s += '<line x1="' + X(0) + '" y1="' + Y(a) + '" x2="' + X(16) + '" y2="' + Y(a + b * 16) + '" style="stroke:var(--accent);stroke-width:3"/>';
+  s += '<text x="' + (W / 2) + '" y="' + (H - 0) + '" text-anchor="middle" style="font-size:12px;fill:var(--ink-3)">age (years) · red lines are residuals · price in ₹ lakh</text>';
+  $('fitChart').innerHTML = s + '</svg>';
+}
+function bestFit() {
+  var n = MID.length, mx = 0, my = 0, sxy = 0, sxx = 0;
+  MID.forEach(function (p) { mx += p.x / n; my += p.y / n; });
+  MID.forEach(function (p) { sxy += (p.x - mx) * (p.y - my); sxx += (p.x - mx) * (p.x - mx); });
+  var b = sxy / sxx; $('bSl').value = b.toFixed(2); $('aSl').value = (my - b * mx).toFixed(1);
+  fitDraw();
+  // sliders round a and b, so show the exact least-squares numbers too
+  $('fitKpi').insertAdjacentHTML('beforeend', '<div class="kpi"><div class="v">' + (my - b * mx).toFixed(3) + ' − ' + Math.abs(b).toFixed(3) + '·age</div><div class="l">exact least-squares line</div></div>');
+}
+['aSl', 'bSl'].forEach(function (id) { $(id).addEventListener('input', fitDraw); });
+
+/* ---------- Part B: car price predictor ---------- */
+// coefficients of the multiple regression trained in lab/unit3_lab.py (Part 3)
+var CAR = { intercept: 5.99292852498754, age_years: -0.4620090114724986, km_thousand: -0.007446805755088793, owners: -0.31020562131267476,
+            tier_Mid: 3.12490857810548, tier_Premium: 11.428640498892861, fuel_Diesel: 0.6934960630105997, fuel_CNG: -0.05550362904875485,
+            fuel_Electric: 2.513974573260111, automatic: 0.9877592784470061 };
+function carPrice() {
+  var age = +$('cAge').value, km = +$('cKm').value, own = +$('cOwn').value, tier = $('cTier').value, fuel = $('cFuel').value, auto = $('cTrans').value === 'Automatic';
+  $('cAgeV').textContent = age; $('cKmV').textContent = km.toLocaleString('en-IN'); $('cOwnV').textContent = own;
+  var parts = [['baseline (Budget, petrol, manual)', CAR.intercept], ['age ' + age + ' × −0.462', CAR.age_years * age], ['km ' + (km / 1000) + 'k × −0.0074', CAR.km_thousand * km / 1000],
+               ['owners ' + own + ' × −0.310', CAR.owners * own]];
+  if (tier !== 'Budget') parts.push([tier + ' tier', CAR['tier_' + tier]]);
+  if (fuel !== 'Petrol') parts.push([fuel, CAR['fuel_' + fuel]]);
+  if (auto) parts.push(['automatic', CAR.automatic]);
+  var total = parts.reduce(function (s, p) { return s + p[1]; }, 0);
+  $('cPrice').textContent = '₹' + total.toFixed(2) + ' lakh'; $('cPrice').style.color = total < 0.8 ? 'var(--bad)' : 'var(--ink)';
+  var W = 420, rowH = 26, max = Math.max.apply(null, parts.map(function (p) { return Math.abs(p[1]); })), mid = 260, sc = 150 / max;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + (parts.length * rowH + 10) + '" role="img" aria-label="Contribution of each feature">';
+  parts.forEach(function (p, i) {
+    var y = 5 + i * rowH, w = Math.abs(p[1]) * sc, x = p[1] >= 0 ? mid : mid - w;
+    s += '<text x="' + (mid - 8 - (p[1] < 0 ? w : 0)) + '" y="' + (y + 16) + '" text-anchor="end" style="font-size:11.5px;fill:var(--ink-2)">' + p[0] + '</text>';
+    s += '<rect x="' + x + '" y="' + (y + 4) + '" width="' + Math.max(1, w) + '" height="16" rx="3" style="fill:' + (p[1] >= 0 ? 'var(--good)' : 'var(--bad)') + '"/>';
+    if (p[1] >= 0) s += '<text x="' + (mid + w + 5) + '" y="' + (y + 16) + '" style="font-size:11.5px;fill:var(--ink)">' + p[1].toFixed(2) + '</text>';
+    else s += '<text x="' + (mid + 5) + '" y="' + (y + 16) + '" style="font-size:11.5px;fill:var(--ink)">' + p[1].toFixed(2) + '</text>';
+  });
+  $('cChart').innerHTML = s + '</svg>';
+}
+['cAge', 'cKm', 'cOwn', 'cTier', 'cFuel', 'cTrans'].forEach(function (id) { $(id).addEventListener('input', carPrice); });
+carPrice();
+
+/* ---------- Part C: KNN playground ---------- */
+var PTS = [], SC = null, NEWP = { t: 6, c: 4 };
+var KW = 760, KH = 330, KX = function (t) { return 40 + (t - 1) * (KW - 60) / 71; }, KY = function (c) { return KH - 30 - c * (KH - 50) / 9; };
+function knnDraw() {
+  if (!PTS.length) return;
+  var k = +$('kSl').value; $('kVal').textContent = k;
+  var zt = (NEWP.t - SC.mt) / SC.st, zc = (NEWP.c - SC.mc) / SC.sc;
+  var d = PTS.map(function (p, i) { return { i: i, d: Math.sqrt(Math.pow(p.zt - zt, 2) + Math.pow(p.zc - zc, 2)) }; }).sort(function (a, b) { return a.d - b.d; }).slice(0, k);
+  var near = {}, ch = 0; d.forEach(function (x) { near[x.i] = 1; ch += PTS[x.i].y; });
+  var s = '<svg id="knnSvg" viewBox="0 0 ' + KW + ' ' + KH + '" role="img" aria-label="Customers by tenure and support calls; click to place a new customer">';
+  [0, 3, 6, 9].forEach(function (c) { s += '<text x="30" y="' + (KY(c) + 4) + '" text-anchor="end" style="font-size:12px;fill:var(--ink-3)">' + c + '</text>'; });
+  [1, 12, 24, 36, 48, 60, 72].forEach(function (t) { s += '<text x="' + KX(t) + '" y="' + (KH - 10) + '" text-anchor="middle" style="font-size:12px;fill:var(--ink-3)">' + t + '</text>'; });
+  PTS.forEach(function (p, i) {
+    var nb = near[i];
+    s += '<circle cx="' + (KX(p.t) + p.jx).toFixed(1) + '" cy="' + (KY(p.c) + p.jy).toFixed(1) + '" r="' + (nb ? 4 : 2.3) + '" style="fill:' + (p.y ? 'var(--bad)' : 'var(--brand)') +
+      ';fill-opacity:' + (nb ? 1 : .28) + (nb ? ';stroke:var(--ink);stroke-width:1' : '') + '"/>';
+  });
+  s += '<rect x="' + (KX(NEWP.t) - 8) + '" y="' + (KY(NEWP.c) - 8) + '" width="16" height="16" rx="3" style="fill:var(--ink)"/>';
+  s += '<text x="' + (KW / 2) + '" y="' + (KH - 0) + '" text-anchor="middle" style="font-size:12px;fill:var(--ink-3)">tenure (months) → · support calls ↑ · ringed dots are the k nearest</text>';
+  $('knnBox').innerHTML = s + '</svg>';
+  $('knnSvg').addEventListener('click', function (e) {
+    var r = this.getBoundingClientRect(), x = (e.clientX - r.left) * KW / r.width, y = (e.clientY - r.top) * KH / r.height;
+    NEWP = { t: Math.max(1, Math.min(72, 1 + (x - 40) * 71 / (KW - 60))), c: Math.max(0, Math.min(9, (KH - 30 - y) * 9 / (KH - 50))) };
+    knnDraw();
+  });
+  var p = ch / k;
+  $('knnOut').innerHTML =
+    '<div class="kpi"><div class="v">' + NEWP.t.toFixed(0) + ' m · ' + NEWP.c.toFixed(1) + '</div><div class="l">new customer (tenure, calls)</div></div>' +
+    '<div class="kpi"><div class="v">' + ch + ' / ' + k + '</div><div class="l">neighbours who churned</div></div>' +
+    '<div class="kpi"><div class="v" style="color:' + (p >= .5 ? 'var(--bad)' : 'var(--good)') + '">' + (100 * p).toFixed(0) + '%</div><div class="l">P(churn) → predict ' + (p >= .5 ? 'CHURN' : 'STAY') + '</div></div>';
+}
+$('kSl').addEventListener('input', knnDraw);
+
+/* ---------- Part D: decision tree path ---------- */
+// depth-3 tree trained in lab/unit3_lab.py (Part 5); thresholds and leaf churn rates from scikit-learn
+var TREE = {"leaf": false, "feature": "support_calls", "thr": 2.5, "n": 1050, "left": {"leaf": false, "feature": "tenure_months", "thr": 17.5, "n": 907, "left": {"leaf": false, "feature": "support_calls", "thr": 1.5, "n": 455, "left": {"leaf": true, "n": 352, "rate": 0.233}, "right": {"leaf": true, "n": 103, "rate": 0.3981}}, "right": {"leaf": false, "feature": "autopay", "thr": 0.5, "n": 452, "left": {"leaf": true, "n": 277, "rate": 0.1516}, "right": {"leaf": true, "n": 175, "rate": 0.0629}}}, "right": {"leaf": false, "feature": "tenure_months", "thr": 37.5, "n": 143, "left": {"leaf": false, "feature": "autopay", "thr": 0.5, "n": 120, "left": {"leaf": true, "n": 85, "rate": 0.6}, "right": {"leaf": true, "n": 35, "rate": 0.2857}}, "right": {"leaf": false, "feature": "autopay", "thr": 0.5, "n": 23, "left": {"leaf": true, "n": 15, "rate": 0.0}, "right": {"leaf": true, "n": 8, "rate": 0.125}}}};
+function treePath() {
+  var x = { support_calls: +$('tCalls').value, tenure_months: +$('tTen').value, autopay: $('tAuto').checked ? 1 : 0 };
+  $('tCallsV').textContent = x.support_calls; $('tTenV').textContent = x.tenure_months;
+  var node = TREE, lines = [], depth = 0;
+  while (!node.leaf) {
+    var goLeft = x[node.feature] <= node.thr, label = node.feature === 'autopay' ? 'autopay = ' + (x.autopay ? 'yes' : 'no') : node.feature + ' = ' + x[node.feature];
+    lines.push('<div class="on">' + '&nbsp;'.repeat(depth * 3) + 'Is ' + node.feature + ' ≤ ' + node.thr + '?  (' + label + ') → <b>' + (goLeft ? 'YES' : 'NO') + '</b></div>');
+    node = goLeft ? node.left : node.right; depth++;
+  }
+  lines.push('<div class="on">' + '&nbsp;'.repeat(depth * 3) + '→ leaf: ' + node.n + ' training customers</div>');
+  $('tPath').innerHTML = lines.join('');
+  $('tRate').textContent = (100 * node.rate).toFixed(1) + '%'; $('tRate').style.color = node.rate >= .5 ? 'var(--bad)' : node.rate >= .227 ? 'var(--accent)' : 'var(--good)';
+  $('tLeaf').textContent = 'predict ' + (node.rate >= .5 ? 'CHURN' : 'STAY') + ' · ' + Math.round(node.rate * node.n) + ' of ' + node.n + ' churned';
+}
+['tCalls', 'tTen', 'tAuto'].forEach(function (id) { $(id).addEventListener('input', treePath); });
+treePath();
+
+/* ---------- data for Parts A and C ---------- */
+fetch('lab/used_cars.csv').then(function (r) { return r.text(); }).then(function (t) {
+  MID = parseCsv(t).filter(function (r) { return r.brand_tier === 'Mid'; }).slice(0, 40).map(function (r) { return { x: +r.age_years, y: +r.price_lakh }; });
+  fitDraw();
+}).catch(function () { $('fitKpi').textContent = 'Open this page through the classroom server to load the data.'; });
+fetch('lab/swifttel_customers.csv').then(function (r) { return r.text(); }).then(function (t) {
+  var rows = parseCsv(t), n = rows.length, seed = 11, rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647 - .5; };
+  var mt = 0, mc = 0; rows.forEach(function (r) { mt += +r.tenure_months / n; mc += +r.support_calls / n; });
+  var st = 0, sc = 0; rows.forEach(function (r) { st += Math.pow(+r.tenure_months - mt, 2); sc += Math.pow(+r.support_calls - mc, 2); });
+  SC = { mt: mt, mc: mc, st: Math.sqrt(st / (n - 1)), sc: Math.sqrt(sc / (n - 1)) };
+  PTS = rows.map(function (r) { var t = +r.tenure_months, c = +r.support_calls;
+    return { t: t, c: c, y: r.churned === 'Yes' ? 1 : 0, zt: (t - SC.mt) / SC.st, zc: (c - SC.mc) / SC.sc, jx: rnd() * 6, jy: rnd() * 14 }; });
+  knnDraw();
+}).catch(function () { $('knnOut').textContent = 'Open this page through the classroom server to load the data.'; });
+</script>
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 Board Slides</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/diagrams.js"></script>
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  body { background: #11161f; margin: 0; }
+  #stage { position: absolute; width: 1280px; height: 720px; left: 50%; top: 50%; transform-origin: center center; }
+  .slide { position: absolute; inset: 0; background: var(--surface); border-radius: 6px; padding: 54px 70px; display: none; overflow: hidden; color: var(--ink); font-size: 27px; line-height: 1.45; }
+  .slide.on { display: block; }
+  .slide h1 { font-size: 58px; margin-bottom: 18px; }
+  .slide h2 { font-size: 42px; margin-bottom: 22px; color: var(--ink); }
+  .slide h2 .k { color: var(--brand); }
+  .slide .sub { font-size: 24px; color: var(--ink-3); }
+  .slide ul { margin: 0; padding-left: 32px; }
+  .slide li { margin: 8px 0; }
+  .slide .math { font-family: var(--mono); font-size: 25px; background: var(--surface-2); border-left: 5px solid var(--accent); padding: 14px 20px; border-radius: 8px; margin: 12px 0; line-height: 1.6; }
+  .slide .big { font-size: 34px; font-weight: 700; }
+  .slide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+  .slide .box { border: 2px solid var(--line); border-radius: 14px; padding: 16px 20px; font-size: 23px; }
+  .slide table { font-size: 25px; }
+  .slide td { padding: 13px 16px; }
+  .slide th { font-size: 17px; }
+  .slide svg { width: 100%; height: auto; }
+  .slide .tag { position: absolute; top: 22px; right: 30px; font-size: 15px; font-weight: 700; color: var(--ink-3); letter-spacing: .08em; text-transform: uppercase; }
+  .slide .ask { position: absolute; left: 70px; right: 70px; bottom: 30px; background: var(--violet-soft); color: var(--violet); font-weight: 700; font-size: 22px; padding: 12px 20px; border-radius: 12px; }
+  .title-slide { background: linear-gradient(135deg, #1b4fa8, #2a6fdb 55%, #149c9c) !important; color: #fff !important; }
+  .title-slide .sub { color: rgba(255,255,255,.85); }
+  #ink { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+  body.drawing #ink { pointer-events: auto; cursor: crosshair; }
+  #hud { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 6px; align-items: center;
+    background: rgba(20,26,38,.88); color: #dfe6f2; padding: 6px 10px; border-radius: 12px; font: 14px var(--font); opacity: .25; transition: opacity .2s; }
+  #hud:hover, body.drawing #hud { opacity: 1; }
+  #hud button { background: transparent; color: inherit; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  #hud button.on { background: #2a6fdb; border-color: #2a6fdb; }
+  #hud .sw { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,.5); padding: 0; }
+  #notes { position: fixed; right: 12px; top: 12px; width: 380px; max-height: calc(100vh - 80px); overflow: auto; z-index: 15; background: #fffbe8; color: #3d3517;
+    border-radius: 12px; padding: 16px 18px; font: 15px/1.5 var(--font); box-shadow: 0 10px 30px rgba(0,0,0,.4); display: none; }
+  #notes.on { display: block; }
+  #notes b { color: #8a5a00; }
+  #notes ul { padding-left: 18px; margin: 6px 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 -->
+<section class="slide title-slide" data-notes="<b>0:00 · 1 min.</b> Welcome. Tell them the 2-hour plan: 30 min board, 5 min break, 35 min study + lab on their screens, 10 min rest, 40 min quiz + review. The quiz is based on everything today, so take notes.">
+  <div style="margin-top:110px">
+    <div class="sub" style="font-weight:700;letter-spacing:.12em;text-transform:uppercase">BCA Semester 5 · Data Science · Unit 1</div>
+    <h1 style="font-size:72px;margin-top:14px">Introduction to<br>Data Science</h1>
+    <div class="sub" style="font-size:26px">Definition · Lifecycle · Roles · DS vs AI vs ML · Applications · CRISP-DM · Data-driven decisions</div>
+  </div>
+  <div style="position:absolute;left:70px;right:70px;bottom:50px;display:flex;gap:6px;font-size:18px;font-weight:700">
+    <div style="flex:30;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Board · 30</div>
+    <div style="flex:5;background:rgba(255,255,255,.1);padding:10px 4px;border-radius:8px">5</div>
+    <div style="flex:35;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Study + lab · 35</div>
+    <div style="flex:10;background:rgba(255,255,255,.1);padding:10px 4px;border-radius:8px">10</div>
+    <div style="flex:40;background:rgba(255,255,255,.22);padding:10px;border-radius:8px">Quiz + review · 40</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-notes="<b>1–3 min.</b> Hook. Ask the class each question and take 2–3 answers. Goal: they realise they are surrounded by data products. Answers: watch history + similar users; your normal spending pattern vs this payment; live speed of phones on that road. Then: 'All three are data science. Today we learn how it works.'">
+  <span class="tag">Warm-up</span>
+  <h2>How does your phone know…</h2>
+  <div class="grid g3" style="margin-top:30px">
+    <div class="box" style="font-size:26px">🎬 …what show you will <b>want to watch</b> tonight?</div>
+    <div class="box" style="font-size:26px">🏦 …that a UPI payment is <b>probably fraud</b>, in under a second?</div>
+    <div class="box" style="font-size:26px">🗺️ …that the road to college will take <b>23 minutes</b>?</div>
+  </div>
+  <p class="big" style="margin-top:60px;text-align:center">None of these rules was written by hand.<br><span style="color:var(--brand)">They were found in data.</span></p>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-notes="<b>3–5 min.</b> Write the definition. Underline: statistics, programming, domain knowledge, insight, decision. Draw the Venn. Ask: 'What happens if you know Python and the business, but not statistics?' → Danger zone: confident but wrong analysis.">
+  <span class="tag">Definition</span>
+  <h2>What is <span class="k">data science</span>?</h2>
+  <div class="cols">
+    <div>
+      <p style="font-size:30px;border-left:6px solid var(--brand);padding-left:20px">Combining <b>statistics</b>, <b>programming</b> and <b>domain knowledge</b> to extract <b>insight</b> from data and turn it into <b>decisions</b> or <b>data products</b>.</p>
+      <p class="sub" style="margin-top:24px">Not “making charts”. Not “just AI”.<br>The goal: <b>a better decision than without data.</b></p>
+    </div>
+    <svg viewBox="0 0 420 380">
+      <circle cx="150" cy="140" r="105" style="fill:var(--brand);fill-opacity:.16;stroke:var(--brand);stroke-width:2"/>
+      <circle cx="270" cy="140" r="105" style="fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:2"/>
+      <circle cx="210" cy="240" r="105" style="fill:var(--good);fill-opacity:.16;stroke:var(--good);stroke-width:2"/>
+      <text x="100" y="100" text-anchor="middle" style="font-size:17px;font-weight:700;fill:var(--brand-ink)">Programming</text>
+      <text x="320" y="100" text-anchor="middle" style="font-size:17px;font-weight:700;fill:var(--accent)">Maths &amp; Stats</text>
+      <text x="210" y="318" text-anchor="middle" style="font-size:17px;font-weight:700;fill:var(--good)">Domain</text>
+      <text x="210" y="122" text-anchor="middle" style="font-size:14px;fill:var(--ink-2)">ML</text>
+      <text x="142" y="230" text-anchor="middle" style="font-size:14px;fill:var(--bad)">Danger zone</text>
+      <text x="280" y="230" text-anchor="middle" style="font-size:14px;fill:var(--ink-2)">Research</text>
+      <text x="210" y="186" text-anchor="middle" style="font-size:18px;font-weight:800;fill:var(--ink)">DATA SCIENCE</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-notes="<b>5–7 min.</b> Draw the pyramid bottom-up. Use the KiranaMart retail example they will use in the lab. Point out: moving up = adding context and meaning. Data science is the machine that moves you up the pyramid.">
+  <span class="tag">DIKW</span>
+  <h2>From data to <span class="k">wisdom</span></h2>
+  <svg viewBox="0 0 1140 470">
+    <polygon points="60,450 560,450 480,350 140,350" style="fill:var(--brand-soft);stroke:var(--brand);stroke-width:2"/>
+    <polygon points="145,342 475,342 400,245 220,245" style="fill:var(--teal-soft);stroke:var(--teal);stroke-width:2"/>
+    <polygon points="225,237 395,237 340,140 280,140" style="fill:var(--violet-soft);stroke:var(--violet);stroke-width:2"/>
+    <polygon points="283,132 337,132 310,40" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+    <text x="310" y="410" text-anchor="middle" style="font-size:26px;font-weight:800;fill:var(--brand-ink)">DATA</text>
+    <text x="310" y="303" text-anchor="middle" style="font-size:24px;font-weight:800;fill:var(--teal)">INFORMATION</text>
+    <text x="310" y="214" text-anchor="middle" style="font-size:18px;font-weight:800;fill:var(--violet)">KNOWLEDGE</text>
+    <text x="350" y="95" style="font-size:20px;font-weight:800;fill:var(--accent)">WISDOM</text>
+    <g style="font-size:23px;fill:var(--ink)">
+      <text x="600" y="405">“KM10287, Mumbai, Beauty, ₹1,520, ★4”</text>
+      <text x="600" y="300">“Nov revenue ₹5.5 lakh: year’s highest”</text>
+      <text x="600" y="185">“Festive discounts cause the spike;</text>
+      <text x="600" y="215">  slow delivery lowers ratings”</text>
+      <text x="600" y="85">“Stock up and hire delivery staff</text>
+      <text x="600" y="115">  from September”</text>
+    </g>
+    <g style="font-size:16px;fill:var(--ink-3)">
+      <text x="600" y="432">raw facts</text><text x="600" y="327">what? when? where?</text>
+      <text x="600" y="240">how? why?</text><text x="600" y="140">what should we do?</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-notes="<b>7–9 min.</b> MATHS. Work the CAGR on the board step by step. 180/2 = 90. 90^(1/15): use ln. ln 90 = 4.50, /15 = 0.30, e^0.30 = 1.35. Doubling time ln2/ln1.35 ≈ 0.693/0.300 = 2.3 yrs. Ask: 'If you graduate in 2027, how much more data will exist by 2030?' (~2.5×).">
+  <span class="tag">Significance · maths</span>
+  <h2>How fast is data <span class="k">growing</span>?</h2>
+  <div class="cols">
+    <div>
+      <table style="font-size:24px;width:auto">
+        <tr><th>Year</th><th class="num">Data created / year</th></tr>
+        <tr><td>2010</td><td class="num">≈ 2 ZB</td></tr>
+        <tr><td>2015</td><td class="num">≈ 15 ZB</td></tr>
+        <tr><td>2020</td><td class="num">≈ 64 ZB</td></tr>
+        <tr><td>2025</td><td class="num">≈ 180 ZB</td></tr>
+      </table>
+      <p class="sub" style="font-size:18px;margin-top:10px">1 ZB = 10<sup>21</sup> bytes = 1 billion TB · IDC estimates</p>
+    </div>
+    <div>
+      <div class="math">CAGR = (V<sub>end</sub> / V<sub>start</sub>)<sup>1/n</sup> − 1<br>
+        = (180 / 2)<sup>1/15</sup> − 1<br>= 90<sup>0.0667</sup> − 1 ≈ <b>0.35 → 35% / year</b></div>
+      <div class="math">Doubling time = ln 2 / ln(1 + r)<br>= 0.693 / 0.300 ≈ <b>2.3 years</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-notes="<b>9–10 min.</b> 5 V's. For each V ask for one example from their own life. Veracity: preview the lab — the dataset has 'delhi ' and 'Delhi' and negative quantities. Value is the only V that matters to the business.">
+  <span class="tag">Significance</span>
+  <h2>The <span class="k">5 V’s</span> of big data</h2>
+  <table>
+    <tr><th>V</th><th>Meaning</th><th>Example</th></tr>
+    <tr><td><b>Volume</b></td><td>how much</td><td>UPI: over 10 billion payments every month</td></tr>
+    <tr><td><b>Velocity</b></td><td>how fast</td><td>Fraud check must finish in milliseconds</td></tr>
+    <tr><td><b>Variety</b></td><td>how many forms</td><td>Tables, text reviews, photos, GPS, audio</td></tr>
+    <tr><td><b>Veracity</b></td><td>how trustworthy</td><td>“delhi ” vs “Delhi”, duplicates, quantity = −1</td></tr>
+    <tr><td><b>Value</b></td><td>how useful</td><td>Insight that changes a decision</td></tr>
+  </table>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-notes="<b>10–12 min.</b> Draw the cycle. Emphasise: (1) it starts with a PROBLEM not with data; (2) cleaning takes the most time; (3) it loops — deployment creates new questions. Ask: 'Which stage do you think takes longest?' Most say modeling. Answer: cleaning/preparation.">
+  <span class="tag">Lifecycle</span>
+  <h2>The data science <span class="k">lifecycle</span></h2>
+  <svg id="bLife" viewBox="0 0 1140 500"></svg>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-notes="<b>12–14 min.</b> MATHS. Why cleaning matters. Compute mean on the board: (21+22+23+24+250)/5 = 340/5 = 68. Median = 23. One typo moved the mean by 45 years. Duplicates: a ₹20,000 order counted twice inflates revenue. Ask: which is safer for messy data, mean or median? (median).">
+  <span class="tag">Lifecycle · maths</span>
+  <h2>Why cleaning matters: <span class="k">one bad value</span></h2>
+  <div class="cols">
+    <div>
+      <p>Customer ages entered in a form:</p>
+      <div class="math">21, 22, 23, 24, <span style="color:var(--bad);font-weight:700">250</span> ← typo for 25</div>
+      <div class="math">Mean = (21+22+23+24+250) / 5<br>= 340 / 5 = <b style="color:var(--bad)">68</b></div>
+      <div class="math">Median = middle value = <b style="color:var(--good)">23</b></div>
+    </div>
+    <div>
+      <div class="box" style="margin-bottom:16px"><b>Garbage in → garbage out</b><br>“Our average customer is 68” leads to the wrong marketing plan.</div>
+      <div class="box" style="margin-bottom:16px"><b>Duplicates</b><br>A ₹20,000 order recorded twice = revenue overstated by ₹20,000.</div>
+      <div class="box"><b>Inconsistent text</b><br>“delhi ” and “Delhi” split one city into two.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-notes="<b>14–16 min.</b> Roles. Use the restaurant analogy: engineer = supply chain, analyst = reports what sold, scientist = invents recipes, ML engineer = production line, business analyst = talks to customers. Ask: 'Which role suits you?'">
+  <span class="tag">Roles</span>
+  <h2>Who does what in a <span class="k">data team</span>?</h2>
+  <table>
+    <tr><th>Role</th><th>Main question</th><th>Typical output</th></tr>
+    <tr><td><b>Data Engineer</b></td><td>Is the data flowing and reliable?</td><td>Pipelines, warehouse</td></tr>
+    <tr><td><b>Data Analyst</b></td><td>What happened and why?</td><td>Reports, dashboards</td></tr>
+    <tr><td><b>Data Scientist</b></td><td>What will happen? What should we do?</td><td>Models, insights</td></tr>
+    <tr><td><b>ML Engineer</b></td><td>How do we run the model at scale?</td><td>Production APIs</td></tr>
+    <tr><td><b>Business Analyst</b></td><td>What does the business need?</td><td>Requirements, KPIs</td></tr>
+    <tr><td><b>Data Architect / MLOps</b></td><td>Is it organised, secure, still accurate?</td><td>Data design, monitoring</td></tr>
+  </table>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-notes="<b>16–18 min.</b> Draw nested circles AI ⊃ ML ⊃ DL, then data science overlapping. Key line: ML learns rules from data; not all AI is ML (rule-based chess); not all DS uses ML (a sales report).">
+  <span class="tag">DS vs AI vs ML</span>
+  <h2>DS vs AI vs ML vs DL</h2>
+  <div class="cols">
+    <svg viewBox="0 0 470 380">
+      <ellipse cx="200" cy="190" rx="185" ry="170" style="fill:var(--brand);fill-opacity:.10;stroke:var(--brand);stroke-width:2.5"/>
+      <ellipse cx="215" cy="215" rx="130" ry="125" style="fill:var(--violet);fill-opacity:.12;stroke:var(--violet);stroke-width:2.5"/>
+      <ellipse cx="225" cy="245" rx="72" ry="68" style="fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:2.5"/>
+      <ellipse cx="355" cy="195" rx="105" ry="130" style="fill:var(--good);fill-opacity:.12;stroke:var(--good);stroke-width:2.5;stroke-dasharray:8 6"/>
+      <text x="90" y="72" style="font-size:20px;font-weight:800;fill:var(--brand-ink)">AI</text>
+      <text x="120" y="135" style="font-size:20px;font-weight:800;fill:var(--violet)">ML</text>
+      <text x="225" y="252" text-anchor="middle" style="font-size:20px;font-weight:800;fill:var(--accent)">DL</text>
+      <text x="405" y="120" text-anchor="middle" style="font-size:20px;font-weight:800;fill:var(--good)">DS</text>
+    </svg>
+    <div style="font-size:24px">
+      <p><b style="color:var(--brand-ink)">AI</b>: machines doing tasks that need intelligence</p>
+      <p><b style="color:var(--violet)">ML</b>: AI that <u>learns rules from data</u></p>
+      <p><b style="color:var(--accent)">DL</b>: ML with deep neural networks (images, speech, text)</p>
+      <p><b style="color:var(--good)">DS</b>: getting <u>insight and decisions</u> from data; uses ML only when useful</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-notes="<b>18–21 min.</b> MATHS. 'Learning' = finding m and c that minimise the squared error. Work the 3-point example: x̄ = 2, ȳ = 13/3 ≈ 4.33. Deviations x: −1, 0, 1; y: 0.67, −0.33, −0.33. Σ(dx·dy) = −0.67 + 0 − 0.33 = −1. Σdx² = 2. m = −0.5. c = 4.33 + 1 = 5.33. Predict 4 days: 3.33. Tell them: the lab does exactly this on 1,133 orders and gets m = −0.29.">
+  <span class="tag">ML · maths</span>
+  <h2>What does “<span class="k">learning</span>” mean?</h2>
+  <div class="cols">
+    <div>
+      <p style="margin-bottom:6px">Traditional: <b>Rules + Data → Answers</b><br>Machine learning: <b>Data + Answers → Rules</b></p>
+      <div class="math">Model: ŷ = m·x + c<br>Learn m, c to minimise Σ(y − ŷ)²</div>
+      <div class="math">m = Σ(x−x̄)(y−ȳ) / Σ(x−x̄)²<br>c = ȳ − m·x̄</div>
+    </div>
+    <div>
+      <table style="font-size:22px;width:auto;margin-bottom:12px">
+        <tr><th>Delivery days x</th><th>Rating y</th></tr>
+        <tr><td>1</td><td>5</td></tr><tr><td>2</td><td>4</td></tr><tr><td>3</td><td>4</td></tr>
+      </table>
+      <div class="math" style="font-size:22px">x̄ = 2, ȳ = 4.33<br>m = (−0.67 + 0 − 0.33) / 2 = <b>−0.5</b><br>c = 4.33 + 0.5·2 = <b>5.33</b><br>Predict x = 4: ŷ = <b>3.33 ★</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-notes="<b>21–22 min.</b> Quick tour. For each, ask: what is the data? what is the decision? Let students add their own examples.">
+  <span class="tag">Applications</span>
+  <h2>Data science <span class="k">everywhere</span></h2>
+  <div class="grid g3" style="font-size:22px">
+    <div class="box">🏥 <b>Healthcare</b><br>disease screening from X-rays</div>
+    <div class="box">🏦 <b>Banking</b><br>real-time UPI fraud detection</div>
+    <div class="box">🛒 <b>Retail</b><br>recommendations, demand forecast</div>
+    <div class="box">🛵 <b>Delivery</b><br>ETA prediction, rider routing</div>
+    <div class="box">🌾 <b>Agriculture</b><br>weather and crop advisories</div>
+    <div class="box">🏏 <b>Sports</b><br>player analytics, DRS ball-tracking</div>
+  </div>
+  <p class="big" style="margin-top:28px;text-align:center;font-size:28px">Problem → Data → Method → <span style="color:var(--brand)">Decision</span></p>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-notes="<b>22–24 min.</b> CRISP-DM = Cross-Industry Standard Process for Data Mining, 1996–2000, SPSS/Teradata/Daimler/NCR. Industry- and tool-neutral. Draw the wheel with DATA in the centre and the back-arrows. Stress: starts with BUSINESS understanding, evaluation checks the BUSINESS goal.">
+  <span class="tag">CRISP-DM</span>
+  <h2><span class="k">CRISP-DM</span>: the industry-standard method</h2>
+  <div class="cols" style="grid-template-columns:1.15fr 1fr">
+    <svg id="bCrisp" viewBox="0 0 560 470"></svg>
+    <div style="font-size:23px">
+      <p><b>CR</b>oss-<b>I</b>ndustry <b>S</b>tandard <b>P</b>rocess for <b>D</b>ata <b>M</b>ining</p>
+      <ul><li>Created 1996–2000 by an industry group</li><li>Industry-neutral, tool-neutral</li><li><b>Iterative</b>: going back is normal</li><li>Starts and ends with the <b>business</b></li><li>Most widely used process model</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-notes="<b>24–25 min.</b> One deliverable per phase — this is a likely exam/quiz question. Ask: 'Which phase produces the go/no-go decision?' (Evaluation).">
+  <span class="tag">CRISP-DM</span>
+  <h2>Six phases, six <span class="k">deliverables</span></h2>
+  <table>
+    <tr><th>Phase</th><th>Key question</th><th>Deliverable</th></tr>
+    <tr><td><b>1 Business Understanding</b></td><td>What is the goal? How do we measure success?</td><td>Objectives, success criteria, plan</td></tr>
+    <tr><td><b>2 Data Understanding</b></td><td>What data do we have? Quality?</td><td>Data quality report</td></tr>
+    <tr><td><b>3 Data Preparation</b></td><td>How do we make it model-ready?</td><td>Final clean dataset</td></tr>
+    <tr><td><b>4 Modeling</b></td><td>Which technique fits?</td><td>Models + parameters</td></tr>
+    <tr><td><b>5 Evaluation</b></td><td>Does it meet the business goal?</td><td>Go / no-go decision</td></tr>
+    <tr><td><b>6 Deployment</b></td><td>How is it used and maintained?</td><td>Live solution, monitoring plan, report</td></tr>
+  </table>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-notes="<b>25–26 min.</b> HiPPO = Highest Paid Person's Opinion. Ask for a time someone's opinion beat the facts. Then the 5-step cycle. Emphasise the last step: MEASURE whether it worked.">
+  <span class="tag">Data-driven decisions</span>
+  <h2>Evidence beats the <span class="k">HiPPO</span></h2>
+  <div class="cols">
+    <div>
+      <p><b>HiPPO</b> = <b>Hi</b>ghest <b>P</b>aid <b>P</b>erson’s <b>O</b>pinion</p>
+      <div class="box" style="margin-bottom:14px">😐 Gut: “Grocery has the most orders, spend the budget there.”</div>
+      <div class="box" style="border-color:var(--good)">📊 Data: “Electronics is 13% of orders but <b>49% of revenue</b>.”</div>
+    </div>
+    <div style="font-size:26px">
+      <p style="margin:0 0 8px"><b>The DDDM cycle</b></p>
+      <ol style="padding-left:30px"><li>Ask a clear question</li><li>Collect the right data</li><li>Analyse</li><li>Decide and act</li><li><b>Measure</b> the result → repeat</li></ol>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-notes="<b>26–27 min.</b> MATHS. Expected value. Profit if sold 2000, loss if unsold 1500. EV = p·2000 − (1−p)·1500. With p = 0.7: 1400 − 450 = 950 per phone, ×200 = ₹1,90,000. Break-even: 2000p = 1500 − 1500p → 3500p = 1500 → p ≈ 0.43. Point: data gives you p.">
+  <span class="tag">Data-driven decisions · maths</span>
+  <h2>Decision maths: <span class="k">expected value</span></h2>
+  <p>Buy 200 extra phones for Diwali? Cost ₹9,000 · price ₹11,000 · unsold returned at ₹7,500</p>
+  <div class="cols">
+    <div>
+      <div class="math">Profit if sold = ₹2,000<br>Loss if unsold = ₹1,500</div>
+      <div class="math">EV = p × 2000 − (1 − p) × 1500</div>
+      <div class="math">Break-even: 2000p = 1500(1 − p)<br>3500p = 1500 → <b>p ≈ 0.43</b></div>
+    </div>
+    <div>
+      <div class="box" style="margin-bottom:14px">Last Diwali’s data: <b>70%</b> of extra stock sold → p = 0.7</div>
+      <div class="math">EV = 0.7×2000 − 0.3×1500<br>= 1400 − 450 = <b>₹950 / phone</b><br>× 200 = <b style="color:var(--good)">₹1,90,000</b> → BUY</div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-notes="<b>27–28 min.</b> MATHS. A/B test. pA = 200/5000 = 0.040, pB = 245/5000 = 0.049. Lift = 0.009/0.040 = 22.5%. Pooled p̂ = 445/10000 = 0.0445. SE = √(0.0445 × 0.9555 × (1/5000 + 1/5000)) = √(0.0000170) ≈ 0.00412. z = 0.009/0.00412 ≈ 2.18 > 1.96 → significant. Detailed theory in Unit 2.">
+  <span class="tag">Data-driven decisions · maths</span>
+  <h2>Prove it: the <span class="k">A/B test</span></h2>
+  <div class="cols">
+    <div>
+      <table style="font-size:22px;width:auto">
+        <tr><th></th><th class="num">Visitors</th><th class="num">Orders</th><th class="num">Rate</th></tr>
+        <tr><td>A (old page)</td><td class="num">5,000</td><td class="num">200</td><td class="num">4.0%</td></tr>
+        <tr><td>B (free-delivery banner)</td><td class="num">5,000</td><td class="num">245</td><td class="num">4.9%</td></tr>
+      </table>
+      <div class="math">Lift = (4.9 − 4.0) / 4.0 = <b>+22.5%</b></div>
+    </div>
+    <div>
+      <div class="math" style="font-size:22px">p̂ = 445 / 10000 = 0.0445<br>SE = √( p̂(1−p̂)(1/n<sub>A</sub>+1/n<sub>B</sub>) ) ≈ 0.00412<br>z = (0.049 − 0.040) / 0.00412 ≈ <b>2.18</b></div>
+      <div class="box" style="border-color:var(--good)">|z| = 2.18 &gt; 1.96 → difference is <b>real</b> (95% confidence). Launch B.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-notes="<b>28–29 min.</b> Traps. Ice-cream/drowning: heat is the hidden cause (confounder). Ask: in our lab, slow delivery goes with bad ratings — could something else explain it? (damaged items, remote areas). How do we prove cause? Run an experiment.">
+  <span class="tag">Data-driven decisions</span>
+  <h2>Traps: <span class="k">correlation ≠ causation</span></h2>
+  <div class="cols">
+    <div>
+      <div class="box" style="margin-bottom:14px">🍦 Ice-cream sales ↑ and drowning ↑ together.<br>Does ice-cream cause drowning? <b>No: summer heat causes both.</b></div>
+      <div class="math" style="font-size:22px">r = cov(x, y) / (σ<sub>x</sub> σ<sub>y</sub>),&nbsp; −1 ≤ r ≤ 1<br>Lab: delivery days vs rating → r = −0.47</div>
+    </div>
+    <ul style="font-size:24px">
+      <li><b>Sampling bias</b>: data misses some people</li>
+      <li><b>Survivorship bias</b>: only studying winners</li>
+      <li><b>Confirmation bias</b>: seeing what you want</li>
+      <li><b>Vanity metrics</b>: downloads ≠ orders</li>
+      <li><b>GIGO</b>: garbage in, garbage out</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-notes="<b>29–30 min.</b> Recap in one breath, then announce: 5-minute break, then open the Study guide on your screens. The quiz at the end covers everything from today.">
+  <span class="tag">Recap</span>
+  <h2>Today in <span class="k">one slide</span></h2>
+  <div class="grid g2" style="font-size:22px">
+    <div class="box"><b>Data science</b> = stats + code + domain → insight → decision</div>
+    <div class="box"><b>Lifecycle</b>: Problem → Collect → Clean → EDA → Model → Evaluate → Deploy ↺</div>
+    <div class="box"><b>Roles</b>: engineer, analyst, scientist, ML engineer, business analyst</div>
+    <div class="box"><b>AI ⊃ ML ⊃ DL</b>; DS overlaps; ML learns rules from data</div>
+    <div class="box"><b>CRISP-DM</b>: Business → Data Und. → Prep → Model → Evaluate → Deploy</div>
+    <div class="box"><b>DDDM</b>: evidence over HiPPO; EV, A/B tests; correlation ≠ causation</div>
+  </div>
+  <div class="ask">Next: 5-minute break → open <b>Study guide</b> on your screen → quiz at the end</div>
+</section>
+
+<canvas id="ink" width="1280" height="720"></canvas>
+</div>
+
+<div id="notes"></div>
+<div id="hud">
+  <button onclick="go(-1)" title="Previous (←)">◀</button>
+  <span id="count">1 / 19</span>
+  <button onclick="go(1)" title="Next (→ or space)">▶</button>
+  <button id="drawBtn" onclick="toggleDraw()" title="Draw (D)">✏️ Draw</button>
+  <button class="sw" style="background:#d64545" onclick="pen='#d64545'"></button>
+  <button class="sw" style="background:#2a6fdb" onclick="pen='#2a6fdb'"></button>
+  <button class="sw" style="background:#1f9d6b" onclick="pen='#1f9d6b'"></button>
+  <button class="sw" style="background:#18202f" onclick="pen='#18202f'"></button>
+  <button onclick="clearInk()" title="Clear drawing (C)">Clear</button>
+  <button onclick="toggleNotes()" title="Teacher notes (N)">Notes</button>
+  <button onclick="fullscreen()" title="Full screen (F)">⛶</button>
+  <a href="./" style="color:inherit;padding:0 6px">Exit</a>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide'), cur = 0, pen = '#d64545';
+var stage = document.getElementById('stage'), ink = document.getElementById('ink'), ctx = ink.getContext('2d');
+var strokes = {};  // per-slide drawings, kept while you move between slides
+
+function fit() {
+  var s = Math.min(innerWidth / 1280, innerHeight / 720);
+  stage.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+}
+addEventListener('resize', fit); fit();
+
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach(function (s, k) { s.classList.toggle('on', k === cur); });
+  document.getElementById('count').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('notes').innerHTML = '<div style="font-size:12px;color:#8a7a40;margin-bottom:6px">SLIDE ' + (cur + 1) + ' · TEACHER NOTES</div>' + (slides[cur].dataset.notes || '');
+  redraw();
+  try { history.replaceState(null, '', '#' + (cur + 1)); } catch (e) {}
+}
+function go(d) { show(cur + d); }
+function toggleNotes() { document.getElementById('notes').classList.toggle('on'); }
+function toggleDraw() { document.body.classList.toggle('drawing'); document.getElementById('drawBtn').classList.toggle('on'); }
+function fullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+function clearInk() { strokes[cur] = []; redraw(); }
+
+function redraw() {
+  ctx.clearRect(0, 0, 1280, 720);
+  (strokes[cur] || []).forEach(function (st) {
+    ctx.strokeStyle = st.c; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); st.p.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+  });
+}
+function pos(e) { var r = ink.getBoundingClientRect(); return [(e.clientX - r.left) * 1280 / r.width, (e.clientY - r.top) * 720 / r.height]; }
+var active = null;
+ink.addEventListener('pointerdown', function (e) { active = { c: pen, p: [pos(e)] }; (strokes[cur] = strokes[cur] || []).push(active); ink.setPointerCapture(e.pointerId); });
+ink.addEventListener('pointermove', function (e) { if (active) { active.p.push(pos(e)); redraw(); } });
+addEventListener('pointerup', function () { active = null; });
+
+addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(slides.length - 1);
+  else if (e.key === 'n' || e.key === 'N') toggleNotes();
+  else if (e.key === 'd' || e.key === 'D') toggleDraw();
+  else if (e.key === 'c' || e.key === 'C') clearInk();
+  else if (e.key === 'f' || e.key === 'F') fullscreen();
+});
+stage.addEventListener('click', function (e) { if (!document.body.classList.contains('drawing') && e.target.closest('.slide')) go(e.clientX > innerWidth / 2 ? 1 : -1); });
+
+drawCycle(document.getElementById('bLife'), {
+  cx: 570, cy: 248, rx: 430, ry: 200, w: 240, h: 84, fs: 25, center: ['Lifecycle', 'iterate ↺'],
+  items: [
+    { t: 'Problem', s: 'what decision?', fill: 'var(--surface-2)', ink: 'var(--ink-2)' },
+    { t: 'Collect', s: 'gather data', fill: 'var(--teal-soft)', ink: 'var(--teal)' },
+    { t: 'Clean', s: 'most time here!', fill: 'var(--accent-soft)', ink: 'var(--accent)' },
+    { t: 'Explore (EDA)', s: 'find patterns', fill: 'var(--violet-soft)', ink: 'var(--violet)' },
+    { t: 'Model', s: 'describe / predict', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+    { t: 'Evaluate', s: 'good enough?', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+    { t: 'Deploy', s: 'use + monitor', fill: 'var(--good-soft)', ink: 'var(--good)' }
+  ]
+});
+(function () {
+  var svg = document.getElementById('bCrisp');
+  drawCycle(svg, {
+    cx: 280, cy: 238, rx: 200, ry: 185, w: 178, h: 62, fs: 19,
+    items: [
+      { t: 'Business', s: 'Understanding', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+      { t: 'Data', s: 'Understanding', fill: 'var(--teal-soft)', ink: 'var(--teal)' },
+      { t: 'Data', s: 'Preparation', fill: 'var(--accent-soft)', ink: 'var(--accent)' },
+      { t: 'Modeling', s: 'build models', fill: 'var(--violet-soft)', ink: 'var(--violet)' },
+      { t: 'Evaluation', s: 'meets the goal?', fill: 'var(--good-soft)', ink: 'var(--good)' },
+      { t: 'Deployment', s: 'use + maintain', fill: 'var(--surface-2)', ink: 'var(--ink-2)' }
+    ]
+  });
+  svgEl('circle', { cx: 280, cy: 238, r: 50, style: 'fill:var(--surface);stroke:var(--ink-3);stroke-width:2' }, svg);
+  svgText(svg, 280, 245, 'DATA', 'font-size:20px;font-weight:800;fill:var(--ink)');
+})();
+addEventListener('hashchange', function () { var k = (parseInt(location.hash.slice(1), 10) || 1) - 1; if (k !== cur) show(k); });
+show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

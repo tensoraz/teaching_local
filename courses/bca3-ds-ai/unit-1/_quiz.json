@@ -1,0 +1,521 @@
+{
+ "title": "Unit 1 Quiz · Introduction to Predictive Analytics",
+ "minutes": 30,
+ "shuffle_questions": true,
+ "instructions": [
+  "33 questions, 37 marks. You have 30 minutes; the quiz submits itself when time runs out.",
+  "Questions and options are shuffled, so your neighbour's screen will not match yours.",
+  "Multi-select questions need ALL correct options for the marks. Ordering questions give part marks for each item in the right place.",
+  "After submitting you will see your score and an explanation for every question."
+ ],
+ "questions": [
+  {
+   "id": "q01",
+   "topic": "Basics",
+   "type": "mcq",
+   "q": "Which statement best describes predictive analytics?",
+   "options": [
+    "Using historical data, statistics and machine learning to estimate the probability of future or unknown outcomes, to support decisions",
+    "Making charts of last month’s sales",
+    "Storing large amounts of customer data safely",
+    "Guaranteeing what will happen in the future"
+   ],
+   "answer": 0,
+   "explain": "Predictive analytics learns from past cases with known outcomes and gives a probability for new cases. It never guarantees the future."
+  },
+  {
+   "id": "q02",
+   "topic": "Basics",
+   "type": "mcq",
+   "q": "In a churn model, the column “churned” (Yes/No) is the:",
+   "options": [
+    "Target variable",
+    "Predictor",
+    "Identifier",
+    "Missing value"
+   ],
+   "answer": 0,
+   "explain": "The target is the outcome we want to predict. Tenure, support calls and plan type are predictors."
+  },
+  {
+   "id": "q03",
+   "topic": "Basics",
+   "type": "mcq",
+   "q": "A model gives a customer a churn probability of 0.70. What does this mean?",
+   "options": [
+    "Among customers like this one, about 70 in 100 are expected to leave",
+    "This customer will definitely leave",
+    "70% of all customers will leave",
+    "The model is 70% accurate"
+   ],
+   "answer": 0,
+   "explain": "A probability describes the risk for customers similar to this one. It is not certain, and it is not the model’s accuracy."
+  },
+  {
+   "id": "q04",
+   "topic": "Types of analytics",
+   "type": "mcq",
+   "q": "Which type of analytics answers “What should we do?”",
+   "options": [
+    "Descriptive",
+    "Diagnostic",
+    "Predictive",
+    "Prescriptive"
+   ],
+   "answer": 3,
+   "fixed": true,
+   "explain": "Prescriptive analytics recommends an action, combining predictions with costs, benefits and constraints."
+  },
+  {
+   "id": "q05",
+   "topic": "Types of analytics",
+   "type": "mcq",
+   "q": "A report says “22.7% of customers left last quarter.” Which type of analytics is this?",
+   "options": [
+    "Descriptive",
+    "Diagnostic",
+    "Predictive",
+    "Prescriptive"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "It summarises what already happened: descriptive."
+  },
+  {
+   "id": "q06",
+   "topic": "Types of analytics",
+   "type": "mcq",
+   "q": "Analysts find that leavers made more support calls than stayers, to explain why customers left. This is:",
+   "options": [
+    "Descriptive",
+    "Diagnostic",
+    "Predictive",
+    "Prescriptive"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "Explaining why something happened is diagnostic analytics."
+  },
+  {
+   "id": "q07",
+   "topic": "Types of analytics",
+   "type": "order",
+   "q": "Arrange the types of analytics from LEAST to MOST valuable (and difficult).",
+   "options": [
+    "Descriptive",
+    "Diagnostic",
+    "Predictive",
+    "Prescriptive"
+   ],
+   "answer": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "marks": 2,
+   "explain": "Descriptive → Diagnostic → Predictive → Prescriptive: from hindsight to foresight to action."
+  },
+  {
+   "id": "q08",
+   "topic": "Types of analytics",
+   "type": "mcq",
+   "q": "A maps app choosing the fastest route for you, given live traffic, is mainly:",
+   "options": [
+    "Descriptive",
+    "Diagnostic",
+    "Predictive",
+    "Prescriptive"
+   ],
+   "answer": 3,
+   "fixed": true,
+   "explain": "Estimating travel time is predictive; choosing the best route for you is a recommended action: prescriptive."
+  },
+  {
+   "id": "q09",
+   "topic": "Analytics maths",
+   "type": "mcq",
+   "q": "340 of 1,500 customers churned. What is the churn rate?",
+   "options": [
+    "22.7%",
+    "34.0%",
+    "4.4%",
+    "77.3%"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "340 ÷ 1,500 = 0.2267 ≈ 22.7%. (77.3% is the share who stayed.)"
+  },
+  {
+   "id": "q10",
+   "topic": "Analytics maths",
+   "type": "mcq",
+   "q": "A trend line gives revenue = 482.81 + 5.664 × t (₹ lakh), with t = 1 for Jan 2023. What is the forecast for t = 25?",
+   "options": [
+    "₹624.4 lakh",
+    "₹488.5 lakh",
+    "₹141.6 lakh",
+    "₹630.1 lakh"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "482.81 + 5.664 × 25 = 482.81 + 141.6 = 624.41. (630.1 is the forecast for t = 26.)"
+  },
+  {
+   "id": "q11",
+   "topic": "Analytics maths",
+   "type": "mcq",
+   "q": "For t = 1 to 5 the fitted line is ŷ = 8.7 + 1.5 t. What is the forecast for t = 6?",
+   "options": [
+    "16.0",
+    "17.5",
+    "17.7",
+    "18.2"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "8.7 + 1.5 × 6 = 8.7 + 9 = 17.7."
+  },
+  {
+   "id": "q12",
+   "topic": "Analytics maths",
+   "type": "mcq",
+   "q": "A logistic model uses p = 1 / (1 + e^(−z)). What is p when z = 0?",
+   "options": [
+    "0",
+    "0.27",
+    "0.5",
+    "1"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "e⁰ = 1, so p = 1 / (1 + 1) = 0.5. Positive z gives p above 0.5; negative z gives p below 0.5."
+  },
+  {
+   "id": "q13",
+   "topic": "Analytics maths",
+   "type": "mcq",
+   "q": "Only 22.7% of customers churn. What accuracy does a lazy model that always predicts “No” get?",
+   "options": [
+    "22.7%",
+    "50%",
+    "77.3%",
+    "100%"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "It is right for every customer who stays: 100% − 22.7% = 77.3%. That is why accuracy alone can be misleading."
+  },
+  {
+   "id": "q14",
+   "topic": "Analytics maths",
+   "type": "mcq",
+   "q": "The 10% of customers a model rates riskiest churn at 48.9%; the overall churn rate is 22.7%. What is the lift?",
+   "options": [
+    "About 0.46",
+    "About 2.16",
+    "About 26.2",
+    "About 71.6"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "Lift = 48.9 ÷ 22.7 ≈ 2.16: the top group contains about twice as many leavers as a random group."
+  },
+  {
+   "id": "q15",
+   "topic": "Analytics maths",
+   "type": "mcq",
+   "q": "Expected gain = p × 0.40 × ₹2,000 − ₹300. What is the expected gain when p = 0.5?",
+   "options": [
+    "−₹100",
+    "+₹100",
+    "+₹400",
+    "+₹700"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "0.5 × 0.40 × 2,000 = 400; 400 − 300 = +₹100, so the offer is worth making."
+  },
+  {
+   "id": "q16",
+   "topic": "Applications",
+   "type": "multi",
+   "q": "Select ALL of the following that are predictive analytics applications.",
+   "options": [
+    "Credit scoring of loan applicants",
+    "Predicting machine failure from sensor readings",
+    "Forecasting next month’s demand for each product",
+    "Printing last month’s salary slips"
+   ],
+   "answer": [
+    0,
+    1,
+    2
+   ],
+   "marks": 2,
+   "explain": "The first three estimate unknown or future outcomes. Printing payslips is routine processing, not analytics."
+  },
+  {
+   "id": "q17",
+   "topic": "Applications",
+   "type": "mcq",
+   "q": "In manufacturing, predictive maintenance mainly predicts:",
+   "options": [
+    "Which machine is likely to fail soon, so it can be serviced first",
+    "How many workers joined last year",
+    "The price of raw material last month",
+    "Which product sold most last year"
+   ],
+   "answer": 0,
+   "explain": "Sensor data (vibration, temperature) is used to predict failures before they happen."
+  },
+  {
+   "id": "q18",
+   "topic": "Data types",
+   "type": "mcq",
+   "q": "Customer reviews, call recordings and photos are examples of:",
+   "options": [
+    "Structured data",
+    "Semi-structured data",
+    "Unstructured data",
+    "Ordinal data"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "They have no predefined rows and columns, so they are unstructured."
+  },
+  {
+   "id": "q19",
+   "topic": "Data types",
+   "type": "mcq",
+   "q": "JSON data sent by a mobile app is usually:",
+   "options": [
+    "Structured data",
+    "Semi-structured data",
+    "Unstructured data",
+    "Interval data"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "JSON has keys and tags, but no fixed table layout: semi-structured."
+  },
+  {
+   "id": "q20",
+   "topic": "Data types",
+   "type": "mcq",
+   "q": "The number of support calls (0, 1, 2, …) is:",
+   "options": [
+    "Quantitative, discrete",
+    "Quantitative, continuous",
+    "Qualitative, nominal",
+    "Qualitative, ordinal"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "It is a count of whole numbers, so it is discrete quantitative data."
+  },
+  {
+   "id": "q21",
+   "topic": "Data types",
+   "type": "mcq",
+   "q": "Monthly revenue of one company for 24 months in a row is:",
+   "options": [
+    "Time-series data",
+    "Cross-sectional data",
+    "Panel data",
+    "Unstructured data"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "One subject measured over time is a time series. Many subjects at one time is cross-sectional; many subjects over time is panel data."
+  },
+  {
+   "id": "q22",
+   "topic": "Measurement levels",
+   "type": "mcq",
+   "q": "Customer satisfaction recorded as 1, 2, 3, 4 or 5 is measured on which scale?",
+   "options": [
+    "Nominal",
+    "Ordinal",
+    "Interval",
+    "Ratio"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "The values have an order, but the gaps between them are not guaranteed equal: ordinal."
+  },
+  {
+   "id": "q23",
+   "topic": "Measurement levels",
+   "type": "mcq",
+   "q": "Temperature in °C is measured on which scale?",
+   "options": [
+    "Nominal",
+    "Ordinal",
+    "Interval",
+    "Ratio"
+   ],
+   "answer": 2,
+   "fixed": true,
+   "explain": "Equal gaps, but 0 °C is not “no temperature”: interval."
+  },
+  {
+   "id": "q24",
+   "topic": "Measurement levels",
+   "type": "mcq",
+   "q": "Monthly charge in rupees is measured on which scale?",
+   "options": [
+    "Nominal",
+    "Ordinal",
+    "Interval",
+    "Ratio"
+   ],
+   "answer": 3,
+   "fixed": true,
+   "explain": "₹0 means no money (a true zero), so ratios make sense: ₹800 is twice ₹400. Ratio."
+  },
+  {
+   "id": "q25",
+   "topic": "Measurement levels",
+   "type": "mcq",
+   "q": "Which summary is valid for a NOMINAL variable such as plan type?",
+   "options": [
+    "Mode (most common value)",
+    "Mean",
+    "Standard deviation",
+    "Ratio of two values"
+   ],
+   "answer": 0,
+   "explain": "Nominal values are only labels, so you can count them and find the most common one. A mean of plan types has no meaning."
+  },
+  {
+   "id": "q26",
+   "topic": "Measurement levels",
+   "type": "mcq",
+   "q": "In SPSS Variable View, interval and ratio variables are both given which Measure?",
+   "options": [
+    "Scale",
+    "Ordinal",
+    "Nominal",
+    "Numeric"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "SPSS combines interval and ratio into “Scale”. (Numeric is a Type, not a Measure.)"
+  },
+  {
+   "id": "q27",
+   "topic": "Measurement levels",
+   "type": "mcq",
+   "q": "Why is 40 °C NOT “twice as hot” as 20 °C?",
+   "options": [
+    "The Celsius scale has no true zero",
+    "Temperature is a nominal variable",
+    "40 is not twice 20",
+    "Temperatures cannot be compared"
+   ],
+   "answer": 0,
+   "explain": "Ratios need a true zero. 0 °C is just the freezing point of water, not an absence of heat."
+  },
+  {
+   "id": "q28",
+   "topic": "Lifecycle",
+   "type": "order",
+   "q": "Arrange the stages of the predictive analytics lifecycle in order.",
+   "options": [
+    "Define the problem",
+    "Collect data",
+    "Prepare data",
+    "Explore",
+    "Build model",
+    "Evaluate",
+    "Deploy",
+    "Monitor"
+   ],
+   "answer": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "marks": 3,
+   "explain": "Define → Collect → Prepare → Explore → Build → Evaluate → Deploy → Monitor, then repeat."
+  },
+  {
+   "id": "q29",
+   "topic": "Lifecycle",
+   "type": "mcq",
+   "q": "Why is a model evaluated on a test set it has never seen?",
+   "options": [
+    "To get an honest estimate of how it will perform on new customers",
+    "Because test data is always cleaner",
+    "To make training faster",
+    "Because the training data is deleted after training"
+   ],
+   "answer": 0,
+   "explain": "A model can memorise its training data. Unseen data shows how it will really perform after deployment."
+  },
+  {
+   "id": "q30",
+   "topic": "Lifecycle",
+   "type": "mcq",
+   "q": "A deployed churn model gets less accurate over months because customer behaviour changes. This is called:",
+   "options": [
+    "Model drift",
+    "Data cleaning",
+    "Overfitting the test set",
+    "Feature selection"
+   ],
+   "answer": 0,
+   "explain": "Model drift is why the lifecycle ends with monitoring and retraining, then starts again."
+  },
+  {
+   "id": "q31",
+   "topic": "Tools",
+   "type": "mcq",
+   "q": "Which Excel function makes a straight-line forecast?",
+   "options": [
+    "FORECAST.LINEAR",
+    "VLOOKUP",
+    "COUNTIF",
+    "CONCAT"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "=FORECAST.LINEAR(x, known_y, known_x) uses the least-squares trend line."
+  },
+  {
+   "id": "q32",
+   "topic": "Tools",
+   "type": "mcq",
+   "q": "Which tool is a free, open-source language built mainly for statistics?",
+   "options": [
+    "R",
+    "Excel",
+    "IBM SPSS Statistics",
+    "PowerPoint"
+   ],
+   "answer": 0,
+   "explain": "R was created by statisticians and is free. Excel and SPSS are paid products."
+  },
+  {
+   "id": "q33",
+   "topic": "Tools",
+   "type": "mcq",
+   "q": "In R, which call fits a logistic regression for a Yes/No target?",
+   "options": [
+    "glm(y ~ x, family = binomial)",
+    "lm(y ~ x)",
+    "mean(y)",
+    "read.csv(\"y.csv\")"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "glm with family = binomial fits logistic regression. lm fits a straight line, as used for the revenue trend."
+  }
+ ]
+}

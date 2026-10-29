@@ -1,0 +1,451 @@
+{
+ "title": "Unit 5 Quiz · Model Deployment & Applications",
+ "minutes": 30,
+ "shuffle_questions": true,
+ "instructions": [
+  "30 questions, 32 marks. You have 30 minutes; the quiz submits itself when time runs out.",
+  "Questions and options are shuffled, so your neighbour's screen will not match yours.",
+  "Multi-select questions need ALL correct options for the marks. Ordering questions give part marks for each item in the right place.",
+  "After submitting you will see your score and an explanation for every question."
+ ],
+ "questions": [
+  {
+   "id": "q01",
+   "topic": "Interpretation",
+   "type": "mcq",
+   "q": "Which method can measure feature importance for ANY model by shuffling one column and measuring the drop in score?",
+   "options": [
+    "Permutation importance",
+    "Impurity importance",
+    "Standardised coefficients",
+    "Gini index"
+   ],
+   "answer": 0,
+   "explain": "Shuffling breaks the link between that feature and the target; the bigger the score drop, the more the model relied on it."
+  },
+  {
+   "id": "q02",
+   "topic": "Interpretation",
+   "type": "mcq",
+   "q": "The credit-score coefficient is −0.01455 per point. The odds ratio for +50 points, e^(−0.01455 × 50), is about:",
+   "options": [
+    "0.48 (the odds of default roughly halve)",
+    "1.48",
+    "0.73",
+    "−0.73"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "e^(−0.7275) ≈ 0.483."
+  },
+  {
+   "id": "q03",
+   "topic": "Interpretation",
+   "type": "mcq",
+   "q": "For a logistic model, a feature’s contribution to one applicant’s log-odds (vs an average applicant) is:",
+   "options": [
+    "coefficient × (applicant’s value − average value)",
+    "coefficient × average value",
+    "the feature’s p-value",
+    "the applicant’s value ÷ coefficient"
+   ],
+   "answer": 0,
+   "explain": "Summing these contributions with the average log-odds gives the applicant’s exact log-odds; the biggest positive ones are the reason codes."
+  },
+  {
+   "id": "q04",
+   "topic": "Interpretation",
+   "type": "mcq",
+   "q": "“With a credit score of about 716, everything else unchanged, the loan would be approved.” This is a:",
+   "options": [
+    "Counterfactual explanation",
+    "Partial dependence plot",
+    "Confusion matrix",
+    "Population stability index"
+   ],
+   "answer": 0,
+   "explain": "It states the smallest change that would flip the decision, which is actionable for the applicant."
+  },
+  {
+   "id": "q05",
+   "topic": "Interpretation",
+   "type": "mcq",
+   "q": "A partial dependence plot (PDP) shows:",
+   "options": [
+    "The average prediction as one feature is varied while the others keep their real values",
+    "The correlation between two features",
+    "The training loss per iteration",
+    "The ROC curve"
+   ],
+   "answer": 0,
+   "explain": "Set every applicant’s credit score to 550, 650, … and average the predictions each time."
+  },
+  {
+   "id": "q06",
+   "topic": "Deployment",
+   "type": "mcq",
+   "q": "Why save the whole fitted pipeline (scaler + encoder + model) rather than only the model?",
+   "options": [
+    "So production data is transformed exactly as in training, avoiding training–serving skew",
+    "Pipelines are always more accurate",
+    "The model cannot be saved alone",
+    "To make the file smaller"
+   ],
+   "answer": 0,
+   "explain": "Unit 3’s get_dummies bug was exactly this kind of skew."
+  },
+  {
+   "id": "q07",
+   "topic": "Deployment",
+   "type": "mcq",
+   "q": "Scoring every customer’s churn risk once a night and sending a call list to the retention team is:",
+   "options": [
+    "Batch deployment",
+    "Real-time deployment",
+    "Edge deployment",
+    "Streaming deployment"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Results are needed hours later, not within milliseconds."
+  },
+  {
+   "id": "q08",
+   "topic": "Deployment",
+   "type": "mcq",
+   "q": "Checking every card transaction for fraud as it happens is best served by:",
+   "options": [
+    "Streaming / real-time scoring",
+    "A monthly batch job",
+    "A printed report",
+    "Re-training the model for every transaction"
+   ],
+   "answer": 0,
+   "explain": "Fraud must be stopped before the payment completes."
+  },
+  {
+   "id": "q09",
+   "topic": "Deployment",
+   "type": "mcq",
+   "q": "OneHotEncoder(handle_unknown=\"ignore\") helps in production because:",
+   "options": [
+    "A category never seen in training (e.g. “Freelancer”) does not crash the model",
+    "It improves AUC",
+    "It removes missing values",
+    "It scales numeric features"
+   ],
+   "answer": 0,
+   "explain": "Unseen categories are encoded as all zeros instead of raising an error."
+  },
+  {
+   "id": "q10",
+   "topic": "Real-time prediction",
+   "type": "mcq",
+   "q": "In a real-time scoring API, the model should be loaded:",
+   "options": [
+    "Once, when the server starts",
+    "Again for every request",
+    "Only after a request fails",
+    "From the training notebook each time"
+   ],
+   "answer": 0,
+   "explain": "Loading on every request would add large, avoidable latency."
+  },
+  {
+   "id": "q11",
+   "topic": "Real-time prediction",
+   "type": "mcq",
+   "q": "Which of these should a real-time scoring API do BEFORE predicting?",
+   "options": [
+    "Validate that all required input fields are present and valid",
+    "Retrain the model",
+    "Delete old logs",
+    "Change the threshold"
+   ],
+   "answer": 0,
+   "explain": "Our API returns a clear 400 error listing missing fields instead of crashing."
+  },
+  {
+   "id": "q12",
+   "topic": "Real-time prediction",
+   "type": "mcq",
+   "q": "A feature store mainly helps by:",
+   "options": [
+    "Computing features the same way for training and for live predictions",
+    "Storing trained models",
+    "Replacing the database",
+    "Choosing hyperparameters"
+   ],
+   "answer": 0,
+   "explain": "Consistent features prevent training–serving skew."
+  },
+  {
+   "id": "q13",
+   "topic": "Monitoring",
+   "type": "mcq",
+   "q": "Lowest PSI bin: expected share 0.099, actual 0.248. Its PSI term (A − E) × ln(A / E) is about:",
+   "options": [
+    "0.137",
+    "0.149",
+    "0.918",
+    "0.339"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "0.149 × ln(2.505) = 0.149 × 0.918 ≈ 0.137. All 10 bins sum to 0.339."
+  },
+  {
+   "id": "q14",
+   "topic": "Monitoring",
+   "type": "mcq",
+   "q": "A PSI of 0.339 on credit score means:",
+   "options": [
+    "Significant drift: investigate and probably retrain",
+    "No change",
+    "The model’s accuracy is 33.9%",
+    "Only a minor change to watch"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Rule of thumb: < 0.10 stable, 0.10–0.25 watch, > 0.25 significant."
+  },
+  {
+   "id": "q15",
+   "topic": "Monitoring",
+   "type": "mcq",
+   "q": "After an interest-rate rise, applicants with the same details default more often than before. This is:",
+   "options": [
+    "Concept drift",
+    "Data drift",
+    "Overfitting",
+    "Data leakage"
+   ],
+   "answer": 0,
+   "explain": "The input → outcome relationship has changed; data drift is a change in the inputs themselves."
+  },
+  {
+   "id": "q16",
+   "topic": "Monitoring",
+   "type": "mcq",
+   "q": "Running a new model on live requests while it makes no real decisions, to compare it with the current one, is called:",
+   "options": [
+    "Shadow mode",
+    "Batch scoring",
+    "Bootstrapping",
+    "One-hot encoding"
+   ],
+   "answer": 0,
+   "explain": "It lets you check the challenger safely before replacing the champion."
+  },
+  {
+   "id": "q17",
+   "topic": "Case studies",
+   "type": "mcq",
+   "q": "For diabetes screening, the clinic chose a threshold of 0.1 (recall 0.86, 289 of 450 referred) instead of 0.5 (recall 0.26). Why?",
+   "options": [
+    "Missing a diabetic patient is far more costly than an extra blood test",
+    "A lower threshold always gives higher accuracy",
+    "0.1 maximises precision",
+    "The model was overfitting at 0.5"
+   ],
+   "answer": 0,
+   "explain": "In screening, recall comes first; the lab test then confirms."
+  },
+  {
+   "id": "q18",
+   "topic": "Case studies",
+   "type": "mcq",
+   "q": "Why is logistic regression a common choice for credit scoring even when other models may be slightly more accurate?",
+   "options": [
+    "Its coefficients give clear reason codes that lenders and regulators need",
+    "It cannot overfit",
+    "It needs no data preparation",
+    "It is required by every bank’s software"
+   ],
+   "answer": 0,
+   "explain": "India’s RBI Fair Practices Code asks lenders to tell applicants the main reasons for rejecting a loan."
+  },
+  {
+   "id": "q19",
+   "topic": "Case studies",
+   "type": "mcq",
+   "q": "Applicant LN71318 has P(default) = 0.413 and the approval threshold is 0.25. The decision is:",
+   "options": [
+    "Refer to a credit officer (not approved automatically)",
+    "Approve",
+    "Approve with a bigger loan",
+    "Reject permanently with no review"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "0.413 ≥ 0.25. Good practice routes such cases to a human rather than an automatic final no."
+  },
+  {
+   "id": "q20",
+   "topic": "K-means",
+   "type": "order",
+   "q": "Arrange the K-means algorithm steps in order.",
+   "options": [
+    "Choose k and place starting centroids",
+    "Assign each point to its nearest centroid",
+    "Move each centroid to the mean of its points",
+    "Repeat until assignments stop changing"
+   ],
+   "answer": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "marks": 2,
+   "explain": "Assign and update alternate until nothing changes."
+  },
+  {
+   "id": "q21",
+   "topic": "K-means",
+   "type": "mcq",
+   "q": "Customers at (1, 1), (1.5, 2) and (3, 4) form one cluster. Its updated centroid is:",
+   "options": [
+    "(1.83, 2.33)",
+    "(1.5, 2)",
+    "(3, 4)",
+    "(5.5, 7)"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Mean x = 5.5/3 = 1.83; mean y = 7/3 = 2.33."
+  },
+  {
+   "id": "q22",
+   "topic": "K-means",
+   "type": "mcq",
+   "q": "Why must features be scaled before K-means on SwiftTel customers?",
+   "options": [
+    "K-means uses distances, so monthly charge in rupees would otherwise dominate",
+    "K-means only accepts values 0–1",
+    "Scaling reduces the number of clusters",
+    "Scaling makes K-means supervised"
+   ],
+   "answer": 0,
+   "explain": "Unscaled, the cluster structure would be driven almost only by price."
+  },
+  {
+   "id": "q23",
+   "topic": "K-means",
+   "type": "mcq",
+   "q": "Running K-means twice with k = 4 gave inertias 387.8 and 404.3. The best explanation is:",
+   "options": [
+    "K-means can stop in a local minimum that depends on the starting centroids; run it several times and keep the best",
+    "The data changed between runs",
+    "k = 4 is invalid",
+    "Inertia is random noise and means nothing"
+   ],
+   "answer": 0,
+   "explain": "That is why scikit-learn uses n_init = 10."
+  },
+  {
+   "id": "q24",
+   "topic": "Ethics",
+   "type": "mcq",
+   "q": "Rural approval is 53.4% and urban approval 74.8%. The disparate impact ratio is about:",
+   "options": [
+    "0.714",
+    "1.40",
+    "0.214",
+    "0.534"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "0.534 / 0.748 = 0.714, below the common four-fifths (0.8) benchmark."
+  },
+  {
+   "id": "q25",
+   "topic": "Ethics",
+   "type": "mcq",
+   "q": "The credit model never uses region, yet rural applicants are approved less often. The most likely cause here is:",
+   "options": [
+    "A proxy: thin credit files make rural credit scores understate repayment ability",
+    "The model secretly reads the region column",
+    "Rural applicants default far more",
+    "Random noise in the test set"
+   ],
+   "answer": 0,
+   "explain": "Actual default rates are similar (24.2% vs 23.1%); the score carries the disadvantage in."
+  },
+  {
+   "id": "q26",
+   "topic": "Ethics",
+   "type": "mcq",
+   "q": "“Among applicants who would repay, approval rates should be similar across groups.” This fairness idea is:",
+   "options": [
+    "Equal opportunity",
+    "Demographic parity",
+    "Calibration",
+    "Accuracy parity"
+   ],
+   "answer": 0,
+   "explain": "Here it is violated: 83.6% urban vs 62.0% rural among good payers."
+  },
+  {
+   "id": "q27",
+   "topic": "Ethics",
+   "type": "multi",
+   "q": "Select ALL principles in India’s Digital Personal Data Protection Act, 2023 as described in this unit.",
+   "options": [
+    "Processing personal data with consent for a specified purpose",
+    "Collecting only the data that is needed",
+    "Letting people access and correct their data",
+    "Selling data freely once it is collected"
+   ],
+   "answer": [
+    0,
+    1,
+    2
+   ],
+   "marks": 2,
+   "explain": "Consent, purpose limitation, data minimisation and individual rights are core ideas; free resale is not allowed."
+  },
+  {
+   "id": "q28",
+   "topic": "Ethics",
+   "type": "mcq",
+   "q": "A lender declines a group, so that group never builds a repayment history, which makes the model decline them again. This is:",
+   "options": [
+    "A feedback loop",
+    "Data drift",
+    "Overfitting",
+    "A counterfactual"
+   ],
+   "answer": 0,
+   "explain": "Monitoring outcomes and human review help break such loops."
+  },
+  {
+   "id": "q29",
+   "topic": "AI integration",
+   "type": "mcq",
+   "q": "In an AI system, which task suits a generative AI model (LLM) alongside a credit-scoring model?",
+   "options": [
+    "Writing a clear explanation letter to the applicant from the model’s reason codes",
+    "Replacing the need for any data",
+    "Guaranteeing the decision is fair",
+    "Computing the AUC"
+   ],
+   "answer": 0,
+   "explain": "The predictive model decides; the LLM helps communicate (still with human oversight)."
+  },
+  {
+   "id": "q30",
+   "topic": "AI integration",
+   "type": "mcq",
+   "q": "AutoML tools such as IBM’s AutoAI mainly:",
+   "options": [
+    "Automate preprocessing, model selection and hyperparameter tuning",
+    "Remove the need to define the business problem",
+    "Guarantee unbiased models",
+    "Collect data from customers"
+   ],
+   "answer": 0,
+   "explain": "People still frame the problem, check data quality and judge fairness."
+  }
+ ]
+}

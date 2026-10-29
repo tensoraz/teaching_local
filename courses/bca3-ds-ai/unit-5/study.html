@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 5 Study Guide</title>
+<meta name="description" content="Model deployment and applications: model interpretation, reason codes, deployment basics, real-time prediction, monitoring and drift, case studies in finance, healthcare and marketing, ethical issues and fairness, and an introduction to AI integration.">
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  .pace { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 18px 0 4px; }
+  .pace a { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; color: var(--ink); font-size: 14px; }
+  .pace a:hover { border-color: var(--brand); text-decoration: none; }
+  .pace b { display: block; font-size: 12px; color: var(--accent); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .lab-ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: end; }
+  .lab-ctrl label, .sl label { font-size: 13px; font-weight: 600; color: var(--ink-3); display: block; margin-bottom: 4px; }
+  .sl input[type=range] { width: 100%; }
+  .chart svg { width: 100%; height: auto; }
+  .toggle { display: flex; gap: 8px; align-items: center; font-weight: 600; font-size: 14.5px; cursor: pointer; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  .toggle input { width: 18px; height: 18px; flex: none; }
+  .task { display: grid; grid-template-columns: 28px 1fr; gap: 8px; margin: 10px 0; font-size: 15.5px; }
+  .task input { width: 18px; height: 18px; margin-top: 4px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  .big-v { font-size: 46px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .verdict { padding: 12px 14px; border-radius: 10px; font-weight: 600; margin-top: 10px; }
+  .ok { color: var(--good); font-weight: 700; } .bad { color: var(--bad); font-weight: 700; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Predictive Analytics</a> › <a href="./">Unit 5</a> › <b>Study guide</b></div>
+  <a class="icon-btn" href="quiz.html">Quiz →</a>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+  <div class="progress"></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 5 · Study guide · 35 minutes</span>
+    <h1>Model Deployment &amp; Applications</h1>
+    <p class="lead">A model in a notebook helps nobody. This unit takes a <b>credit-scoring model</b> for 2,000 loan applications all the way to production: you will explain its decisions, save it, score new applications in batch and in real time through an API, watch it for drift, and audit it for fairness, where it turns out to treat rural applicants unfairly without ever seeing their region. Two more case studies, in <b>healthcare</b> and <b>marketing</b>, and a look at how predictive models fit into wider <b>AI systems</b>, complete the course.</p>
+    <div class="pace">
+      <a href="#interpret"><b>0–7 min</b>Interpretation</a>
+      <a href="#deploy"><b>7–11 min</b>Deployment</a>
+      <a href="#realtime"><b>11–14 min</b>Real-time</a>
+      <a href="#monitor"><b>14–17 min</b>Monitoring</a>
+      <a href="#cases"><b>17–23 min</b>Case studies</a>
+      <a href="#ethics"><b>23–28 min</b>Ethics</a>
+      <a href="#lab"><b>28–35 min</b>Hands-on lab</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc">
+      <div class="t">On this page</div>
+      <a href="#interpret">1. Model interpretation</a>
+      <a href="#deploy">2. Deployment basics</a>
+      <a href="#realtime">3. Real-time prediction</a>
+      <a href="#monitor">4. Monitoring and drift</a>
+      <a href="#cases">5. Case study: finance</a>
+      <a href="#health">6. Case study: healthcare</a>
+      <a href="#market">7. Case study: marketing</a>
+      <a href="#ethics">8. Ethical issues</a>
+      <a href="#ai">9. AI integration</a>
+      <a href="#lab">10. Hands-on lab</a>
+      <a href="#summary">11. Summary and revision</a>
+    </nav>
+
+    <main>
+<!-- ================================================================ 1 -->
+<section class="block" id="interpret">
+  <div class="sec-no">Section 1</div>
+  <h2>Model interpretation</h2>
+  <p>Interpretation answers two different questions. <b>Global</b>: what does the model rely on overall? <b>Local</b>: why did it make <i>this</i> decision for <i>this</i> person? Banks, doctors, regulators and customers all ask both.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Method</th><th>Global / local</th><th>Works for</th><th>Idea</th></tr>
+    <tr><td><b>Coefficients, odds ratios</b></td><td>global</td><td>linear and logistic models</td><td>effect of +1 unit, others fixed</td></tr>
+    <tr><td><b>Tree rules, impurity importance</b></td><td>global (and local path)</td><td>trees, forests</td><td>which splits reduce impurity most</td></tr>
+    <tr><td><b>Permutation importance</b></td><td>global</td><td>any model</td><td>shuffle one column, measure the score drop</td></tr>
+    <tr><td><b>Partial dependence (PDP)</b></td><td>global</td><td>any model</td><td>average prediction as one feature changes</td></tr>
+    <tr><td><b>Contributions / reason codes</b></td><td>local</td><td>linear models (exact)</td><td>coefficient × (value − average)</td></tr>
+    <tr><td><b>SHAP, LIME</b></td><td>local (and global)</td><td>any model</td><td>fair share of the prediction for each feature</td></tr>
+    <tr><td><b>Counterfactual</b></td><td>local</td><td>any model</td><td>smallest change that flips the decision</td></tr>
+  </table></div>
+
+  <h3>Global: what drives default in the credit model?</h3>
+<pre class="out">default rate 0.235   test AUC 0.75
+
+Standardised coefficients (effect of +1 standard deviation on the log-odds):
+credit_score       -0.929
+emi_to_income       0.596
+past_defaults       0.451
+self_employed       0.380
+income_lakh        -0.075
+age                -0.037
+loan_amount_lakh   -0.018
+years_employed     -0.016</pre>
+  <div class="callout warn"><b>Do the maths: odds ratios in natural units</b>
+    On the original scale, the credit-score coefficient is −0.01455 per point, the EMI-to-income coefficient 3.588 and past defaults 0.903.<br>
+    +50 credit points: e<sup>−0.01455 × 50</sup> = <b>0.48</b> → the odds of default roughly halve.<br>
+    EMIs take 10 percentage points more of income: e<sup>3.588 × 0.10</sup> = <b>1.43</b> → odds rise 43%.<br>
+    Each past default: e<sup>0.903</sup> = <b>2.47</b> → odds more than double.
+  </div>
+  <div class="two">
+    <figure class="shot"><img src="img/perm_importance.png" alt="Permutation importance: credit score 0.109, EMI-to-income 0.062, past defaults 0.036, others near zero" loading="lazy"><figcaption>Shuffle a column in the test data; the bigger the AUC drop, the more the model depends on it.</figcaption></figure>
+    <figure class="shot"><img src="img/pdp_credit_score.png" alt="Average default probability falls from 0.74 at score 500 to 0.03 at 850" loading="lazy"><figcaption>Partial dependence: the average P(default) if everybody had a given credit score.</figcaption></figure>
+  </div>
+  <p><b>Permutation importance</b> works for any model and avoids the bias of impurity importance we met in Unit 4: credit score (AUC drop 0.109), EMI share (0.062) and past defaults (0.036) matter; age, loan amount and years employed hardly at all. The <b>PDP</b> shows the shape of the effect: 550 → 0.60, 650 → 0.29, 700 → 0.18, 750 → 0.10, 800 → 0.05.</p>
+
+  <h3>Local: why was <i>this</i> applicant declined?</h3>
+  <p>For a logistic model the explanation is exact. Each feature contributes <b>coefficient × (applicant’s value − average value)</b> to the log-odds, measured against an average applicant.</p>
+<pre class="out">Applicant LN71318: P(default) = 0.413 -&gt; DECLINE
+Reasons (contribution to log-odds vs an average applicant; + pushes towards decline):
+emi_to_income    0.635
+credit_score     0.380
+self_employed    0.240
+income_lakh      0.061</pre>
+  <div class="two">
+    <div class="callout warn" style="margin-top:0"><b>Do the maths</b>
+      Average applicant: log-odds −1.53 (P = 0.18).<br>
+      EMI share 0.567 vs average 0.390 → 3.588 × 0.177 = <b>+0.64</b><br>
+      Credit score 664 vs 690 → −0.01455 × (−26) = <b>+0.38</b><br>
+      Self-employed (1 vs 0.37) → <b>+0.24</b> · no past defaults (0 vs 0.23) → <b>−0.20</b><br>
+      All contributions add to +1.18 → log-odds −0.35 → P = 1/(1 + e<sup>0.35</sup>) = <b>0.413</b> &gt; 0.25 → declined.
+    </div>
+    <div>
+      <div class="callout idea" style="margin-top:0"><b>Turning it into words</b>“Your application was referred because (1) loan repayments would take 57% of your income, (2) your credit score is below our typical applicant’s, and (3) self-employed income is less predictable. A credit score of about <b>716</b>, with everything else unchanged, would have qualified.” The last sentence is a <b>counterfactual explanation</b>: actionable advice.</div>
+      <p>India’s RBI Fair Practices Code asks lenders to tell applicants the main reasons a loan application was rejected, so reason codes are a requirement, not a nice extra. For non-linear models, <b>SHAP</b> values give each feature a fair share of the prediction in the same additive way.</p>
+    </div>
+  </div>
+  <div class="callout tip"><b>Interpretability vs accuracy</b> Unit 4 found a random forest no better than logistic regression on churn. When a simple, explainable model is about as accurate, prefer it in high-stakes decisions. When a complex model is clearly better, explain it with permutation importance, PDPs and SHAP, and document its limits.</div>
+</section>
+
+<!-- ================================================================ 2 -->
+<section class="block" id="deploy">
+  <div class="sec-no">Section 2</div>
+  <h2>Deployment basics</h2>
+  <p><b>Deployment</b> means putting a trained model where it can make predictions for real decisions: in a nightly job, behind an app, or inside a device.</p>
+  <h3>Save the whole pipeline</h3>
+<pre class="code" data-lang="py">pipe = Pipeline([
+    ("prep", ColumnTransformer([("num", StandardScaler(), NUM),
+                                ("cat", OneHotEncoder(drop="first", handle_unknown="ignore"), ["employment"])])),
+    ("model", LogisticRegression(max_iter=5000)),
+]).fit(train[FEATS], train["defaulted"])
+joblib.dump(pipe, "credit_model_lab.joblib")
+loaded = joblib.load("credit_model_lab.joblib")      # what a server or nightly job would do</pre>
+  <p>The scaler’s means, the encoder’s categories and the model travel together in one file. In Unit 3, scoring one car with <code>pd.get_dummies</code> produced different columns from training. That is <b>training–serving skew</b>, and saving a fitted pipeline prevents it. <code>handle_unknown="ignore"</code> also stops a crash if a new category (say “Freelancer”) appears.</p>
+
+  <h3>Batch scoring</h3>
+<pre class="code" data-lang="py">new = pd.read_csv("new_applications.csv")
+new["p_default"] = loaded.predict_proba(new[FEATS])[:, 1].round(3)
+new["decision"] = np.where(new["p_default"] &lt; THRESHOLD, "approve", "refer to officer")</pre>
+<pre class="out">Batch-scored 20 applications: {'approve': 14, 'refer to officer': 6}
+application_id  credit_score  emi_to_income  p_default         decision
+       LN70208           626          0.263      0.207          approve
+       LN70757           673          0.642      0.335 refer to officer
+       LN70290           604          0.668      0.780 refer to officer
+       LN71693           697          0.120      0.056          approve
+       LN70867           661          0.149      0.142          approve</pre>
+  <p>Notice LN70208: a credit score of 626 is low, but EMIs take only 26% of income, so the risk (0.207) is acceptable. The model weighs features together, which a single cut-off on credit score cannot do.</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Deployment mode</th><th>How</th><th>Speed needed</th><th>Example</th></tr>
+    <tr><td><b>Batch</b></td><td>score a file or table on a schedule</td><td>hours</td><td>nightly churn call list; monthly credit-limit review</td></tr>
+    <tr><td><b>Real-time (online)</b></td><td>an API answers one request at a time</td><td>milliseconds</td><td>loan decision inside an app</td></tr>
+    <tr><td><b>Streaming</b></td><td>score every event as it flows past</td><td>milliseconds, continuously</td><td>card and UPI fraud checks</td></tr>
+    <tr><td><b>Edge / embedded</b></td><td>the model runs on the device</td><td>instant, works offline</td><td>phone keyboard prediction, factory sensor</td></tr>
+  </table></div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Practice</th><th>Why</th></tr>
+    <tr><td><b>Version</b> models, data and code (v1, v2…; a model registry)</td><td>know exactly which model made each decision; roll back if needed</td></tr>
+    <tr><td><b>Package</b> the environment (requirements.txt, a Docker container)</td><td>“works on my laptop” must also work on the server</td></tr>
+    <tr><td><b>Test</b> before release (unit tests on the pipeline, a hold-out check)</td><td>catch broken features before customers do</td></tr>
+    <tr><td><b>Automate</b> (CI/CD, MLOps pipelines)</td><td>repeatable retraining and release</td></tr>
+    <tr><td><b>Document</b> (a “model card”: purpose, data, metrics, limits, owner)</td><td>accountability and safe reuse</td></tr>
+  </table></div>
+</section>
+
+<!-- ================================================================ 3 -->
+<section class="block" id="realtime">
+  <div class="sec-no">Section 3</div>
+  <h2>Real-time prediction</h2>
+  <p>In real time, a request arrives, the system builds the features, scores them and replies, usually within milliseconds. Our lab includes a complete scoring API in about 50 lines of standard Python (<code>score_api.py</code>):</p>
+<pre class="code" data-lang="py">MODEL = joblib.load(HERE / "credit_model.joblib")       # load ONCE at start-up, not on every request
+
+def do_POST(self):
+    app = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))))
+    missing = [f for f in FEATURES if f not in app]
+    if missing:                                         # validate input before scoring
+        return self.reply(400, {"error": "missing fields", "fields": missing})
+    p = float(MODEL.predict_proba(pd.DataFrame([{f: app[f] for f in FEATURES}]))[0, 1])
+    self.reply(200, {"p_default": round(p, 4), "decision": "approve" if p &lt; THRESHOLD else "refer to officer",
+                     "threshold": THRESHOLD, "model_version": MODEL_VERSION, "latency_ms": ...})</pre>
+  <p>Real requests to it on the teacher’s laptop:</p>
+<pre class="out">{'p_default': 0.4132, 'decision': 'refer to officer', 'threshold': 0.25, 'model_version': 'credit-logit-v1', 'latency_ms': 4.26}
+{'p_default': 0.0368, 'decision': 'approve', 'threshold': 0.25, 'model_version': 'credit-logit-v1', 'latency_ms': 2.95}
+(400, {'error': 'missing fields', 'fields': ['years_employed', 'income_lakh', ...]})
+latency ms median 2.57 max 6.35</pre>
+  <div class="tbl-wrap"><table>
+    <tr><th>Concept</th><th>Meaning</th><th>In our API</th></tr>
+    <tr><td><b>Latency</b></td><td>time from request to answer</td><td>≈ 2.6 ms median for the model step</td></tr>
+    <tr><td><b>Latency budget</b></td><td>the slice of total response time the model may use</td><td>network + feature lookup + model must fit the app’s limit</td></tr>
+    <tr><td><b>Throughput</b></td><td>requests per second</td><td>add more server copies behind a load balancer</td></tr>
+    <tr><td><b>Feature store</b></td><td>one place that computes features identically for training and serving</td><td>e.g. “EMI-to-income” computed the same way everywhere</td></tr>
+    <tr><td><b>Input validation</b></td><td>reject bad requests clearly</td><td>missing fields → 400 error, not a crash</td></tr>
+    <tr><td><b>Logging and versioning</b></td><td>record inputs, outputs and model version</td><td>needed for monitoring, audits and appeals</td></tr>
+    <tr><td><b>Fallback</b></td><td>what happens if the model is down</td><td>a simple rule, or route to a human</td></tr>
+  </table></div>
+</section>
+
+<!-- ================================================================ 4 -->
+<section class="block" id="monitor">
+  <div class="sec-no">Section 4</div>
+  <h2>Monitoring and model drift</h2>
+  <div class="two">
+    <div class="card"><b>Data drift</b><p style="margin:6px 0 0;font-size:15px">The <i>inputs</i> change: a partner bank starts sending applicants with thinner credit files, so the average credit score falls from 690 to 651.</p></div>
+    <div class="card"><b>Concept drift</b><p style="margin:6px 0 0;font-size:15px">The <i>relationship</i> changes: after an interest-rate rise, the same applicant is riskier than before. Only visible once outcomes (defaults) arrive, often months later.</p></div>
+  </div>
+  <h3>Population Stability Index (PSI)</h3>
+  <div class="two">
+    <div class="callout warn" style="margin-top:0"><b>Do the maths</b>
+      Split the training scores into 10 equal-sized bins (10% each). Compare this month’s share in each bin:<br>
+      <code>PSI = Σ (A − E) × ln(A / E)</code><br>
+      Lowest bin: E = 0.099, A = 0.248 → (0.149) × ln(2.505) = 0.149 × 0.918 = <b>0.137</b><br>
+      Adding all 10 bins gives <b>PSI = 0.339</b>.<br>
+      Rule of thumb: &lt; 0.10 stable · 0.10–0.25 watch · &gt; 0.25 <b>significant drift</b>.
+    </div>
+    <figure class="shot" style="margin-top:0"><img src="img/psi_drift.png" alt="This month has far more applicants in the lowest credit-score bins" loading="lazy"><figcaption>This month (orange) piles up in the lowest bins.</figcaption></figure>
+  </div>
+<pre class="out">PSI credit_score = 0.339  -&gt;  SIGNIFICANT DRIFT: investigate / retrain</pre>
+  <div class="tbl-wrap"><table>
+    <tr><th>What to monitor</th><th>How</th></tr>
+    <tr><td>Input data</td><td>PSI per feature, missing-value rates, new categories</td></tr>
+    <tr><td>Predictions</td><td>average score and approval rate over time</td></tr>
+    <tr><td>Performance</td><td>AUC, recall, default rate of approved loans, once outcomes arrive</td></tr>
+    <tr><td>Fairness</td><td>approval and error rates by group (Section 8)</td></tr>
+    <tr><td>Operations</td><td>latency, error rate, uptime</td></tr>
+  </table></div>
+  <div class="callout tip"><b>Updating a model safely</b> <b>Retrain</b> on a schedule or when monitoring triggers. Before replacing the current model (the <b>champion</b>), run the new one (the <b>challenger</b>) in <b>shadow mode</b> (it scores real requests but decides nothing), or in an <b>A/B test</b> on a small share of traffic. Switch only if it is better and fair.</div>
+</section>
+
+<!-- ================================================================ 5 -->
+<section class="block" id="cases">
+  <div class="sec-no">Section 5</div>
+  <h2>Case study: finance (credit scoring)</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Lifecycle stage</th><th>The lender’s credit model</th></tr>
+    <tr><td>Problem</td><td>Approve applicants likely to repay; refer risky ones to a credit officer</td></tr>
+    <tr><td>Data</td><td>2,000 applications: age, income, loan amount, EMI-to-income, credit score, past defaults, employment; 23.5% defaulted</td></tr>
+    <tr><td>Model</td><td>Logistic regression pipeline (explainable by design); test AUC 0.750</td></tr>
+    <tr><td>Decision rule</td><td>approve if P(default) &lt; 0.25 → 402 of 600 test applicants (67%) approved</td></tr>
+    <tr><td>Explanation</td><td>reason codes + counterfactuals for every referral</td></tr>
+    <tr><td>Deployment</td><td>real-time API in the loan app; batch re-scoring monthly</td></tr>
+    <tr><td>Monitoring</td><td>PSI on inputs (0.339 this month → investigate), default rate of approved loans, fairness by group</td></tr>
+  </table></div>
+  <p><b>Other finance applications:</b> card and UPI fraud detection (streaming, very high precision needed so genuine payments aren’t blocked), collection prioritisation (who to remind first), credit-limit setting, insurance pricing, anti-money-laundering alerts.</p>
+</section>
+
+<!-- ================================================================ 6 -->
+<section class="block" id="health">
+  <div class="sec-no">Section 6</div>
+  <h2>Case study: healthcare (diabetes screening)</h2>
+  <p>A clinic wants to decide which patients should get a confirmatory blood test for diabetes. 22.1% of its 1,500 patients turned out to be diabetic. A logistic model on age, BMI, fasting glucose, blood pressure, family history and activity reaches a test AUC of 0.731.</p>
+<pre class="out">Diabetes screening: 22.1% diabetic, test AUC 0.731
+  threshold 0.5: recall 0.263  referred for a lab test 47 of 450  missed 73
+  threshold 0.2: recall 0.667  referred for a lab test 177 of 450  missed 33
+  threshold 0.1: recall 0.859  referred for a lab test 289 of 450  missed 14</pre>
+  <div class="two">
+    <div class="callout idea" style="margin-top:0"><b>Choosing the threshold</b>A missed diabetic may go untreated for years; an unnecessary blood test costs little. So recall comes first: at a threshold of 0.1 the clinic catches 86% of diabetics (85 of 99) and refers 289 of 450 patients. At 0.5 it would miss 73. This is Unit 4’s cost-based threshold reasoning in a medical setting.</div>
+    <div class="callout warn" style="margin-top:0"><b>Healthcare cautions</b>
+      <ul style="margin:6px 0 0;padding-left:20px">
+        <li><b>Decision support, not diagnosis:</b> a doctor and a lab test decide.</li>
+        <li><b>Check every subgroup</b> (age, gender, region): a model trained mostly on one group can miss others.</li>
+        <li><b>Health data is sensitive personal data:</b> strict consent and security.</li>
+      </ul></div>
+  </div>
+  <p><b>Other healthcare applications:</b> hospital readmission risk, sepsis early warning, no-show prediction for appointments, medical-image screening (deep learning), drug-stock forecasting.</p>
+</section>
+
+<!-- ================================================================ 7 -->
+<section class="block" id="market">
+  <div class="sec-no">Section 7</div>
+  <h2>Case study: marketing (customer segmentation with K-means)</h2>
+  <p>Marketing often starts without a target: “what kinds of customers do we have?” That is <b>unsupervised learning</b>, and <b>K-means clustering</b> (Lab Experiment 9) is its workhorse.</p>
+  <div class="two">
+    <div class="callout warn" style="margin-top:0"><b>The algorithm</b>
+      1. Choose k and place k starting centroids (k-means++ spreads them out).<br>
+      2. <b>Assign</b> every customer to the nearest centroid (Euclidean distance).<br>
+      3. <b>Update</b> every centroid to the mean of its customers. E.g. customers at (1, 1), (1.5, 2) and (3, 4) give the centroid (1.83, 2.33).<br>
+      4. Repeat 2–3 until no customer changes cluster.<br>
+      It minimises <b>inertia</b> = Σ (distance from each customer to its centroid)².
+    </div>
+    <div>
+      <p><b>Choosing k.</b> Inertia always falls as k grows (k = n would give 0), so look for the “elbow”: 6000, 4067, 3218, <b>2660</b> (k = 4), 2285, 2055. The <b>silhouette score</b> (how much closer each point is to its own cluster than to the next) prefers k = 2 (0.308; k = 4 gives 0.261), but two segments are too coarse to act on. Choosing k combines statistics and <b>business judgement</b>.</p>
+      <p><b>Scale first.</b> Monthly charge is in hundreds of rupees, data in tens of GB; without scaling, K-means would only see price.</p>
+    </div>
+  </div>
+<pre class="out">         customers  data_gb  voice  charge  tenure  prepaid  churn
+segment
+0              507    24.60  424.0  348.25   13.59     0.82   0.29
+1              380    54.82  351.5  753.11   18.57     0.19   0.22
+2              323    28.12  127.0  391.48   14.86     0.72   0.25
+3              290    30.12  491.0  422.86   46.06     0.72   0.10</pre>
+  <figure class="shot"><img src="img/kmeans_segments.png" alt="Elbow curve bending at k = 3-4, and a scatter of four segments by data and voice usage" loading="lazy"><figcaption>Segments were formed on four scaled features, so they overlap in this two-feature view.</figcaption></figure>
+  <div class="tbl-wrap"><table>
+    <tr><th>Segment (our name)</th><th>Profile</th><th class="num">Churn</th><th>Campaign</th></tr>
+    <tr><td><b>0 · New prepaid talkers</b></td><td>507 customers, low data, cheap plans, 82% prepaid, 14 months</td><td class="num bad">29%</td><td>first-year onboarding offer; push autopay</td></tr>
+    <tr><td><b>1 · Premium data lovers</b></td><td>380, 55 GB, ₹753 plans, mostly postpaid</td><td class="num">22%</td><td>data add-ons, priority support</td></tr>
+    <tr><td><b>2 · Light users</b></td><td>323, very little voice (127 min)</td><td class="num">25%</td><td>offer a cheaper plan before they leave</td></tr>
+    <tr><td><b>3 · Loyal veterans</b></td><td>290, 46 months’ tenure</td><td class="num ok">10%</td><td>loyalty rewards, referral bonus</td></tr>
+  </table></div>
+  <p>Combine segmentation with the churn model: <i>within</i> each segment, call the customers with the highest churn probability, using the campaign designed for that segment. Other marketing uses: response models (who will buy if contacted), uplift modelling (who will buy <i>because</i> they were contacted), recommendations, lifetime value prediction.</p>
+</section>
+
+<!-- ================================================================ 8 -->
+<section class="block" id="ethics">
+  <div class="sec-no">Section 8</div>
+  <h2>Ethical issues</h2>
+  <h3>Bias and fairness: a model that never sees region</h3>
+  <p>The credit model does not use region or gender. We audited its decisions anyway:</p>
+<pre class="out">        applicants  approval_rate  approval_rate_good_payers  actual_default_rate
+region
+Rural          219          0.534                      0.620                0.242
+Urban          381          0.748                      0.836                0.231
+disparate impact ratio = 0.714  (below 0.8 is a warning sign)
+
+        applicants  approval_rate  approval_rate_good_payers  actual_default_rate
+gender
+Female         246          0.663                      0.781                0.276
+Male           354          0.675                      0.744                0.206
+disparate impact ratio = 0.981  (below 0.8 is a warning sign)</pre>
+  <div class="two">
+    <figure class="shot" style="margin-top:0"><img src="img/fairness_audit.png" alt="Approval rates: urban 75 vs rural 53; among good payers urban 84 vs rural 62; male and female similar" loading="lazy"><figcaption>Rural applicants who would repay are approved far less often than urban ones.</figcaption></figure>
+    <div class="callout warn" style="margin-top:0"><b>Do the maths</b>
+      <b>Disparate impact</b> = approval rate of the less-approved group ÷ that of the more-approved group = 0.534 / 0.748 = <b>0.714</b>. The common “four-fifths rule” flags anything below 0.8.<br>
+      <b>Equal opportunity</b>: among applicants who <i>would repay</i>, approval should be similar. Urban 83.6% vs rural 62.0% → a <b>21.6-point</b> gap.<br>
+      Yet actual default rates are almost equal (24.2% vs 23.1%). Gender passes both checks (0.981).
+    </div>
+  </div>
+  <div class="callout idea"><b>Where did the bias come from?</b> Rural applicants often have <b>thin credit files</b> (few past loans or cards on record), so their credit score <i>understates</i> how reliably they repay: 664 on average vs 705 for urban applicants. The model trusts the score, so the score acts as a <b>proxy</b> that carries the disadvantage in. Removing the “region” column fixes nothing; it was never there.</div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Source of bias</th><th>Example</th><th>Mitigation</th></tr>
+    <tr><td><b>Historical bias</b></td><td>past decisions were unfair, and the model learns them</td><td>question the labels; audit outcomes</td></tr>
+    <tr><td><b>Measurement / proxy bias</b></td><td>thin-file credit scores; pin code standing in for community</td><td>better data (rent, utility, UPI repayment history), drop proxies</td></tr>
+    <tr><td><b>Representation bias</b></td><td>few rural applicants in training</td><td>collect more, reweight</td></tr>
+    <tr><td><b>Feedback loops</b></td><td>declined groups never build a repayment record</td><td>monitor, controlled exploration, human review</td></tr>
+    <tr><td><b>Deployment bias</b></td><td>a model built for salaried city workers used for farmers</td><td>check the population matches; document intended use</td></tr>
+  </table></div>
+  <div class="callout tip"><b>Fixing it is a choice</b> Options include better features, group-aware thresholds (Lab Part D), constraints during training, or human review of borderline cases. Different fairness definitions can conflict: you cannot always have equal approval rates <i>and</i> equal error rates at once. Decide with the business, legal and affected people, and document why.</div>
+
+  <h3>Privacy, transparency and accountability</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Principle</th><th>What it means in practice</th></tr>
+    <tr><td><b>Privacy and consent</b></td><td>India’s <b>Digital Personal Data Protection Act, 2023</b> requires consent for a specified purpose, collecting only the data needed, keeping it secure, and letting people access, correct and erase their data. Serious breaches can attract penalties of up to ₹250 crore.</td></tr>
+    <tr><td><b>Transparency</b></td><td>explain decisions (reason codes); publish what the model is for and its limits (model card)</td></tr>
+    <tr><td><b>Accountability</b></td><td>a named owner for every model; human review and appeal for significant decisions</td></tr>
+    <tr><td><b>Security</b></td><td>protect training data and the model; anonymise or pseudonymise where possible</td></tr>
+    <tr><td><b>Purpose and misuse</b></td><td>the same churn model could target vulnerable customers with manipulative offers; review uses, not just accuracy</td></tr>
+  </table></div>
+</section>
+
+<!-- ================================================================ 9 -->
+<section class="block" id="ai">
+  <div class="sec-no">Section 9</div>
+  <h2>Introduction to AI integration</h2>
+  <p>Predictive models are increasingly one component of larger <b>AI systems</b>:</p>
+  <div class="grid g2">
+    <div class="card"><b>🤖 Generative AI + predictive models</b><p class="muted" style="margin:6px 0 0;font-size:15px">A large language model (LLM) turns reason codes into a clear letter in the customer’s language, summarises call transcripts into features (“complained about network”), or answers staff questions about a prediction. The predictive model still makes the decision; the LLM helps communicate it.</p></div>
+    <div class="card"><b>⚙️ AutoML</b><p class="muted" style="margin:6px 0 0;font-size:15px">Automated tools try preprocessing steps, models and hyperparameters for you. IBM’s watsonx platform includes AutoAI, which does this and ranks candidate pipelines. You still define the problem, check the data and judge fairness.</p></div>
+    <div class="card"><b>🔁 MLOps</b><p class="muted" style="margin:6px 0 0;font-size:15px">Engineering practice that automates the lifecycle: data checks → training → testing → deployment → monitoring → retraining, with versioning at every step.</p></div>
+    <div class="card"><b>🧑‍⚖️ AI governance</b><p class="muted" style="margin:6px 0 0;font-size:15px">Policies, documentation and oversight so AI systems stay accurate, fair, private and accountable over time: everything in Section 8, at organisational scale.</p></div>
+  </div>
+  <div class="callout idea"><b>The course in one loop</b>Unit 1 asked what kind of analytics a problem needs. Unit 2 prepared the data, Unit 3 built models, Unit 4 validated them honestly, and Unit 5 explained, deployed, monitored and governed them: <b>predict → explain → decide → act → monitor ↺</b>.</div>
+</section>
+
+<!-- ================================================================ 10 -->
+<section class="block" id="lab">
+  <div class="sec-no">Section 10</div>
+  <h2>Hands-on lab</h2>
+  <p><b>Parts A–D</b> run in this page with the real credit model and data. <b>Part E</b> is the full Python, R and SPSS lab, including the real-time API.</p>
+
+  <h3>Part A · Explain a loan decision</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div class="sl"><label>Credit score: <b id="xCsV">664</b></label><input type="range" id="xCs" min="400" max="850" value="664"></div>
+      <div class="sl"><label>EMIs as share of income: <b id="xEmiV">0.567</b></label><input type="range" id="xEmi" min="0.05" max="0.8" step="0.001" value="0.567"></div>
+      <div class="sl"><label>Income: <b id="xIncV">3.05</b> lakh/yr</label><input type="range" id="xInc" min="1" max="20" step="0.05" value="3.05"></div>
+      <div class="sl"><label>Past defaults: <b id="xPdV">0</b></label><input type="range" id="xPd" min="0" max="2" value="0"></div>
+      <div class="sl"><label>Age: <b id="xAgeV">25</b></label><input type="range" id="xAge" min="21" max="65" value="25"></div>
+      <div class="sl"><label>Years employed: <b id="xYrV">2</b></label><input type="range" id="xYr" min="0" max="30" value="2"></div>
+      <div class="sl"><label>Loan amount: <b id="xLoanV">6.65</b> lakh</label><input type="range" id="xLoan" min="0.5" max="40" step="0.05" value="6.65"></div>
+      <label class="toggle"><input type="checkbox" id="xSelf" checked> Self-employed</label>
+    </div>
+    <div class="two" style="margin-top:12px">
+      <div style="text-align:center">
+        <div class="muted" style="font-size:14px;font-weight:600">P(default)</div><div class="big-v" id="xP"></div>
+        <div class="verdict" id="xDec"></div>
+        <p class="muted" style="font-size:13.5px;margin:8px 0 0" id="xCf"></p>
+      </div>
+      <div class="chart" id="xChart"></div>
+    </div>
+  </div>
+
+  <h3>Part B · Drift monitor (PSI on credit score)</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div class="sl"><label>Shift every score by: <b id="dShV">0</b> points</label><input type="range" id="dSh" min="-80" max="60" value="0"></div>
+      <div class="sl"><label>Spread ×<b id="dSpV">1.00</b></label><input type="range" id="dSp" min="0.6" max="1.6" step="0.05" value="1"></div>
+      <button class="btn ghost" onclick="useThisMonth()">Use this month’s real file</button>
+    </div>
+    <div class="kpis" id="dKpi"></div>
+    <div class="chart" id="dChart"></div>
+  </div>
+
+  <h3>Part C · K-means, step by step</h3>
+  <div class="card">
+    <p class="muted" style="margin:0 0 6px;font-size:15px">600 SwiftTel customers by data GB and voice minutes (both scaled). Choose k, initialise, then step: <b>assign</b> → <b>update</b> → assign → …</p>
+    <div class="lab-ctrl" style="grid-template-columns:minmax(0,200px) auto auto auto">
+      <div class="sl"><label>k: <b id="kmKV">3</b></label><input type="range" id="kmK" min="2" max="6" value="3"></div>
+      <button class="btn ghost" onclick="kmInit()">Initialise</button>
+      <button class="btn" onclick="kmStep()">Step ▶</button>
+      <button class="btn ghost" onclick="kmRun()">Run to the end</button>
+    </div>
+    <div class="kpis" id="kmKpi"></div>
+    <div class="chart" id="kmChart"></div>
+  </div>
+
+  <h3>Part D · Fairness checker</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div><label for="fGroup">Compare groups by</label><select id="fGroup"><option value="region">Region (Urban / Rural)</option><option value="gender">Gender</option></select></div>
+      <div class="sl"><label>Threshold for <span id="fG1">Urban</span>: <b id="fT1V">0.25</b></label><input type="range" id="fT1" min="0.05" max="0.6" step="0.01" value="0.25"></div>
+      <div class="sl"><label>Threshold for <span id="fG2">Rural</span>: <b id="fT2V">0.25</b></label><input type="range" id="fT2" min="0.05" max="0.6" step="0.01" value="0.25"></div>
+    </div>
+    <div class="tbl-wrap" id="fTable" style="margin-bottom:0"></div>
+    <div class="kpis" id="fKpi"></div>
+  </div>
+
+  <h3>Your tasks</h3>
+  <div class="card">
+    <label class="task"><input type="checkbox"><span><b>Task 1.</b> In Part A, the default applicant (LN71318) is declined. Find two <i>different</i> single changes that get them approved. Which is more realistic for the applicant to achieve?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 2.</b> In Part A, set past defaults to 2 and leave everything else. Which reason now comes first, and how large is its contribution?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 3.</b> In Part B, how many points must the scores shift (spread 1.00) before PSI passes 0.10, and then 0.25? Then press “Use this month’s real file”.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 4.</b> In Part C, choose k = 4 and press “Initialise” then “Run to the end” several times. Do you always get the same final inertia? What does that tell you about K-means?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 5.</b> In Part D (region), keep Urban at 0.25 and raise the Rural threshold until disparate impact reaches 0.8. What happens to the default rate among approved rural applicants? Is this fair, and to whom?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 6.</b> Write a three-sentence model card for the credit model: purpose, main limitation (use the fairness result), and who should review declined applications.</span></label>
+    <details><summary>Check your answers</summary>
+      <p>1. LN71318 (P = 0.413) is approved by lowering the EMI share from 0.567 to about <b>0.35</b> (P ≈ 0.244), for example by borrowing less or over a longer term, or by raising the credit score to about <b>716</b>. Changing to salaried employment alone is not enough (P = 0.327), and no income on the slider gets them approved, because income has a tiny coefficient. Borrowing less is the most realistic: it is within the applicant’s control today, while building a credit score takes months. 2. With 2 past defaults P jumps to about 0.81, and “past defaults” becomes the top reason with a contribution of about <b>+1.60</b> (0.903 × (2 − 0.23)), well ahead of the EMI share (+0.64). 3. Shifting every score <b>down by about 21 points</b> pushes PSI above 0.10 (0.114), and <b>down by about 33 points</b> above 0.25 (0.254); upward shifts need about +19 and +33. This month’s real file gives <b>0.339</b>: its mean fell by 39 points and its shape changed too. 4. Most starts converge to an inertia of about <b>387.8–387.9</b>, but some get stuck in a worse solution (we saw 404.3). K-means finds a <b>local</b> minimum that depends on the starting centroids, which is why real implementations run it several times (n_init = 10) and keep the best. Cluster numbers and colours also change between runs, while the groups themselves stay similar. 5. Raising the rural threshold to <b>0.31</b> lifts rural approval from 53.4% to 60.3% (disparate impact 0.806) and narrows the equal-opportunity gap from 21.6 to 13.1 points. Surprisingly, the default rate among approved rural applicants <i>falls</i> slightly (12.0% → 11.4%), and expected bad loans across both groups rise by only one (54 → 55), because the model was overstating rural risk. Treating groups differently is itself a policy choice that needs legal review; fixing the data (better credit information for thin files) is the cleaner long-term remedy. 6. Example model card: “Purpose: estimates the probability that a loan applicant defaults, to approve applications below 25% risk and refer the rest to a credit officer. Limitation: it approves rural applicants who would repay less often than urban ones (disparate impact 0.71), because thin credit files understate rural credit scores. Every referral and every rural decline is reviewed by a credit officer, and fairness and PSI are checked monthly.”</p>
+    </details>
+  </div>
+
+  <h3>Part E · The full lab in Python, R and SPSS</h3>
+  <div class="grid g3">
+    <a class="card tile" href="lab/credit_applications.csv" download><div class="ic c-brand">🏦</div><h3>Credit applications</h3><p>credit_applications.csv · 2,000 rows</p></a>
+    <a class="card tile" href="lab/new_applications.csv" download><div class="ic c-brand">🆕</div><h3>New applications</h3><p>20 to batch-score</p></a>
+    <a class="card tile" href="lab/credit_scores_this_month.csv" download><div class="ic c-accent">📉</div><h3>This month’s scores</h3><p>600 rows · for PSI</p></a>
+    <a class="card tile" href="lab/clinic_screening.csv" download><div class="ic c-good">🏥</div><h3>Clinic screening</h3><p>clinic_screening.csv · 1,500 patients</p></a>
+    <a class="card tile" href="lab/swifttel_prepared.csv" download><div class="ic c-teal">📱</div><h3>SwiftTel (prepared)</h3><p>for K-means segments</p></a>
+    <a class="card tile" href="lab/credit_model.joblib" download><div class="ic c-violet">💾</div><h3>Saved model</h3><p>credit_model.joblib (pipeline)</p></a>
+    <a class="card tile" href="lab/unit5_lab.ipynb" download><div class="ic c-accent">📓</div><h3>Jupyter notebook</h3><p>8 steps: interpret → segment</p></a>
+    <a class="card tile" href="lab/unit5_lab.py" download><div class="ic c-accent">🐍</div><h3>Python script</h3><p>python unit5_lab.py</p></a>
+    <a class="card tile" href="lab/score_api.py" download><div class="ic c-good">⚡</div><h3>Real-time API</h3><p>python score_api.py</p></a>
+    <a class="card tile" href="lab/unit5_lab.R" download><div class="ic c-violet">📊</div><h3>R script</h3><p>base R: glm, PSI, kmeans</p></a>
+  </div>
+  <ol style="margin-top:14px">
+    <li><code>pip install pandas numpy scikit-learn joblib matplotlib</code>, put all files in one folder, run the notebook or script.</li>
+    <li>Start the API with <code>python score_api.py</code>, then send it an application (the example is at the top of the file). Try leaving out a field.</li>
+    <li>The model file was saved with scikit-learn 1.8. If yours is different and loading fails, run <code>unit5_lab.py</code>, which trains and saves its own copy (<code>credit_model_lab.joblib</code>), and point the API at it.</li>
+  </ol>
+  <h3>SPSS · Lab Experiment 9: K-means cluster analysis</h3>
+  <ol>
+    <li>Open <code>swifttel_prepared.csv</code>. <b>Analyze → Descriptive Statistics → Descriptives</b>, tick “Save standardized values as variables” for data_gb, log_voice, monthly_charge, tenure_months (this creates Z-scores).</li>
+    <li><b>Analyze → Classify → K-Means Cluster</b>: move the four Z variables into Variables; Number of Clusters = 4; Iterate → maximum iterations 20; Save → Cluster membership; Options → ANOVA table.</li>
+    <li>Read the <b>Final Cluster Centers</b> (in Z units: + means above average), the number of cases per cluster and the ANOVA table (which variables separate clusters most).</li>
+    <li>Use <b>Analyze → Compare Means → Means</b> with churn_flag by the saved cluster variable to get churn per segment, then name each segment.</li>
+    <li>Repeat with 3 and 5 clusters and compare: which k gives segments a marketing team could act on?</li>
+  </ol>
+  <div class="callout tip"><b>Challenge (assignment)</b> Retrain the credit model after adding a new feature of your own design that could reduce the rural disadvantage (for example, a flag for “thin file” applicants, if such information were available). Re-run the fairness audit and the PSI check, and write one paragraph on the trade-offs you observed.</div>
+</section>
+
+<!-- ================================================================ 11 -->
+<section class="block" id="summary">
+  <div class="sec-no">Section 11</div>
+  <h2>Summary and revision</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Topic</th><th>Remember this</th></tr>
+    <tr><td>Global interpretation</td><td>Standardised coefficients, odds ratios (+50 points → ×0.48), permutation importance (credit score 0.109), PDP</td></tr>
+    <tr><td>Local interpretation</td><td>Contribution = b × (x − x̄); reason codes; counterfactual (score ≈ 716); SHAP/LIME for any model</td></tr>
+    <tr><td>Deployment</td><td>Save the fitted pipeline (joblib); batch, real-time, streaming, edge; avoid training–serving skew; version, package, test, document</td></tr>
+    <tr><td>Real-time</td><td>API: validate → features → predict → threshold → reply + log; latency budget; load model once; fallback</td></tr>
+    <tr><td>Monitoring</td><td>Data vs concept drift; PSI = Σ(A − E)ln(A/E), &gt; 0.25 act (0.339 here); champion–challenger, shadow mode, A/B</td></tr>
+    <tr><td>Case studies</td><td>Finance: explainable credit scoring (AUC 0.75); healthcare: recall-first screening (0.86 at 0.1); marketing: K-means segments (k = 4)</td></tr>
+    <tr><td>Ethics</td><td>Disparate impact 0.714 &lt; 0.8 via a proxy; equal opportunity gap 21.6 points; DPDP Act 2023; transparency, accountability</td></tr>
+    <tr><td>AI integration</td><td>LLMs explain and extract features; AutoML (AutoAI); MLOps; governance; humans stay in the loop</td></tr>
+  </table></div>
+
+  <h3>Key terms (click a card to flip)</h3>
+  <div class="grid g4">
+    <div class="flip"><div class="inner"><div class="face"><b>Permutation importance</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Score drop when one feature is shuffled; works for any model.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Reason code</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">A top feature contribution behind one decision, stated in plain words.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Counterfactual</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">The smallest change to the inputs that would flip the decision.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Training–serving skew</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Production data transformed differently from training data; prevented by saving the pipeline.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>PSI</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Population Stability Index: how much a feature’s distribution has shifted. &gt; 0.25 = significant.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Concept drift</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">The relationship between inputs and outcome changes over time.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Disparate impact</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Ratio of group approval rates; below 0.8 signals possible unfairness.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Inertia (K-means)</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Sum of squared distances from points to their cluster centre; K-means minimises it.</div></div></div>
+  </div>
+
+  <div class="callout tip" style="margin-top:22px"><b>Ready for the quiz?</b> You should be able to: tell global from local interpretation · compute an odds ratio and a contribution · explain permutation importance and PDP · describe why the pipeline is saved and what training–serving skew is · compare batch, real-time, streaming and edge · list what a real-time API must do · compute one PSI term and read PSI levels · tell data drift from concept drift · justify the threshold in a screening case · run K-means by hand and choose k · compute disparate impact and explain proxy bias · name DPDP Act principles · describe how LLMs, AutoML and MLOps integrate with predictive models.</div>
+  <p style="text-align:center;margin-top:20px"><a class="btn accent" href="quiz.html">Go to the Unit 5 quiz →</a></p>
+</section>
+    </main>
+  </div>
+</div>
+<footer class="foot">Unit 5 · Model Deployment &amp; Applications · BCA DS &amp; AI Semester 3</footer>
+
+<script>
+var $ = function (id) { return document.getElementById(id); };
+var M = null, FAIR = [], DRIFT = null, MONTH = null, KM = { pts: [], c: [], lab: [], it: 0, phase: 'assign', done: false };
+
+/* ---------- Part A: explain a loan decision ---------- */
+var NAMES = { age: 'age', years_employed: 'years employed', income_lakh: 'income', loan_amount_lakh: 'loan amount', emi_to_income: 'EMI share of income',
+              credit_score: 'credit score', past_defaults: 'past defaults', self_employed: 'self-employed' };
+function applicant() {
+  return { credit_score: +$('xCs').value, emi_to_income: +$('xEmi').value, income_lakh: +$('xInc').value, past_defaults: +$('xPd').value,
+           age: +$('xAge').value, years_employed: +$('xYr').value, loan_amount_lakh: +$('xLoan').value, self_employed: $('xSelf').checked ? 1 : 0 };
+}
+function explain() {
+  if (!M) return;
+  var x = applicant();
+  $('xCsV').textContent = x.credit_score; $('xEmiV').textContent = x.emi_to_income.toFixed(3); $('xIncV').textContent = x.income_lakh.toFixed(2);
+  $('xPdV').textContent = x.past_defaults; $('xAgeV').textContent = x.age; $('xYrV').textContent = x.years_employed; $('xLoanV').textContent = x.loan_amount_lakh.toFixed(2);
+  var z = M.intercept, base = M.intercept, parts = [];
+  Object.keys(M.coef).forEach(function (k) { z += M.coef[k] * x[k]; base += M.coef[k] * M.mean[k]; parts.push([k, M.coef[k] * (x[k] - M.mean[k])]); });
+  var p = 1 / (1 + Math.exp(-z)), ok = p < M.threshold;
+  $('xP').textContent = p.toFixed(3); $('xP').style.color = ok ? 'var(--good)' : 'var(--bad)';
+  $('xDec').textContent = ok ? 'APPROVE (P(default) below ' + M.threshold + ')' : 'REFER TO A CREDIT OFFICER (P(default) ≥ ' + M.threshold + ')';
+  $('xDec').style.background = ok ? 'var(--good-soft)' : 'var(--surface-2)'; $('xDec').style.color = ok ? 'var(--good)' : 'var(--bad)';
+  var target = Math.log(M.threshold / (1 - M.threshold)), need = (target - (z - M.coef.credit_score * x.credit_score)) / M.coef.credit_score;
+  $('xCf').textContent = ok ? 'Approved. Average applicant: P = ' + (1 / (1 + Math.exp(-base))).toFixed(3) + '.' :
+    'Counterfactual: a credit score of about ' + Math.ceil(need) + (Math.ceil(need) > 900 ? ' (impossible: change something else)' : '') + ', everything else unchanged, would be approved.';
+  parts.sort(function (a, b) { return b[1] - a[1]; });
+  var W = 430, rowH = 26, max = Math.max.apply(null, parts.map(function (q) { return Math.abs(q[1]); })) || 1, mid = 250, sc = 160 / max;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + (parts.length * rowH + 30) + '" role="img" aria-label="Reason codes">';
+  s += '<text x="' + mid + '" y="12" text-anchor="middle" style="font-size:11px;fill:var(--ink-3)">← lowers risk · raises risk →</text>';
+  parts.forEach(function (q, i) {
+    var y = 20 + i * rowH, w = Math.abs(q[1]) * sc, pos = q[1] >= 0;
+    s += '<text x="' + (pos ? mid - 6 : mid - w - 6) + '" y="' + (y + 15) + '" text-anchor="end" style="font-size:11.5px;fill:var(--ink-2)">' + NAMES[q[0]] + '</text>';
+    s += '<rect x="' + (pos ? mid : mid - w) + '" y="' + (y + 3) + '" width="' + Math.max(1, w) + '" height="16" rx="3" style="fill:' + (pos ? 'var(--bad)' : 'var(--good)') + '"/>';
+    s += '<text x="' + (pos ? mid + w + 4 : mid + 4) + '" y="' + (y + 15) + '" style="font-size:11.5px;fill:var(--ink)">' + (pos ? '+' : '') + q[1].toFixed(2) + '</text>';
+  });
+  $('xChart').innerHTML = s + '</svg>';
+}
+['xCs', 'xEmi', 'xInc', 'xPd', 'xAge', 'xYr', 'xLoan', 'xSelf'].forEach(function (id) { $(id).addEventListener('input', explain); });
+
+/* ---------- Part B: drift monitor ---------- */
+function psiOf(values) {
+  var e = DRIFT.edges, nb = e.length - 1, E = new Array(nb).fill(0), A = new Array(nb).fill(0);
+  var bin = function (v) { for (var i = 0; i < nb; i++) if (v >= e[i] && v < e[i + 1]) return i; return v < e[0] ? 0 : nb - 1; };
+  DRIFT.train.forEach(function (v) { E[bin(v)]++; }); values.forEach(function (v) { A[bin(v)]++; });
+  var psi = 0;
+  E = E.map(function (c) { return c / DRIFT.train.length; }); A = A.map(function (c) { return Math.max(c, 0.5) / values.length; });
+  for (var i = 0; i < nb; i++) psi += (A[i] - E[i]) * Math.log(A[i] / E[i]);
+  return { psi: psi, E: E, A: A };
+}
+function drift(values, label) {
+  if (!DRIFT) return;
+  if (!values) {
+    var sh = +$('dSh').value, sp = +$('dSp').value, m = DRIFT.train.reduce(function (a, b) { return a + b; }, 0) / DRIFT.train.length;
+    $('dShV').textContent = sh; $('dSpV').textContent = sp.toFixed(2);
+    values = DRIFT.train.map(function (v) { return Math.max(300, Math.min(900, Math.round(m + (v - m) * sp + sh))); });
+    label = 'synthetic month';
+  }
+  var r = psiOf(values), mean = values.reduce(function (a, b) { return a + b; }, 0) / values.length;
+  var lvl = r.psi < 0.1 ? ['stable', 'var(--good)'] : r.psi < 0.25 ? ['watch', 'var(--accent)'] : ['significant drift: investigate / retrain', 'var(--bad)'];
+  $('dKpi').innerHTML = '<div class="kpi"><div class="v" style="color:' + lvl[1] + '">' + r.psi.toFixed(3) + '</div><div class="l">PSI · ' + lvl[0] + '</div></div>' +
+    '<div class="kpi"><div class="v">' + mean.toFixed(1) + '</div><div class="l">mean score, ' + label + ' (training 690.1)</div></div>' +
+    '<div class="kpi"><div class="v">' + values.length + '</div><div class="l">applicants compared</div></div>';
+  var W = 760, s = '<svg viewBox="0 0 ' + W + ' 190" role="img" aria-label="Share of applicants per credit-score bin">', bw = (W - 60) / 10;
+  r.E.forEach(function (e, i) {
+    var x = 40 + i * bw, h1 = e * 900, h2 = r.A[i] * 900;
+    s += '<rect x="' + (x + 4) + '" y="' + (160 - h1) + '" width="' + (bw / 2 - 6) + '" height="' + h1 + '" style="fill:var(--ink-3);fill-opacity:.5"/>';
+    s += '<rect x="' + (x + bw / 2) + '" y="' + (160 - h2) + '" width="' + (bw / 2 - 6) + '" height="' + h2 + '" style="fill:var(--accent)"/>';
+    s += '<text x="' + (x + bw / 2) + '" y="176" text-anchor="middle" style="font-size:10.5px;fill:var(--ink-3)">' + Math.round(DRIFT.edges[i]) + '+</text>';
+  });
+  s += '<text x="40" y="14" style="font-size:12px;fill:var(--ink-3)">grey = training (10% per bin) · orange = ' + label + '</text>';
+  $('dChart').innerHTML = s + '</svg>';
+}
+function useThisMonth() { if (MONTH) drift(MONTH, "this month's file"); }
+['dSh', 'dSp'].forEach(function (id) { $(id).addEventListener('input', function () { drift(); }); });
+
+/* ---------- Part C: K-means ---------- */
+var KCOL = ['var(--brand)', 'var(--accent)', 'var(--good)', 'var(--violet)', 'var(--bad)', 'var(--teal)'];
+var seed = 5; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+function kmInit() {
+  var k = +$('kmK').value, P = KM.pts; $('kmKV').textContent = k;
+  var c = [P[Math.floor(rnd() * P.length)]];
+  while (c.length < k) {           // k-means++: next centre far from existing ones
+    var d = P.map(function (p) { return Math.min.apply(null, c.map(function (q) { return Math.pow(p[0] - q[0], 2) + Math.pow(p[1] - q[1], 2); })); });
+    var tot = d.reduce(function (a, b) { return a + b; }, 0), r = rnd() * tot, i = 0;
+    while (r > d[i]) { r -= d[i]; i++; }
+    c.push(P[i]);
+  }
+  KM.c = c.map(function (q) { return q.slice(); }); KM.lab = P.map(function () { return -1; }); KM.it = 0; KM.phase = 'assign'; KM.done = false;
+  kmDraw();
+}
+function inertia() { return KM.pts.reduce(function (s, p, i) { var c = KM.c[KM.lab[i]]; return c ? s + Math.pow(p[0] - c[0], 2) + Math.pow(p[1] - c[1], 2) : s; }, 0); }
+function kmStep() {
+  if (KM.done) return;
+  if (KM.phase === 'assign') {
+    var changed = 0;
+    KM.pts.forEach(function (p, i) {
+      var best = 0, bd = Infinity;
+      KM.c.forEach(function (c, j) { var d = Math.pow(p[0] - c[0], 2) + Math.pow(p[1] - c[1], 2); if (d < bd) { bd = d; best = j; } });
+      if (KM.lab[i] !== best) changed++; KM.lab[i] = best;
+    });
+    KM.it++; KM.phase = 'update';
+    if (!changed) { KM.done = true; }
+  } else {
+    KM.c = KM.c.map(function (c, j) {
+      var m = KM.pts.filter(function (p, i) { return KM.lab[i] === j; });
+      return m.length ? [m.reduce(function (s, p) { return s + p[0]; }, 0) / m.length, m.reduce(function (s, p) { return s + p[1]; }, 0) / m.length] : c;
+    });
+    KM.phase = 'assign';
+  }
+  kmDraw();
+}
+function kmRun() { var guard = 0; while (!KM.done && guard++ < 400) kmStep(); }
+function kmDraw() {
+  var W = 760, H = 320, P = KM.pts, X = function (v) { return 40 + (v + 2.5) * (W - 60) / 7.5; }, Y = function (v) { return H - 25 - (v + 2.5) * (H - 40) / 7.5; };
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="K-means clustering of customers">';
+  P.forEach(function (p, i) { s += '<circle cx="' + X(p[0]).toFixed(1) + '" cy="' + Y(p[1]).toFixed(1) + '" r="3" style="fill:' + (KM.lab[i] < 0 ? 'var(--ink-3)' : KCOL[KM.lab[i]]) + ';fill-opacity:.55"/>'; });
+  KM.c.forEach(function (c, j) { s += '<rect x="' + (X(c[0]) - 9) + '" y="' + (Y(c[1]) - 9) + '" width="18" height="18" rx="3" style="fill:' + KCOL[j] + ';stroke:var(--ink);stroke-width:2"/>'; });
+  s += '<text x="' + (W / 2) + '" y="' + (H - 5) + '" text-anchor="middle" style="font-size:12px;fill:var(--ink-3)">data GB (scaled) → · voice minutes (scaled) ↑ · squares are centroids</text>';
+  $('kmChart').innerHTML = s + '</svg>';
+  var churn = KM.c.map(function (c, j) { var m = KM.pts.map(function (p, i) { return i; }).filter(function (i) { return KM.lab[i] === j; });
+    return m.length ? Math.round(100 * m.reduce(function (s, i) { return s + KM.churn[i]; }, 0) / m.length) + '% (' + m.length + ')' : '–'; });
+  $('kmKpi').innerHTML = '<div class="kpi"><div class="v">' + KM.it + '</div><div class="l">assignment rounds · next: ' + (KM.done ? 'converged ✔' : KM.phase) + '</div></div>' +
+    '<div class="kpi"><div class="v">' + (KM.lab[0] < 0 ? '–' : inertia().toFixed(1)) + '</div><div class="l">inertia</div></div>' +
+    '<div class="kpi"><div class="v" style="font-size:16px">' + churn.join(' · ') + '</div><div class="l">churn rate (size) per cluster</div></div>';
+}
+$('kmK').addEventListener('input', function () { $('kmKV').textContent = this.value; kmInit(); });
+
+/* ---------- Part D: fairness checker ---------- */
+function fairness() {
+  if (!FAIR.length) return;
+  var col = $('fGroup').value === 'region' ? 2 : 3, groups = col === 2 ? ['Urban', 'Rural'] : ['Male', 'Female'];
+  $('fG1').textContent = groups[0]; $('fG2').textContent = groups[1];
+  var t = [+$('fT1').value, +$('fT2').value]; $('fT1V').textContent = t[0].toFixed(2); $('fT2V').textContent = t[1].toFixed(2);
+  var res = groups.map(function (g, k) {
+    var rows = FAIR.filter(function (r) { return r[col] === g; }), appr = rows.filter(function (r) { return r[0] < t[k]; }), good = rows.filter(function (r) { return !r[1]; });
+    return { g: g, n: rows.length, approve: appr.length / rows.length, tpr: good.filter(function (r) { return r[0] < t[k]; }).length / good.length,
+             bad: appr.length ? appr.filter(function (r) { return r[1]; }).length / appr.length : 0, defaults: appr.filter(function (r) { return r[1]; }).length, actual: rows.filter(function (r) { return r[1]; }).length / rows.length };
+  });
+  $('fTable').innerHTML = '<table><tr><th>Group</th><th class="num">Applicants</th><th class="num">Threshold</th><th class="num">Approval rate</th><th class="num">Approval among good payers</th><th class="num">Default rate among approved</th><th class="num">Actual default rate</th></tr>' +
+    res.map(function (r, k) { return '<tr><td><b>' + r.g + '</b></td><td class="num">' + r.n + '</td><td class="num">' + t[k].toFixed(2) + '</td><td class="num">' + (100 * r.approve).toFixed(1) + '%</td><td class="num">' + (100 * r.tpr).toFixed(1) +
+      '%</td><td class="num">' + (100 * r.bad).toFixed(1) + '%</td><td class="num">' + (100 * r.actual).toFixed(1) + '%</td></tr>'; }).join('') + '</table>';
+  var di = Math.min(res[0].approve, res[1].approve) / Math.max(res[0].approve, res[1].approve), gap = Math.abs(res[0].tpr - res[1].tpr) * 100;
+  $('fKpi').innerHTML = '<div class="kpi"><div class="v" style="color:' + (di >= .8 ? 'var(--good)' : 'var(--bad)') + '">' + di.toFixed(3) + '</div><div class="l">disparate impact (≥ 0.8 passes)</div></div>' +
+    '<div class="kpi"><div class="v">' + gap.toFixed(1) + ' pts</div><div class="l">equal-opportunity gap</div></div>' +
+    '<div class="kpi"><div class="v">' + (res[0].defaults + res[1].defaults) + '</div><div class="l">expected bad loans among approvals (test set)</div></div>';
+}
+['fGroup', 'fT1', 'fT2'].forEach(function (id) { $(id).addEventListener('input', fairness); });
+
+/* ---------- load data ---------- */
+Promise.all([fetch('lab/credit_model.json').then(function (r) { return r.json(); }), fetch('lab/fairness_scores.json').then(function (r) { return r.json(); }),
+             fetch('lab/drift_data.json').then(function (r) { return r.json(); }), fetch('lab/kmeans_points.json').then(function (r) { return r.json(); }),
+             fetch('lab/credit_scores_this_month.csv').then(function (r) { return r.text(); })])
+  .then(function (d) {
+    M = d[0]; FAIR = d[1]; DRIFT = d[2];
+    MONTH = d[4].trim().split(/\r?\n/).slice(1).map(Number);
+    var xs = d[3].x, ys = d[3].y, mx = xs.reduce(function (a, b) { return a + b; }, 0) / xs.length, my = ys.reduce(function (a, b) { return a + b; }, 0) / ys.length;
+    var sx = Math.sqrt(xs.reduce(function (s, v) { return s + (v - mx) * (v - mx); }, 0) / xs.length), sy = Math.sqrt(ys.reduce(function (s, v) { return s + (v - my) * (v - my); }, 0) / ys.length);
+    KM.pts = xs.map(function (v, i) { return [(v - mx) / sx, (ys[i] - my) / sy]; }); KM.churn = d[3].churn;
+    explain(); drift(); kmInit(); fairness();
+  })
+  .catch(function () { $('xDec').textContent = 'Open this page through the classroom server to load the model and data.'; });
+</script>
+</body>
+</html>

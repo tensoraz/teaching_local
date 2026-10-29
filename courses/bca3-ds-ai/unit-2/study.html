@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 2 Study Guide</title>
+<meta name="description" content="Data preparation and exploration: data collection and joins, data cleaning, missing values (MCAR, MAR, MNAR) and imputation, outlier detection, data transformation, feature selection, exploratory data analysis and visualization, on three messy telecom source files.">
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  .pace { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 18px 0 4px; }
+  .pace a { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; color: var(--ink); font-size: 14px; }
+  .pace a:hover { border-color: var(--brand); text-decoration: none; }
+  .pace b { display: block; font-size: 12px; color: var(--accent); }
+  .step-head { display: flex; gap: 12px; align-items: center; margin: 28px 0 8px; }
+  .step-head .n { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--brand); color: #fff; font-size: 15px; }
+  .step-head h3 { margin: 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .lab-ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: end; }
+  .lab-ctrl label, .sl label { font-size: 13px; font-weight: 600; color: var(--ink-3); display: block; margin-bottom: 4px; }
+  .sl input[type=range] { width: 100%; }
+  .toggle { display: flex; gap: 8px; align-items: center; font-weight: 600; font-size: 14.5px; cursor: pointer; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  .toggle input { width: 18px; height: 18px; flex: none; }
+  .chart svg { width: 100%; height: auto; }
+  .task { display: grid; grid-template-columns: 28px 1fr; gap: 8px; margin: 10px 0; font-size: 15.5px; }
+  .task input { width: 18px; height: 18px; margin-top: 4px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  .miss3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  @media (max-width: 820px) { .miss3 { grid-template-columns: 1fr; } }
+  .miss3 div { border-radius: 12px; padding: 14px; border: 1.5px solid; background: var(--surface); }
+  .miss3 b { display: block; font-size: 17px; margin-bottom: 4px; }
+  .miss3 p { margin: 6px 0 0; font-size: 14.5px; }
+  .ok { color: var(--good); font-weight: 700; } .bad { color: var(--bad); font-weight: 700; }
+  .flow { display: flex; gap: 4px; flex-wrap: wrap; margin: 16px 0; }
+  .flow div { flex: 1 1 120px; padding: 12px 12px 12px 20px; background: var(--brand-soft); color: var(--brand-ink); font-weight: 700; font-size: 14px;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); }
+  .flow div:first-child { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); }
+  .flow small { display: block; font-weight: 500; color: var(--ink-2); font-size: 12px; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Predictive Analytics</a> › <a href="./">Unit 2</a> › <b>Study guide</b></div>
+  <a class="icon-btn" href="quiz.html">Quiz →</a>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+  <div class="progress"></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 2 · Study guide · 35 minutes</span>
+    <h1>Data Preparation &amp; Exploration</h1>
+    <p class="lead">In Unit 1 you were handed a clean SwiftTel file. Real projects never start that way. Here you get the <b>three messy exports</b> it was built from: a CRM file with duplicates, seven spellings of two plans and impossible ages; a usage file with meter glitches; and one row per complaint ticket. You will collect, clean, repair, transform, select and explore, and end with a model-ready table.</p>
+    <div class="flow">
+      <div>Collect<small>join 3 sources</small></div><div>Clean<small>labels, types</small></div><div>Missing<small>why + fill</small></div>
+      <div>Outliers<small>detect + treat</small></div><div>Transform<small>scale, encode</small></div><div>Select<small>best features</small></div><div>Explore<small>EDA + charts</small></div>
+    </div>
+    <div class="pace">
+      <a href="#collect"><b>0–4 min</b>Collection</a>
+      <a href="#clean"><b>4–8 min</b>Cleaning</a>
+      <a href="#missing"><b>8–13 min</b>Missing values</a>
+      <a href="#outliers"><b>13–17 min</b>Outliers</a>
+      <a href="#transform"><b>17–21 min</b>Transformation</a>
+      <a href="#select"><b>21–25 min</b>Feature selection</a>
+      <a href="#eda"><b>25–28 min</b>EDA + charts</a>
+      <a href="#lab"><b>28–35 min</b>Hands-on lab</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc">
+      <div class="t">On this page</div>
+      <a href="#why">1. Why preparation matters</a>
+      <a href="#collect">2. Data collection</a>
+      <a href="#clean">3. Data cleaning</a>
+      <a href="#missing">4. Missing values</a>
+      <a href="#outliers">5. Outlier detection</a>
+      <a href="#transform">6. Data transformation</a>
+      <a href="#select">7. Feature selection</a>
+      <a href="#eda">8. Exploratory data analysis</a>
+      <a href="#viz">9. Visualization techniques</a>
+      <a href="#lab">10. Hands-on lab</a>
+      <a href="#summary">11. Summary and revision</a>
+    </nav>
+
+    <main>
+<!-- ================================================================ 1 -->
+<section class="block" id="why">
+  <div class="sec-no">Section 1</div>
+  <h2>Why data preparation matters</h2>
+  <p>A model can only learn what the data shows it. If “Prepaid” and “PREPAID” are different values, the model sees two plans. If one customer is recorded at 999.9 GB, the average data use jumps by about 4 GB. If unhappy customers skip the survey, “satisfaction” looks better than it is. <b>Garbage in, garbage out.</b> Practitioners routinely report that preparing data takes more of a project’s time than modelling it.</p>
+
+  <h3>Six dimensions of data quality</h3>
+  <p>Use these six words as a checklist on every new dataset. The SwiftTel column shows what we found in today’s files.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Dimension</th><th>Question to ask</th><th>SwiftTel finding</th><th>Fix</th></tr>
+    <tr><td><b>Uniqueness</b></td><td>Is any record stored twice?</td><td>15 exact duplicate rows in the CRM export</td><td>drop duplicates</td></tr>
+    <tr><td><b>Consistency</b></td><td>Is the same thing always written the same way?</td><td>7 spellings of 2 plans, 6 of 2 genders, “yes” and “Yes”</td><td>standardise labels</td></tr>
+    <tr><td><b>Validity</b></td><td>Does each value have the right type and format?</td><td>151 charges with “₹”, 73 ending “.00”; 296 dates as DD/MM/YYYY</td><td>convert types, parse dates</td></tr>
+    <tr><td><b>Accuracy</b></td><td>Is the value true?</td><td>ages 0, 151, 234; charges ₹23,900–₹79,900; 6 usage values near 1,000 GB</td><td>fix, or set missing</td></tr>
+    <tr><td><b>Completeness</b></td><td>Is anything missing?</td><td>age 59 blank, satisfaction 151 blank, 25 customers with no usage record</td><td>understand why, then impute</td></tr>
+    <tr><td><b>Timeliness</b></td><td>Is it recent enough for the question?</td><td>December 2024 usage for a 1 January 2025 snapshot</td><td>✔ fine</td></tr>
+  </table></div>
+</section>
+
+<!-- ================================================================ 2 -->
+<section class="block" id="collect">
+  <div class="sec-no">Section 2</div>
+  <h2>Data collection</h2>
+  <p>Data for a predictive project usually comes from several systems that were never designed to work together.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Source</th><th>Example</th><th>Watch out for</th></tr>
+    <tr><td><b>Internal databases</b></td><td>CRM, billing, ERP, point-of-sale (queried with SQL)</td><td>different IDs and codes in each system</td></tr>
+    <tr><td><b>System logs</b></td><td>app clicks, network usage, call records</td><td>huge volume, glitches, time zones</td></tr>
+    <tr><td><b>Surveys and forms</b></td><td>satisfaction survey, KYC form</td><td>skipped questions, typing errors, default values</td></tr>
+    <tr><td><b>APIs</b></td><td>payment gateway, weather, maps</td><td>rate limits, changing formats</td></tr>
+    <tr><td><b>Sensors / IoT</b></td><td>machine vibration, smart meters</td><td>drift, missing readings when offline</td></tr>
+    <tr><td><b>Web scraping</b></td><td>competitor prices, public reviews</td><td>website terms, privacy law, page changes</td></tr>
+    <tr><td><b>Third-party data</b></td><td>credit bureau scores, purchased demographics</td><td>cost, consent, unknown quality</td></tr>
+  </table></div>
+  <p><b>Primary data</b> is collected for your exact question (a churn survey). <b>Secondary data</b> was collected earlier for another purpose (billing records). Secondary data is cheaper but may not measure exactly what you need.</p>
+
+  <h3>Joining sources: keys, aggregation and join types</h3>
+  <div class="two">
+    <div class="tbl-wrap" style="margin-top:0"><table>
+      <tr><th>Join</th><th>Keeps</th><th>SwiftTel result</th></tr>
+      <tr><td><b>Inner</b></td><td>only IDs in both tables</td><td>1,475: loses 25 customers silently</td></tr>
+      <tr><td><b>Left</b></td><td>every row of the left table</td><td>1,500, with 25 blank usage rows</td></tr>
+      <tr><td><b>Right</b></td><td>every row of the right table</td><td>1,475</td></tr>
+      <tr><td><b>Full outer</b></td><td>every ID from either table</td><td>1,500 (no orphans here)</td></tr>
+    </table></div>
+    <div class="callout warn" style="margin-top:0"><b>Three join traps in our files</b>
+      <ul style="margin:6px 0 0;padding-left:20px">
+        <li><b>Key mismatch:</b> 10 usage rows say <code>st10007</code>, the CRM says <code>ST10007</code>. Upper-case before joining, or 10 customers lose their usage.</li>
+        <li><b>Wrong grain:</b> tickets have one row <i>per ticket</i> (1,840 rows). Joining them directly would copy each customer once per ticket. Aggregate first: one count per customer.</li>
+        <li><b>Absence ≠ missing:</b> a customer with no ticket made <b>0</b> calls (a fact). A customer with no usage row has <b>unknown</b> usage (missing).</li>
+      </ul></div>
+  </div>
+<pre class="code" data-lang="py">usage["customer_id"] = usage["customer_id"].str.upper()
+calls = tickets.groupby("customer_id").size().rename("support_calls")
+df = crm.merge(usage, on="customer_id", how="left").merge(calls, on="customer_id", how="left")
+df["support_calls"] = df["support_calls"].fillna(0).astype(int)
+print("Merged:", df.shape)
+print(df.isna().sum()[df.isna().sum() &gt; 0])</pre>
+<pre class="out">Merged: (1500, 14)
+age                59
+satisfaction      151
+data_gb            25
+voice_minutes      25
+recharge_count     25</pre>
+  <figure class="shot" style="max-width:600px"><img src="img/missing_after_merge.png" alt="Missing values after merge: satisfaction 151, age 59, usage columns 25 each" loading="lazy"><figcaption>Gaps after joining. Each column is missing for a different reason (Section 4).</figcaption></figure>
+</section>
+
+<!-- ================================================================ 3 -->
+<section class="block" id="clean">
+  <div class="sec-no">Section 3</div>
+  <h2>Data cleaning</h2>
+  <p>Read raw files <b>as text</b> first (<code>dtype=str</code>). If pandas guesses types, it silently turns “₹399” into a text column and blank ages into NaN, hiding the problems you need to see.</p>
+<pre class="code" data-lang="py">crm = pd.read_csv("crm_customers.csv", dtype=str, keep_default_na=False)
+print(crm.head(3))
+print("Exact duplicate rows:", crm.duplicated().sum())</pre>
+<pre class="out">  customer_id gender age city_tier plan_type   join_date monthly_charge autopay satisfaction churned
+0     ST10849      F  44    Tier-3   Prepaid  2022-08-01            599      No            4      No
+1     ST11402      M  34    Tier-3   Prepaid  2024-09-29            479      No            5      No
+2     ST11135   male  34    Tier-2   Prepaid  16/12/2023            479      No            5     Yes
+Exact duplicate rows: 15</pre>
+
+  <div class="step-head"><div class="n">1</div><h3>Remove duplicates first</h3></div>
+  <p>Every later count (churn rate, averages) would include the 15 copies twice. Remove exact duplicates <b>before</b> anything else: 1,515 → 1,500 rows. Watch for <i>near</i>-duplicates too (same customer, different spelling), which <code>drop_duplicates()</code> cannot see.</p>
+
+  <div class="step-head"><div class="n">2</div><h3>Standardise labels</h3></div>
+<pre class="code" data-lang="py">crm["plan_type"] = (crm["plan_type"].str.lower().str.replace("-", "", regex=False)
+                    .map({"prepaid": "Prepaid", "postpaid": "Postpaid"}))
+crm["gender"] = crm["gender"].str.strip().str.lower().map({"m": "Male", "male": "Male", "f": "Female", "female": "Female"})
+crm["churned"] = crm["churned"].str.title()</pre>
+<pre class="out">Plan labels before: {'Prepaid': 807, 'Postpaid': 498, 'prepaid': 54, 'Pre-paid': 45, 'postpaid': 41, 'PREPAID': 28, 'Post-paid': 27}
+Plan labels after : {'Prepaid': 934, 'Postpaid': 566}</pre>
+  <p>Note the order inside the chain: <code>strip()</code> removes the hidden space in <code>"female "</code>, <code>lower()</code> merges capitals, and <code>map()</code> sends each spelling to one official label. Any spelling you forgot becomes NaN, which is a useful alarm.</p>
+
+  <div class="step-head"><div class="n">3</div><h3>Fix types and formats</h3></div>
+<pre class="code" data-lang="py">crm["monthly_charge"] = pd.to_numeric(crm["monthly_charge"].str.replace("₹", "", regex=False))
+crm["join_date"] = pd.to_datetime(crm["join_date"], format="mixed", dayfirst=True)
+crm["age"] = pd.to_numeric(crm["age"].replace("", np.nan))
+print(crm.dtypes)</pre>
+<pre class="out">customer_id               object
+gender                    object
+age                      float64
+city_tier                 object
+plan_type                 object
+join_date         datetime64[ns]
+monthly_charge           float64
+autopay                   object
+satisfaction             float64
+churned                   object</pre>
+  <div class="callout warn"><b>Dates are dangerous</b><code>04/05/2024</code> is 4 May in India but April 5 in the USA. Always state the format (<code>dayfirst=True</code>) and spot-check a few rows. A wrong date silently changes every tenure you compute from it.</div>
+</section>
+
+<!-- ================================================================ 4 -->
+<section class="block" id="missing">
+  <div class="sec-no">Section 4</div>
+  <h2>Handling missing values</h2>
+  <p>Before choosing <i>how</i> to fill a gap, ask <i>why</i> it is there. Statistician Donald Rubin (1976) named three mechanisms:</p>
+  <div class="miss3">
+    <div style="border-color:var(--good)"><b style="color:var(--good)">MCAR: Missing Completely At Random</b>Missingness has nothing to do with any value.<p><i>SwiftTel:</i> the 45 survey gaps already present in Unit 1 were random (a page that failed to load).</p><p><b>Safe:</b> dropping a few rows does not bias results.</p></div>
+    <div style="border-color:var(--accent)"><b style="color:var(--accent)">MAR: Missing At Random</b>Missingness depends on <i>other columns you have</i>.<p><i>SwiftTel:</i> age is missing for <b>6.0%</b> of prepaid but <b>1.4%</b> of postpaid customers (prepaid KYC forms are often incomplete).</p><p><b>Fix:</b> impute using the related column (median age within each plan).</p></div>
+    <div style="border-color:var(--bad)"><b style="color:var(--bad)">MNAR: Missing Not At Random</b>Missingness depends on the <i>missing value itself</i>.<p><i>SwiftTel:</i> unhappy customers skip the survey. Churn is <b>27.8%</b> when satisfaction is blank vs <b>22.1%</b> when filled.</p><p><b>Fix:</b> keep a “was missing” flag; the gap itself carries information.</p></div>
+  </div>
+<pre class="code" data-lang="py">print("Age missing by plan (%):", (df.groupby("plan_type")["age"].apply(lambda s: s.isna().mean()) * 100).round(1).to_dict())
+print("Churn % if satisfaction missing / present:",
+      round(df.loc[df["satisfaction"].isna(), "churned"].eq("Yes").mean() * 100, 1),
+      round(df.loc[df["satisfaction"].notna(), "churned"].eq("Yes").mean() * 100, 1))</pre>
+<pre class="out">Age missing by plan (%): {'Postpaid': 1.4, 'Prepaid': 6.0}
+Churn % if satisfaction missing / present: 27.8 22.1</pre>
+  <p class="muted" style="font-size:14px">(These age figures include the 5 impossible ages that we set to missing in Section 5.)</p>
+
+  <h3>Methods for handling missing values</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Method</th><th>How</th><th>Good when</th><th>Risk</th></tr>
+    <tr><td><b>Listwise deletion</b></td><td>drop rows with any gap</td><td>few gaps, MCAR</td><td>loses data; biased if not MCAR</td></tr>
+    <tr><td><b>Drop the column</b></td><td>remove the feature</td><td>mostly empty (say &gt; 60%) and unimportant</td><td>throws away signal</td></tr>
+    <tr><td><b>Mean imputation</b></td><td>fill with the average</td><td>quick baseline, symmetric data</td><td>shrinks spread, makes a spike</td></tr>
+    <tr><td><b>Median imputation</b></td><td>fill with the middle value</td><td>skewed data, outliers present</td><td>same spike problem</td></tr>
+    <tr><td><b>Mode imputation</b></td><td>fill with the most common value</td><td>categorical columns</td><td>over-represents one category</td></tr>
+    <tr><td><b>Group imputation</b></td><td>median within a related group</td><td>MAR</td><td>needs a good grouping column</td></tr>
+    <tr><td><b>Indicator flag</b></td><td>add <code>x_was_missing</code> = 1/0, then fill</td><td>MNAR or unknown</td><td>one more column</td></tr>
+    <tr><td><b>Model-based</b></td><td>predict the gap from other columns (KNN imputer, regression)</td><td>strong relationships between columns</td><td>slower; can leak if done before the train/test split</td></tr>
+    <tr><td><b>Domain rule</b></td><td>no ticket → 0 calls</td><td>the “gap” is really a known value</td><td>none, if the rule is true</td></tr>
+  </table></div>
+
+  <div class="callout warn"><b>Do the maths: mean imputation shrinks the spread</b>
+    1,436 ages are observed, with standard deviation 10.22. Filling 64 gaps with the mean adds 64 values that sit exactly on the mean, so they add <b>nothing</b> to Σ(x − x̄)² but increase n.<br>
+    <code>sd_new = sd_old × √((n_obs − 1) / (n − 1)) = 10.22 × √(1435 / 1499) = 10.22 × 0.978 = 10.00</code><br>
+    That is exactly what pandas printed: <code>Age std: observed 10.22, after mean fill 10.00</code>. A model then thinks ages are more alike than they really are.
+  </div>
+  <figure class="shot"><img src="img/imputation_compare.png" alt="Mean imputation puts 64 values in one bar at 34; group median splits them between 32 and 34" loading="lazy"><figcaption>Every imputed value lands in one bar (red). Group medians split the spike (green), and the flag column remembers which ages were invented.</figcaption></figure>
+<pre class="code" data-lang="py">df["age_was_missing"] = df["age"].isna().astype(int)              # keep the fact that it was missing
+df["age"] = df["age"].fillna(df.groupby("plan_type")["age"].transform("median"))
+df["satisfaction_missing"] = df["satisfaction"].isna().astype(int)
+df["satisfaction"] = df["satisfaction"].fillna(df["satisfaction"].median())</pre>
+  <div class="activity" id="missGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">MCAR, MAR or MNAR?</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 5 -->
+<section class="block" id="outliers">
+  <div class="sec-no">Section 5</div>
+  <h2>Outlier detection</h2>
+  <p>An <b>outlier</b> is a value far from the rest. It may be an <b>error</b> (a typo, a meter glitch) or a <b>genuine extreme</b> (a heavy user). Detection rules only <i>flag</i> candidates; you decide what they are.</p>
+
+  <h3>Three detection rules</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Rule</th><th>Formula</th><th>Strength</th><th>Weakness</th></tr>
+    <tr><td><b>IQR (box-plot) rule</b></td><td>flag x &lt; Q1 − 1.5·IQR or x &gt; Q3 + 1.5·IQR</td><td>robust: quartiles barely move when outliers are added</td><td>flags many genuine values in skewed data</td></tr>
+    <tr><td><b>z-score rule</b></td><td>z = (x − x̄)/s; flag |z| &gt; 3</td><td>simple, good for bell-shaped data</td><td>x̄ and s are themselves pulled by outliers (<b>masking</b>)</td></tr>
+    <tr><td><b>Domain rule</b></td><td>age 18–100; charge ≤ ₹999; data ≤ 100 GB</td><td>uses real business knowledge</td><td>needs someone who knows the business</td></tr>
+  </table></div>
+
+  <div class="callout warn"><b>Do the maths on data_gb as received</b>
+    Q1 = 21.90, Q3 = 43.65, so IQR = 21.75.<br>
+    Fences: 21.90 − 1.5 × 21.75 = <b>−10.73</b> and 43.65 + 1.5 × 21.75 = <b>76.28</b>. <b>28 values</b> lie outside.<br>
+    z-scores: x̄ = 37.76, s = 59.18. For the largest value, z = (999.9 − 37.76) / 59.18 = <b>16.3</b>. Only <b>6 values</b> have |z| &gt; 3.<br>
+    Why so different? The six glitches inflated s from about 16 to 59, so genuine heavy users at 80+ GB no longer look unusual to the z rule. That is <b>masking</b>.
+  </div>
+<pre class="out">data_gb IQR fences: [-10.73, 76.28]  -&gt; flagged 28
+data_gb |z| &gt; 3      -&gt; flagged 6
+data_gb &gt; 100 GB (impossible on any plan): 6
+monthly_charge &gt; 999 (no such plan): 4 [59900.0, 23900.0, 79900.0, 34900.0]
+age outside 18-100: 5 [0.0, 0.0, 0.0, 151.0, 234.0]</pre>
+  <figure class="shot"><img src="img/outliers_boxplot.png" alt="Box plot with six points near 900-1000 GB; after removing them, a few heavy users remain just above 76 GB" loading="lazy"><figcaption>Left: six meter glitches dominate the plot. Right: what remains above the fence are 22 real heavy users, who should stay.</figcaption></figure>
+
+  <h3>Treatment depends on the cause</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Cause</th><th>SwiftTel case</th><th>Treatment</th></tr>
+    <tr><td>Typo you can explain</td><td>₹59,900 is ₹599 with an extra “00”</td><td><b>Fix</b> it (÷ 100)</td></tr>
+    <tr><td>Impossible value</td><td>age 0 / 151 / 234; 999.9 GB</td><td><b>Set to missing</b>, then impute like any gap</td></tr>
+    <tr><td>Genuine extreme</td><td>a heavy user at 87.5 GB</td><td><b>Keep</b>. For sensitive models, <b>cap</b> (winsorize at the 1st/99th percentile) or <b>log-transform</b></td></tr>
+    <tr><td>Different population</td><td>a corporate account with hundreds of lines</td><td>model it <b>separately</b></td></tr>
+    <tr><td>The event you are looking for</td><td>fraud, network attack</td><td><b>Keep</b>: the outliers are the signal</td></tr>
+  </table></div>
+  <div class="activity" id="outGame">
+    <span class="tag">Try it · 1 min</span>
+    <h3 style="margin:0 0 6px">What would you do with it?</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 6 -->
+<section class="block" id="transform">
+  <div class="sec-no">Section 6</div>
+  <h2>Data transformation</h2>
+  <p>Transformation reshapes clean data so models can use it well: putting numbers on comparable scales, taming long tails, turning text categories into numbers, and creating more useful features.</p>
+
+  <h3>Scaling</h3>
+  <div class="two">
+    <div class="callout warn" style="margin-top:0"><b>Do the maths</b>
+      Min-max: <code>x′ = (x − min) / (max − min)</code><br>₹599 → (599 − 199) / (999 − 199) = 400 / 800 = <b>0.50</b><br><br>
+      z-score (standardization): <code>z = (x − x̄) / s</code><br>₹599 → (599 − 474.55) / 211.44 = <b>0.589</b>
+    </div>
+    <div class="tbl-wrap" style="margin-top:0"><table>
+      <tr><th>Model</th><th>Needs scaling?</th></tr>
+      <tr><td>KNN, K-means (distances)</td><td class="bad">Yes</td></tr>
+      <tr><td>Logistic / linear regression with regularization, neural nets</td><td class="bad">Yes</td></tr>
+      <tr><td>Decision trees, random forest, boosting</td><td class="ok">No</td></tr>
+    </table></div>
+  </div>
+<pre class="out">customer_id  monthly_charge  charge_minmax  charge_z  tenure_months tenure_band
+    ST10849           599.0           0.50     0.589             29       25-48
+    ST11402           479.0           0.35     0.021              3         0-6
+    ST11135           479.0           0.35     0.021             12        7-12</pre>
+  <p>Why scale? Without it, a distance between two customers is dominated by monthly charge (hundreds of rupees) and ignores tenure (tens of months). Scaling puts every feature on comparable footing. Min-max is fragile: a single ₹79,900 typo would squash every real charge into 0.00–0.01.</p>
+  <div class="activity">
+    <span class="tag">Calculator · try any charge</span>
+    <div class="lab-ctrl"><div><label for="scIn">Monthly charge ₹</label><input type="number" id="scIn" value="599" min="0"></div></div>
+    <div class="kpis" id="scOut"></div>
+  </div>
+
+  <h3>Log transform for skewed data</h3>
+  <p>Voice minutes have a long right tail: most customers talk 200–550 minutes, a few over 1,500. The mean (401) sits well above the median (338). <code>log(1 + x)</code> compresses big values more than small ones; the “1 +” keeps <code>log(0)</code> from breaking.</p>
+  <figure class="shot"><img src="img/log_transform.png" alt="Voice minutes skewness 1.39 becomes -0.60 after log transform" loading="lazy"><figcaption>Skewness 1.39 → −0.60. Closer to symmetric, so a few heavy talkers no longer dominate.</figcaption></figure>
+
+  <h3>Binning, encoding and derived features</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Technique</th><th>What it does</th><th>SwiftTel example</th><th>Use when</th></tr>
+    <tr><td><b>Binning (discretization)</b></td><td>number → ordered groups</td><td>tenure → 0-6, 7-12, 13-24, 25-48, 49-72</td><td>relationship is step-like; readability</td></tr>
+    <tr><td><b>One-hot encoding</b></td><td>nominal → one 0/1 column per category</td><td>plan → plan_Prepaid, plan_Postpaid</td><td>categories have no order</td></tr>
+    <tr><td><b>Ordinal encoding</b></td><td>ordered categories → 1, 2, 3</td><td>Tier-1 → 1, Tier-2 → 2, Tier-3 → 3</td><td>categories have a real order</td></tr>
+    <tr><td><b>Binary encoding</b></td><td>two categories → 1/0</td><td>autopay Yes → 1</td><td>exactly two values</td></tr>
+    <tr><td><b>Derived feature</b></td><td>build a new column from others</td><td>tenure from join_date; support_calls from ticket rows; GB per ₹100</td><td>domain knowledge suggests it</td></tr>
+    <tr><td><b>Date parts</b></td><td>date → month, weekday, days since</td><td>join month (festive-season joiners?)</td><td>seasonality matters</td></tr>
+  </table></div>
+  <div class="callout warn"><b>Two encoding traps</b>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li><b>Fake order.</b> Encoding plan as Prepaid = 1, Postpaid = 2 tells a linear model that Postpaid is “twice” Prepaid. Use one-hot for nominal data.</li>
+      <li><b>Dummy-variable trap.</b> plan_Prepaid + plan_Postpaid always equals 1, so a linear model cannot separate their effects. Drop one of them (<code>drop_first=True</code>).</li>
+    </ul></div>
+  <div class="activity" id="encGame">
+    <span class="tag">Try it · 1 min</span>
+    <h3 style="margin:0 0 6px">How would you encode it?</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 7 -->
+<section class="block" id="select">
+  <div class="sec-no">Section 7</div>
+  <h2>Feature selection</h2>
+  <p>More columns are not always better. Irrelevant or duplicate features add noise, invite overfitting, slow training, cost money to collect and make models harder to explain. Feature selection keeps the useful few.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Family</th><th>How it works</th><th>Methods</th><th>Pros</th><th>Cons</th></tr>
+    <tr><td><b>Filter</b></td><td>score each feature on its own against the target</td><td>correlation, chi-square, mutual information, variance threshold</td><td>very fast, model-free</td><td>ignores interactions and redundancy</td></tr>
+    <tr><td><b>Wrapper</b></td><td>train a model on different feature subsets</td><td>forward selection, backward elimination, RFE</td><td>finds sets that work together</td><td>slow; can overfit</td></tr>
+    <tr><td><b>Embedded</b></td><td>selection happens during model training</td><td>L1 (lasso) regularization, tree feature importance</td><td>efficient, accounts for other features</td><td>tied to one kind of model</td></tr>
+  </table></div>
+
+  <h3>Filter 1 · correlation with the target, and redundancy</h3>
+<pre class="out">Filter 1 · correlation with churn (by size):
+ support_calls           0.224
+tenure_months          -0.212
+autopay_yes            -0.139
+satisfaction           -0.137
+plan_Prepaid            0.093
+recharge_count          0.062
+age                    -0.054
+tier_ordinal            0.048
+satisfaction_missing    0.041
+voice_minutes          -0.024
+data_gb                -0.014
+male                    0.014
+monthly_charge         -0.013
+Redundancy check: r(data_gb, monthly_charge) = 0.911</pre>
+  <div class="two">
+    <figure class="shot"><img src="img/collinear_scatter.png" alt="Monthly charge and data GB rise together almost in a line" loading="lazy"><figcaption>Bigger plans include more data, so the two columns tell almost the same story.</figcaption></figure>
+    <div>
+      <p><b>Pearson r</b> runs from −1 (perfect falling line) through 0 (no straight-line link) to +1 (perfect rising line). Support calls (+0.22) and tenure (−0.21) are the strongest single signals; monthly charge barely matters on its own.</p>
+      <p><b>Multicollinearity:</b> data_gb and monthly_charge correlate at 0.91. Keeping both adds little information and makes regression coefficients unstable. Keep one (usually the one that is easier to explain or measure).</p>
+      <div class="callout warn" style="margin:8px 0 0"><b>Do the maths: r by hand</b>x = 1, 2, 3, 4, 5 and y = 2, 4, 5, 4, 5. x̄ = 3, ȳ = 4.<br>Σ(x − x̄)(y − ȳ) = 4 + 0 + 0 + 0 + 2 = 6; Σ(x − x̄)² = 10; Σ(y − ȳ)² = 6.<br>r = 6 / √(10 × 6) = <b>0.775</b>.</div>
+    </div>
+  </div>
+
+  <h3>Filter 2 · chi-square test for categorical features</h3>
+  <p>Is churn <b>independent</b> of plan type? Compare the observed counts with the counts you would expect if there were no link.</p>
+  <div class="two">
+    <div class="tbl-wrap" style="margin-top:0"><table>
+      <tr><th>Observed (expected)</th><th class="num">Churn: Yes</th><th class="num">No</th><th class="num">Total</th></tr>
+      <tr><td>Postpaid</td><td class="num">100 (128.29)</td><td class="num">466 (437.71)</td><td class="num">566</td></tr>
+      <tr><td>Prepaid</td><td class="num">240 (211.71)</td><td class="num">694 (722.29)</td><td class="num">934</td></tr>
+      <tr><td><b>Total</b></td><td class="num">340</td><td class="num">1,160</td><td class="num">1,500</td></tr>
+    </table></div>
+    <div class="callout warn" style="margin-top:0"><b>Do the maths</b>
+      Expected = row total × column total ÷ grand total: 566 × 340 / 1,500 = 128.29.<br>
+      Every cell is 28.29 away from its expected value, so (O − E)² ≈ 800.3 for each.<br>
+      χ² = 800.3/128.29 + 800.3/437.71 + 800.3/211.71 + 800.3/722.29 = 6.24 + 1.83 + 3.78 + 1.11 = <b>12.96</b>.<br>
+      Degrees of freedom = (rows − 1)(columns − 1) = 1; the 5% critical value is 3.84. 12.96 &gt; 3.84 → plan type and churn are <b>related</b>.
+    </div>
+  </div>
+<pre class="out">Filter 2 · chi-square plan_type  chi2 =  12.96  p = 0.0003  keep
+Filter 2 · chi-square autopay    chi2 =  28.87  p = 0.0000  keep
+Filter 2 · chi-square city_tier  chi2 =   3.57  p = 0.1675  weak
+Filter 2 · chi-square gender     chi2 =   0.31  p = 0.5786  weak</pre>
+
+  <h3>Filter 3 · mutual information, and the wrapper and embedded views</h3>
+  <div class="two">
+    <figure class="shot"><img src="img/feature_ranking.png" alt="Support calls has the highest mutual information with churn, then tenure and autopay" loading="lazy"><figcaption>Mutual information also catches non-linear links; the top five are green.</figcaption></figure>
+    <div>
+<pre class="out">Filter 3 · mutual information (top 5): {'support_calls': 0.0256, 'tenure_months': 0.021,
+  'autopay_yes': 0.0101, 'recharge_count': 0.0052, 'monthly_charge': 0.005}
+Wrapper · RFE keeps: ['tenure_months', 'monthly_charge', 'support_calls', 'plan_Prepaid', 'autopay_yes']</pre>
+      <p><b>RFE</b> (recursive feature elimination) trains a logistic regression, drops the weakest feature, retrains, and repeats until five remain. Notice it keeps monthly_charge but drops its twin, data_gb: wrappers handle redundancy that filters miss.</p>
+      <p>An <b>L1 (lasso)</b> logistic regression with strong regularization keeps only four non-zero weights: tenure, support calls, autopay and satisfaction.</p>
+    </div>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Feature</th><th>|r|</th><th>χ² / MI</th><th>RFE</th><th>L1</th><th>Verdict</th></tr>
+    <tr><td>support_calls</td><td class="ok">0.224</td><td class="ok">MI #1</td><td class="ok">✔</td><td class="ok">✔</td><td><b>keep</b></td></tr>
+    <tr><td>tenure_months</td><td class="ok">0.212</td><td class="ok">MI #2</td><td class="ok">✔</td><td class="ok">✔</td><td><b>keep</b></td></tr>
+    <tr><td>autopay</td><td class="ok">0.139</td><td class="ok">χ² 28.9</td><td class="ok">✔</td><td class="ok">✔</td><td><b>keep</b></td></tr>
+    <tr><td>plan type</td><td>0.093</td><td class="ok">χ² 13.0</td><td class="ok">✔</td><td>–</td><td><b>keep</b></td></tr>
+    <tr><td>satisfaction</td><td class="ok">0.137</td><td>–</td><td>–</td><td class="ok">✔</td><td>keep (+ missing flag)</td></tr>
+    <tr><td>data_gb</td><td>0.014</td><td>–</td><td>–</td><td>–</td><td>drop: twin of charge</td></tr>
+    <tr><td>gender</td><td>0.014</td><td class="bad">χ² 0.31</td><td>–</td><td>–</td><td>drop</td></tr>
+  </table></div>
+  <div class="callout tip"><b>Do feature selection on training data only</b> If you choose features by looking at the whole dataset, the test set has influenced the model: <b>data leakage</b>. The scores will look better than reality. Unit 3 shows the correct order: split first, then select.</div>
+</section>
+
+<!-- ================================================================ 8 -->
+<section class="block" id="eda">
+  <div class="sec-no">Section 8</div>
+  <h2>Exploratory Data Analysis (EDA)</h2>
+  <p>EDA, a term popularised by statistician John Tukey (1977), means <b>looking at the data from many angles before modelling</b>: checking assumptions, finding patterns, spotting problems and forming questions.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Level</th><th>Question</th><th>Numbers</th><th>Charts</th></tr>
+    <tr><td><b>Univariate</b></td><td>What does one column look like?</td><td>mean, median, mode, sd, IQR, min/max, skewness, counts</td><td>histogram, box plot, bar chart</td></tr>
+    <tr><td><b>Bivariate</b></td><td>How do two columns relate?</td><td>correlation r, cross-tab, group means</td><td>scatter, grouped bars, box plot by group</td></tr>
+    <tr><td><b>Multivariate</b></td><td>How do many columns relate together?</td><td>correlation matrix, pivot tables</td><td>heatmap, pair plot, faceted charts</td></tr>
+  </table></div>
+
+  <h3>Univariate: the prepared table</h3>
+<pre class="out">                 count   mean    std    min    25%    50%    75%     max
+age             1500.0   34.0   10.0   18.0   27.0   34.0   41.0    70.0
+tenure_months   1500.0   21.4   16.4    1.0    9.0   17.0   30.0    72.0
+monthly_charge  1500.0  474.5  211.4  199.0  299.0  399.0  599.0   999.0
+data_gb         1500.0   34.1   16.1    3.0   22.0   32.0   43.3    87.5
+voice_minutes   1500.0  401.1  279.0   14.0  194.8  338.0  543.2  1830.0
+support_calls   1500.0    1.2    1.2    0.0    0.0    1.0    2.0     7.0
+
+Customers aged exactly 18, 19, 20: [123, 23, 12]  &lt;- a pile-up worth checking</pre>
+  <div class="callout idea"><b>Reading the summary like an analyst</b>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li><b>Mean vs median:</b> voice minutes 401 vs 338 and tenure 21.4 vs 17: both right-skewed (a long tail of large values).</li>
+      <li><b>Pile-ups:</b> 123 customers are exactly 18, but only 23 are 19. Real age data does not jump like that. Likely the form’s minimum or default value. EDA does not fix this; it raises a question for the data owner.</li>
+      <li><b>Range check:</b> after cleaning, every value is plausible (age 18–70, charge ₹199–₹999, data ≤ 87.5 GB).</li>
+    </ul></div>
+
+  <h3>Bivariate and multivariate</h3>
+  <div class="two">
+    <figure class="shot"><img src="img/correlation_heatmap.png" alt="Correlation heatmap: charge and data 0.91; support calls and satisfaction -0.31; churn with calls 0.22 and tenure -0.21" loading="lazy"><figcaption>Read a heatmap row by row: dark cells off the diagonal are the stories.</figcaption></figure>
+    <figure class="shot"><img src="img/churn_tier_plan.png" alt="Prepaid churn is higher than postpaid in every tier; churn rises from Tier-1 to Tier-3" loading="lazy"><figcaption>Two factors at once: prepaid is riskier in every tier, and the gap is largest in Tier-1.</figcaption></figure>
+  </div>
+  <p>The heatmap also shows <b>support calls vs satisfaction: r = −0.31</b>. Unhappy customers call more. So when both features enter a model, part of their effect is shared: a reason to interpret coefficients carefully in Unit 3.</p>
+</section>
+
+<!-- ================================================================ 9 -->
+<section class="block" id="viz">
+  <div class="sec-no">Section 9</div>
+  <h2>Visualization techniques</h2>
+  <p>Choose the chart from the <b>question</b>, not from what looks impressive.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Question</th><th>Best chart</th><th>Python (matplotlib / pandas)</th></tr>
+    <tr><td>How is one number distributed?</td><td><b>Histogram</b> (or density curve)</td><td><code>plt.hist(df["voice_minutes"], bins=40)</code></td></tr>
+    <tr><td>Centre, spread and outliers, or compare groups?</td><td><b>Box plot</b></td><td><code>df.boxplot(column="tenure_months", by="churned")</code></td></tr>
+    <tr><td>Compare counts or rates across categories?</td><td><b>Bar chart</b> (grouped or stacked)</td><td><code>rate.plot.bar()</code></td></tr>
+    <tr><td>Do two numbers move together?</td><td><b>Scatter plot</b></td><td><code>plt.scatter(df["monthly_charge"], df["data_gb"])</code></td></tr>
+    <tr><td>Many correlations at once?</td><td><b>Heatmap</b> or pair plot</td><td><code>plt.imshow(df.corr())</code></td></tr>
+    <tr><td>How does something change over time?</td><td><b>Line chart</b></td><td><code>plt.plot(m["t"], m["revenue_lakh"])</code></td></tr>
+    <tr><td>Parts of a whole?</td><td><b>Stacked bar</b> (a pie only for 2–4 parts)</td><td><code>counts.plot.barh(stacked=True)</code></td></tr>
+  </table></div>
+  <div class="callout tip"><b>Good chart habits</b> Start bar charts at zero. Label axes with units. Sort bars by value unless the categories have a natural order. Use colour to highlight one thing, not to decorate. Avoid 3-D effects. Give every chart a title that states the finding (“First-year customers leave most”), not just the variables.</div>
+  <div class="activity" id="chartGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">Pick the right chart</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 10 -->
+<section class="block" id="lab">
+  <div class="sec-no">Section 10</div>
+  <h2>Hands-on lab</h2>
+  <p><b>Parts A–C</b> run in this page on the real raw files. <b>Part D</b> is the full pipeline in Python, R and SPSS.</p>
+
+  <h3>Part A · Cleaning pipeline: switch each step on</h3>
+  <div class="card">
+    <div class="lab-ctrl" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      <label class="toggle"><input type="checkbox" class="cl" value="dup"> 1. Remove duplicates</label>
+      <label class="toggle"><input type="checkbox" class="cl" value="lab"> 2. Standardise labels</label>
+      <label class="toggle"><input type="checkbox" class="cl" value="num"> 3. Parse charges (“₹”, “.00”)</label>
+      <label class="toggle"><input type="checkbox" class="cl" value="typo"> 4. Fix ×100 charge typos</label>
+      <label class="toggle"><input type="checkbox" class="cl" value="age"> 5. Blank impossible ages</label>
+    </div>
+    <div class="kpis" id="aKpi"></div>
+    <div class="tbl-wrap" id="aTable" style="margin-bottom:0"></div>
+  </div>
+
+  <h3>Part B · Outlier detector</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div><label for="bCol">Column (as received)</label>
+        <select id="bCol"><option value="data_gb">data_gb (usage file)</option><option value="voice_minutes">voice_minutes</option><option value="monthly_charge">monthly_charge (parsed)</option><option value="age">age</option></select></div>
+      <div><label for="bMeth">Rule</label><select id="bMeth"><option value="iqr">IQR fences</option><option value="z">z-score</option></select></div>
+      <div class="sl"><label>Multiplier / threshold: <b id="bKv">1.5</b></label><input type="range" id="bK" min="1" max="4" step="0.25" value="1.5"></div>
+    </div>
+    <div class="kpis" id="bKpi"></div>
+    <div class="chart" id="bChart"></div>
+    <p class="muted" id="bNote" style="font-size:14px;margin:0"></p>
+  </div>
+
+  <h3>Part C · Imputation comparer (age)</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div><label for="cMeth">Fill the 64 missing / impossible ages with</label>
+        <select id="cMeth"><option value="drop">nothing: drop those rows</option><option value="mean">the mean</option><option value="median">the median</option><option value="group">the median of their plan</option><option value="random">a random observed age (hot-deck)</option></select></div>
+    </div>
+    <div class="kpis" id="cKpi"></div>
+    <div class="chart" id="cChart"></div>
+    <p class="muted" id="cNote" style="font-size:14px;margin:0"></p>
+  </div>
+
+  <h3>Your tasks</h3>
+  <div class="card">
+    <label class="task"><input type="checkbox"><span><b>Task 1.</b> In Part A, with all steps off, why is the average charge so high and the churn rate slightly low? Switch steps on one at a time and note which step fixes which number.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 2.</b> Does the order of steps matter? What goes wrong if you compute the churn rate before removing duplicates and standardising labels?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 3.</b> In Part B, choose data_gb. Compare IQR (1.5) with z-score (3). Explain the difference using the word <i>masking</i>. Then raise the IQR multiplier until only the glitches are flagged. What value works?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 4.</b> In Part B, choose age. Which rule finds all 5 impossible ages? Why is a domain rule (18–100) better here?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 5.</b> In Part C, compare the standard deviation for mean, group-median and hot-deck filling. Which keeps the spread closest to the observed data, and what is the catch?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 6.</b> For each of the five columns with gaps after the merge (Section 2), write which missing-value mechanism you suspect and the treatment you would choose, with one reason.</span></label>
+    <details><summary>Check your answers</summary>
+      <p>1. With every step off, the 151 charges with “₹” cannot be read and are left out, while the four ×100 typos (₹23,900–₹79,900) push the average to <b>₹618.70</b>. Parsing (step 3) adds the 151 back (₹605.62); fixing the typos (step 4) gives the true <b>₹474.55</b>. Churn starts at 22.2% because the 15 duplicates add rows and lower-case “yes” is not counted; removing duplicates gives 22.3%, standardising labels gives the true <b>22.7%</b>. Step 5 brings the average age from 34.15 to 34.00 and the maximum from 234 to 70. 2. Yes: count before cleaning and duplicates are counted twice while spelling variants are split into separate groups, so rates and group sizes are wrong. Remove duplicates first, standardise next, compute last. 3. IQR (1.5) flags 28 values, z (3) only 6: the six glitches inflate the standard deviation from about 16 to 59, so genuine heavy users no longer look unusual (masking). An IQR multiplier of <b>2.25 or more</b> flags only the 6 glitches (at 2.0 the 87.5 GB heavy user is still flagged). 4. IQR (1.5) does catch all five impossible ages (fences 6 and 62) but also flags 10 genuine customers aged 63–70. The z rule (3) catches only 151 and 234: the two huge values inflate the sd to 12, so the zeros look normal (masking again). The domain rule “adults are 18–100” catches exactly the 5 errors and nothing else. 5. Mean, median and group median all give sd 10.00 (spread shrinks); hot-deck keeps it at about 10.18, closest to the observed 10.22, because it copies real ages. The catch: results depend on the random draw, and it ignores links with other columns (such as plan). 6. Example answers. Satisfaction: MNAR → median + “was missing” flag. Age: MAR on plan → group median + flag. data_gb, voice_minutes, recharge_count (25 customers with no usage record): probably inactive SIMs → median + flag, and ask the usage team.</p>
+    </details>
+  </div>
+
+  <h3>Part D · The full pipeline in Python, R and SPSS</h3>
+  <div class="grid g3">
+    <a class="card tile" href="lab/crm_customers.csv" download><div class="ic c-brand">🗂️</div><h3>CRM export</h3><p>crm_customers.csv · 1,515 rows</p></a>
+    <a class="card tile" href="lab/usage_dec2024.csv" download><div class="ic c-teal">📶</div><h3>Usage file</h3><p>usage_dec2024.csv · 1,475 rows</p></a>
+    <a class="card tile" href="lab/support_tickets_q4_2024.csv" download><div class="ic c-accent">🎫</div><h3>Support tickets</h3><p>support_tickets_q4_2024.csv · 1,840 rows</p></a>
+    <a class="card tile" href="lab/unit2_lab.ipynb" download><div class="ic c-accent">📓</div><h3>Jupyter notebook</h3><p>8 steps, collect → explore</p></a>
+    <a class="card tile" href="lab/unit2_lab.py" download><div class="ic c-accent">🐍</div><h3>Python script</h3><p>python unit2_lab.py</p></a>
+    <a class="card tile" href="lab/unit2_lab.R" download><div class="ic c-violet">📊</div><h3>R script</h3><p>Base R · same 8 steps</p></a>
+  </div>
+  <p style="margin-top:14px">Install once: <code>pip install pandas numpy matplotlib scipy scikit-learn</code>. The script saves <code>swifttel_prepared.csv</code> (1,500 × 27) and a four-chart EDA figure. <code>swifttel_prepared_reference.csv</code> is the instructor’s version to compare with.</p>
+
+  <h3>SPSS · Lab Experiments 2, 3 and 4</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Experiment</th><th>Menu path</th><th>What to do with SwiftTel</th></tr>
+    <tr><td><b>2 · Preprocessing</b></td><td>Data → Identify Duplicate Cases</td><td>Match on all variables; 15 duplicates are flagged. Keep primary cases only.</td></tr>
+    <tr><td></td><td>Transform → Recode into Different Variables</td><td>plan_type: “prepaid”, “Pre-paid”, “PREPAID” → “Prepaid” (and so on). Recode age 0, 151, 234 → System-missing.</td></tr>
+    <tr><td></td><td>Variable View → Missing</td><td>Declare impossible codes as user-missing, so SPSS ignores them in statistics.</td></tr>
+    <tr><td></td><td>Transform → Replace Missing Values</td><td>age: “Median of nearby points” or “Series mean”; compare the results.</td></tr>
+    <tr><td><b>3 · Descriptive statistics</b></td><td>Analyze → Descriptive Statistics → Frequencies / Descriptives / Explore</td><td>Mean, median, sd, skewness; histograms and box plots; Explore by churned.</td></tr>
+    <tr><td><b>4 · Correlation</b></td><td>Analyze → Correlate → Bivariate (Pearson)</td><td>monthly_charge with data_gb: you should get r ≈ 0.91. support_calls with satisfaction: about −0.31.</td></tr>
+  </table></div>
+  <div class="callout tip"><b>Challenge (assignment)</b> Using the Python notebook, add one <b>derived feature</b> of your own (for example, the share of a customer’s tickets that were “Billing”). Show with one chart and one number whether it helps separate leavers from stayers, and say which feature-selection method you would use to confirm it.</div>
+</section>
+
+<!-- ================================================================ 11 -->
+<section class="block" id="summary">
+  <div class="sec-no">Section 11</div>
+  <h2>Summary and revision</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Topic</th><th>Remember this</th></tr>
+    <tr><td>Data quality</td><td>Uniqueness, consistency, validity, accuracy, completeness, timeliness</td></tr>
+    <tr><td>Collection</td><td>Sources: databases, logs, surveys, APIs, sensors, scraping, third party. Standardise keys, aggregate to the right grain, choose the join (left keeps everyone)</td></tr>
+    <tr><td>Cleaning</td><td>Read as text → drop duplicates → standardise labels → fix types and dates → join → check impossible values</td></tr>
+    <tr><td>Missing values</td><td>MCAR (chance), MAR (depends on other columns), MNAR (depends on itself). Mean fill shrinks sd (10.22 → 10.00); prefer group medians + a “was missing” flag</td></tr>
+    <tr><td>Outliers</td><td>IQR fences Q1 − 1.5·IQR, Q3 + 1.5·IQR; |z| &gt; 3 (beware masking); domain rules. Fix typos, blank impossible values, keep genuine extremes</td></tr>
+    <tr><td>Transformation</td><td>Min-max (x − min)/(max − min); z-score (x − x̄)/s; log(1 + x) for right skew; binning; one-hot (nominal) vs ordinal encoding; derived features</td></tr>
+    <tr><td>Feature selection</td><td>Filter (r, χ², MI), wrapper (RFE, forward/backward), embedded (L1, tree importance). Drop redundant twins. Select on training data only</td></tr>
+    <tr><td>EDA</td><td>Univariate → bivariate → multivariate; compare mean vs median; look for pile-ups and impossible values</td></tr>
+    <tr><td>Visualization</td><td>Histogram (distribution), box plot (spread/outliers), bar (categories), scatter (two numbers), heatmap (many correlations), line (time)</td></tr>
+  </table></div>
+
+  <h3>Key terms (click a card to flip)</h3>
+  <div class="grid g4">
+    <div class="flip"><div class="inner"><div class="face"><b>Left join</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Keeps every row of the left table; unmatched right-side columns become missing.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>MNAR</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Missing because of the missing value itself, e.g. unhappy customers skip the survey.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Imputation</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Filling missing values with an estimate: mean, median, group median, model-based.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>IQR fences</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Q1 − 1.5·IQR and Q3 + 1.5·IQR; values outside are flagged as possible outliers.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Masking</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Big outliers inflate the mean and sd, so other outliers no longer look unusual to the z rule.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Standardization</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">z = (x − mean) / sd: rescales a feature to mean 0 and sd 1.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>One-hot encoding</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">One 0/1 column per category; the right choice for nominal data.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Multicollinearity</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Two predictors carrying the same information (r = 0.91 for charge and data); keep one.</div></div></div>
+  </div>
+
+  <div class="callout tip" style="margin-top:22px"><b>Ready for the quiz?</b> You should be able to: name the six quality dimensions · pick the right join and explain aggregation to the right grain · write the cleaning order · tell MCAR, MAR and MNAR apart from evidence · explain why mean imputation shrinks spread · compute IQR fences and a z-score · choose a treatment for an outlier from its cause · compute min-max and z-score scaling · choose one-hot vs ordinal encoding · compute a correlation and a 2×2 chi-square · name filter, wrapper and embedded methods · choose the right chart for a question.</div>
+  <p style="text-align:center;margin-top:20px"><a class="btn accent" href="quiz.html">Go to the Unit 2 quiz →</a></p>
+</section>
+    </main>
+  </div>
+</div>
+<footer class="foot">Unit 2 · Data Preparation &amp; Exploration · BCA DS &amp; AI Semester 3</footer>
+
+<script>
+/* ---------- generic multiple-choice rows ---------- */
+function choiceRows(container, rows, labels) {
+  rows.forEach(function (r, idx) {
+    var d = document.createElement('div'); d.style.margin = '14px 0';
+    d.innerHTML = '<div style="font-weight:600;font-size:15.5px">' + (idx + 1) + '. ' + r.q + '</div>';
+    var fb = document.createElement('div'); fb.className = 'feedback';
+    labels.forEach(function (l, i) {
+      var b = document.createElement('button'); b.className = 'choice'; b.textContent = l;
+      b.onclick = function () {
+        d.querySelectorAll('.choice').forEach(function (x) { x.classList.remove('right', 'wrong'); });
+        if (i === r.a) { b.classList.add('right'); fb.innerHTML = '✅ ' + r.why; }
+        else { b.classList.add('wrong'); fb.innerHTML = '<span style="color:var(--bad)">Not quite. Try again.</span>'; }
+      };
+      d.appendChild(b);
+    });
+    d.appendChild(fb); container.appendChild(d);
+  });
+}
+choiceRows(document.querySelector('#missGame .rg'), [
+  { q: 'A sensor loses some readings because of random power cuts unrelated to the reading.', a: 0, why: 'Nothing about the data explains the gaps: MCAR.' },
+  { q: 'Income is missing more often for self-employed applicants, and employment type is recorded.', a: 1, why: 'Missingness depends on a column you have (employment type): MAR.' },
+  { q: 'People with very high incomes refuse to state their income.', a: 2, why: 'Missingness depends on the hidden value itself: MNAR.' },
+  { q: 'SwiftTel: age is blank 6.0% of the time for prepaid, 1.4% for postpaid.', a: 1, why: 'It depends on plan type, which we know: MAR.' },
+  { q: 'Patients who feel worst skip the follow-up questionnaire.', a: 2, why: 'The unseen answer (feeling bad) causes the gap: MNAR.' }
+], ['MCAR', 'MAR', 'MNAR']);
+choiceRows(document.querySelector('#outGame .rg'), [
+  { q: 'A salary entered as ₹4,50,00,000 per month for a junior clerk; the slip shows ₹45,000.', a: 0, why: 'A typo you can explain and correct: fix it.' },
+  { q: 'A customer’s age is recorded as 0.', a: 1, why: 'Impossible and not recoverable: set to missing and impute.' },
+  { q: 'One shop sells 40× the average on Diwali.', a: 2, why: 'Genuine and important: keep it (and maybe model festivals separately).' },
+  { q: 'A card transaction 50× the customer’s usual amount, at 3 a.m., abroad.', a: 2, why: 'In fraud detection the outlier is the signal: keep it.' }
+], ['Fix it', 'Set to missing', 'Keep it']);
+choiceRows(document.querySelector('#encGame .rg'), [
+  { q: 'City: Mumbai, Delhi, Pune, Jaipur', a: 0, why: 'Nominal (no order): one-hot.' },
+  { q: 'Education: 10th < 12th < Graduate < Postgraduate', a: 1, why: 'Ordered categories: ordinal encoding 1–4.' },
+  { q: 'customer_id: ST10001, ST10002, …', a: 2, why: 'An identifier carries no pattern: drop it before modelling.' },
+  { q: 'T-shirt size: S, M, L, XL', a: 1, why: 'Sizes have a natural order: ordinal.' },
+  { q: 'Payment mode: UPI, Card, Cash, Net banking', a: 0, why: 'No order: one-hot.' }
+], ['One-hot', 'Ordinal', 'Drop it']);
+choiceRows(document.querySelector('#chartGame .rg'), [
+  { q: 'Is customer age skewed?', a: 0, why: 'One number’s distribution: histogram.' },
+  { q: 'Do leavers have shorter tenure than stayers (including spread and outliers)?', a: 1, why: 'Compare a number across groups with spread: box plot by group.' },
+  { q: 'Churn rate for each of 3 city tiers?', a: 2, why: 'A value per category: bar chart.' },
+  { q: 'Does data used rise with monthly charge?', a: 3, why: 'Two numbers together: scatter plot.' },
+  { q: 'How do 8 numeric columns correlate with each other?', a: 4, why: 'Many pairs at once: heatmap.' }
+], ['Histogram', 'Box plot', 'Bar chart', 'Scatter', 'Heatmap']);
+
+/* ---------- scaling calculator ---------- */
+function scale() {
+  var x = +document.getElementById('scIn').value, mn = 199, mx = 999, mean = 474.55, sd = 211.44;
+  document.getElementById('scOut').innerHTML =
+    '<div class="kpi"><div class="v">' + ((x - mn) / (mx - mn)).toFixed(3) + '</div><div class="l">min-max (x − 199) / 800</div></div>' +
+    '<div class="kpi"><div class="v">' + ((x - mean) / sd).toFixed(3) + '</div><div class="l">z-score (x − 474.55) / 211.44</div></div>' +
+    '<div class="kpi"><div class="v">' + Math.log1p(Math.max(0, x)).toFixed(3) + '</div><div class="l">log(1 + x)</div></div>';
+}
+document.getElementById('scIn').addEventListener('input', scale); scale();
+
+/* ---------- data loading ---------- */
+function parseCsv(txt) {
+  var lines = txt.replace(/^﻿/, '').trim().split(/\r?\n/), head = lines[0].split(',');
+  return lines.slice(1).map(function (l) { var v = l.split(','), o = {}; head.forEach(function (h, i) { o[h] = v[i] === undefined ? '' : v[i]; }); return o; });
+}
+var CRM = [], USE = [];
+function stats(a) {
+  var n = a.length, m = a.reduce(function (s, x) { return s + x; }, 0) / n;
+  var sd = Math.sqrt(a.reduce(function (s, x) { return s + (x - m) * (x - m); }, 0) / (n - 1));
+  return { n: n, mean: m, sd: sd };
+}
+function quantile(sorted, q) {   // same method as pandas (linear interpolation)
+  var pos = (sorted.length - 1) * q, lo = Math.floor(pos), hi = Math.ceil(pos);
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
+}
+var inr = function (v) { return '₹' + v.toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
+var PLAN = { prepaid: 'Prepaid', postpaid: 'Postpaid' };
+
+/* ---------- Part A: cleaning pipeline ---------- */
+function pipeline() {
+  if (!CRM.length) return;
+  var on = {}; document.querySelectorAll('.cl').forEach(function (c) { on[c.value] = c.checked; });
+  var rows = CRM, seen = {};
+  if (on.dup) rows = rows.filter(function (r) { var k = JSON.stringify(r); if (seen[k]) return false; seen[k] = 1; return true; });
+  var labels = {}, charges = [], unread = 0, ages = [], yes = 0;
+  rows.forEach(function (r) {
+    var plan = on.lab ? (PLAN[r.plan_type.toLowerCase().replace('-', '')] || r.plan_type) : r.plan_type;
+    labels[plan] = (labels[plan] || 0) + 1;
+    if ((on.lab ? r.churned.charAt(0).toUpperCase() + r.churned.slice(1).toLowerCase() : r.churned) === 'Yes') yes++;
+    var txt = on.num ? r.monthly_charge.replace('₹', '') : r.monthly_charge, c = Number(txt);
+    if (txt === '' || isNaN(c)) unread++;
+    else { if (on.typo && c > 999) c /= 100; charges.push(c); }
+    if (r.age !== '') { var a = +r.age; if (!(on.age && (a < 18 || a > 100))) ages.push(a); }
+  });
+  var cs = stats(charges), as = stats(ages);
+  document.getElementById('aKpi').innerHTML =
+    '<div class="kpi"><div class="v">' + rows.length.toLocaleString('en-IN') + '</div><div class="l">rows</div></div>' +
+    '<div class="kpi"><div class="v">' + Object.keys(labels).length + '</div><div class="l">distinct plan labels (should be 2)</div></div>' +
+    '<div class="kpi"><div class="v">' + (100 * yes / rows.length).toFixed(1) + '%</div><div class="l">churn rate (counts “Yes” only)</div></div>' +
+    '<div class="kpi"><div class="v">' + inr(Math.round(cs.mean * 100) / 100) + '</div><div class="l">average charge · ' + unread + ' unreadable</div></div>' +
+    '<div class="kpi"><div class="v">' + as.mean.toFixed(2) + '</div><div class="l">average age · max ' + Math.max.apply(null, ages) + '</div></div>';
+  document.getElementById('aTable').innerHTML = '<table><tr><th>plan_type label</th><th class="num">rows</th></tr>' +
+    Object.keys(labels).sort(function (a, b) { return labels[b] - labels[a]; }).map(function (k) {
+      return '<tr><td><code>' + k + '</code></td><td class="num">' + labels[k] + '</td></tr>';
+    }).join('') + '</table>';
+}
+document.querySelectorAll('.cl').forEach(function (c) { c.addEventListener('change', pipeline); });
+
+/* ---------- Part B: outlier detector ---------- */
+function columnValues(col) {
+  if (col === 'data_gb' || col === 'voice_minutes') return USE.map(function (r) { return +r[col]; });
+  var seen = {}, out = [];
+  CRM.forEach(function (r) {
+    var k = JSON.stringify(r); if (seen[k]) return; seen[k] = 1;
+    if (col === 'age') { if (r.age !== '') out.push(+r.age); }
+    else out.push(Number(r.monthly_charge.replace('₹', '')));
+  });
+  return out;
+}
+function detect() {
+  if (!USE.length) return;
+  var col = document.getElementById('bCol').value, meth = document.getElementById('bMeth').value, k = +document.getElementById('bK').value;
+  document.getElementById('bKv').textContent = k;
+  var v = columnValues(col), s = v.slice().sort(function (a, b) { return a - b; }), st = stats(v), lo, hi, info;
+  if (meth === 'iqr') {
+    var q1 = quantile(s, .25), q3 = quantile(s, .75), iqr = q3 - q1; lo = q1 - k * iqr; hi = q3 + k * iqr;
+    info = 'Q1 ' + q1.toFixed(2) + ' · Q3 ' + q3.toFixed(2) + ' · IQR ' + iqr.toFixed(2);
+  } else { lo = st.mean - k * st.sd; hi = st.mean + k * st.sd; info = 'mean ' + st.mean.toFixed(2) + ' · sd ' + st.sd.toFixed(2); }
+  var flagged = v.filter(function (x) { return x < lo || x > hi; });
+  document.getElementById('bKpi').innerHTML =
+    '<div class="kpi"><div class="v">' + v.length.toLocaleString('en-IN') + '</div><div class="l">values checked</div></div>' +
+    '<div class="kpi"><div class="v">[' + lo.toFixed(1) + ', ' + hi.toFixed(1) + ']</div><div class="l">' + info + '</div></div>' +
+    '<div class="kpi"><div class="v" style="color:var(--bad)">' + flagged.length + '</div><div class="l">flagged</div></div>';
+  // strip plot: every value as a dot, flagged in red, fences dashed
+  var W = 760, H = 120, min = s[0], max = s[s.length - 1], span = (max - min) || 1, X = function (x) { return 20 + (W - 40) * (x - min) / span; };
+  var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Strip plot of values">';
+  v.forEach(function (x, i) {
+    var bad = x < lo || x > hi;
+    svg += '<circle cx="' + X(x).toFixed(1) + '" cy="' + (30 + (i * 37 % 50)) + '" r="' + (bad ? 3.5 : 2) + '" style="fill:' + (bad ? 'var(--bad)' : 'var(--brand)') + ';fill-opacity:' + (bad ? 1 : .35) + '"/>';
+  });
+  [lo, hi].forEach(function (f) { if (f >= min && f <= max) svg += '<line x1="' + X(f) + '" y1="18" x2="' + X(f) + '" y2="92" style="stroke:var(--bad);stroke-width:1.5;stroke-dasharray:5 4"/>'; });
+  svg += '<text x="20" y="112" style="font-size:12px;fill:var(--ink-3)">' + min + '</text><text x="' + (W - 20) + '" y="112" text-anchor="end" style="font-size:12px;fill:var(--ink-3)">' + max + '</text></svg>';
+  document.getElementById('bChart').innerHTML = svg;
+  var top = flagged.slice().sort(function (a, b) { return b - a; });
+  document.getElementById('bNote').textContent = flagged.length ? 'Flagged values (largest first): ' + top.slice(0, 12).join(', ') + (top.length > 12 ? ' …' : '') + '. Are they errors or genuine?' : 'Nothing flagged with this rule.';
+}
+['bCol', 'bMeth', 'bK'].forEach(function (id) { document.getElementById(id).addEventListener('input', detect); });
+document.getElementById('bMeth').addEventListener('change', function () { var z = this.value === 'z'; var s = document.getElementById('bK'); s.value = z ? 3 : 1.5; detect(); });
+
+/* ---------- Part C: imputation comparer ---------- */
+function impute() {
+  if (!CRM.length) return;
+  var seen = {}, people = [];
+  CRM.forEach(function (r) {
+    var k = JSON.stringify(r); if (seen[k]) return; seen[k] = 1;
+    var a = r.age === '' ? null : +r.age; if (a !== null && (a < 18 || a > 100)) a = null;
+    people.push({ age: a, plan: PLAN[r.plan_type.toLowerCase().replace('-', '')] });
+  });
+  var obs = people.filter(function (p) { return p.age !== null; }).map(function (p) { return p.age; });
+  var so = obs.slice().sort(function (a, b) { return a - b; }), os = stats(obs);
+  var med = { Prepaid: quantile(people.filter(function (p) { return p.plan === 'Prepaid' && p.age !== null; }).map(function (p) { return p.age; }).sort(function (a, b) { return a - b; }), .5),
+              Postpaid: quantile(people.filter(function (p) { return p.plan === 'Postpaid' && p.age !== null; }).map(function (p) { return p.age; }).sort(function (a, b) { return a - b; }), .5) };
+  var m = document.getElementById('cMeth').value, seed = 7, rand = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  var filled = [];
+  people.forEach(function (p) {
+    if (p.age !== null) { filled.push({ v: p.age, imp: false }); return; }
+    if (m === 'drop') return;
+    var v = m === 'mean' ? os.mean : m === 'median' ? quantile(so, .5) : m === 'group' ? med[p.plan] : obs[Math.floor(rand() * obs.length)];
+    filled.push({ v: v, imp: true });
+  });
+  var fs = stats(filled.map(function (f) { return f.v; }));
+  document.getElementById('cKpi').innerHTML =
+    '<div class="kpi"><div class="v">' + fs.n.toLocaleString('en-IN') + '</div><div class="l">rows kept</div></div>' +
+    '<div class="kpi"><div class="v">' + fs.mean.toFixed(2) + '</div><div class="l">mean age (observed ' + os.mean.toFixed(2) + ')</div></div>' +
+    '<div class="kpi"><div class="v">' + fs.sd.toFixed(2) + '</div><div class="l">standard deviation (observed ' + os.sd.toFixed(2) + ')</div></div>';
+  var bins = {}, ib = {}, maxc = 0;
+  filled.forEach(function (f) { var b = Math.floor(f.v / 2) * 2; (f.imp ? ib : bins)[b] = ((f.imp ? ib : bins)[b] || 0) + 1; });
+  for (var b = 18; b <= 70; b += 2) maxc = Math.max(maxc, (bins[b] || 0) + (ib[b] || 0));
+  var W = 760, H = 170, bw = (W - 40) / 27, svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Age histogram">';
+  for (b = 18; b <= 70; b += 2) {
+    var x = 20 + (b - 18) / 2 * bw, h1 = 130 * (bins[b] || 0) / maxc, h2 = 130 * (ib[b] || 0) / maxc;
+    svg += '<rect x="' + x + '" y="' + (145 - h1) + '" width="' + (bw - 2) + '" height="' + h1 + '" style="fill:var(--ink-3);fill-opacity:.45"/>';
+    if (h2) svg += '<rect x="' + x + '" y="' + (145 - h1 - h2) + '" width="' + (bw - 2) + '" height="' + h2 + '" style="fill:var(--bad)"/>';
+    if ((b - 18) % 10 === 0) svg += '<text x="' + (x + bw / 2) + '" y="162" text-anchor="middle" style="font-size:12px;fill:var(--ink-3)">' + b + '</text>';
+  }
+  document.getElementById('cChart').innerHTML = svg + '</svg>';
+  document.getElementById('cNote').textContent = m === 'drop' ? 'Dropping keeps the true spread but loses 64 customers, most of them prepaid (the gaps are MAR).' :
+    'Grey = observed ages, red = filled values. ' + (m === 'random' ? 'Hot-deck copies real ages, so the shape and spread survive, but results change with the random draw.' : 'Every filled value lands in one or two bars: the spread shrinks.');
+}
+document.getElementById('cMeth').addEventListener('change', impute);
+
+Promise.all([fetch('lab/crm_customers.csv').then(function (r) { return r.text(); }), fetch('lab/usage_dec2024.csv').then(function (r) { return r.text(); })])
+  .then(function (t) { CRM = parseCsv(t[0]); USE = parseCsv(t[1]); pipeline(); detect(); impute(); })
+  .catch(function () { document.getElementById('aKpi').textContent = 'Could not load the data files. Open this page through the classroom server (not as a file).'; });
+</script>
+</body>
+</html>

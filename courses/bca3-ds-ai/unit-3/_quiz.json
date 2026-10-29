@@ -1,0 +1,452 @@
+{
+ "title": "Unit 3 Quiz · Predictive Modeling Techniques",
+ "minutes": 30,
+ "shuffle_questions": true,
+ "instructions": [
+  "30 questions, 31 marks. You have 30 minutes; the quiz submits itself when time runs out.",
+  "Questions and options are shuffled, so your neighbour's screen will not match yours.",
+  "Multi-select questions need ALL correct options for the marks. Ordering questions give part marks for each item in the right place.",
+  "After submitting you will see your score and an explanation for every question."
+ ],
+ "questions": [
+  {
+   "id": "q01",
+   "topic": "Regression vs classification",
+   "type": "mcq",
+   "q": "Which task is a CLASSIFICATION problem?",
+   "options": [
+    "Predicting whether a loan applicant will default (yes/no)",
+    "Predicting next month’s electricity bill in rupees",
+    "Predicting the selling price of a used car",
+    "Predicting tomorrow’s temperature in °C"
+   ],
+   "answer": 0,
+   "explain": "A yes/no target is a category, so it is classification. The others predict numbers (regression)."
+  },
+  {
+   "id": "q02",
+   "topic": "Regression vs classification",
+   "type": "mcq",
+   "q": "Logistic regression is used for:",
+   "options": [
+    "Classification: it predicts the probability of a category",
+    "Regression of continuous prices only",
+    "Clustering customers without labels",
+    "Sorting data alphabetically"
+   ],
+   "answer": 0,
+   "explain": "Despite the name, logistic regression is a classifier: it outputs a probability between 0 and 1."
+  },
+  {
+   "id": "q03",
+   "topic": "Linear regression",
+   "type": "mcq",
+   "q": "For five cars, Σ(x − x̄)(y − ȳ) = −7.90 and Σ(x − x̄)² = 10. What is the least-squares slope b?",
+   "options": [
+    "−0.79",
+    "−7.90",
+    "0.79",
+    "−79.0"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "b = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)² = −7.90 / 10 = −0.79."
+  },
+  {
+   "id": "q04",
+   "topic": "Linear regression",
+   "type": "mcq",
+   "q": "With slope b = −0.79, x̄ = 3 and ȳ = 6.38, the intercept a is:",
+   "options": [
+    "8.75",
+    "6.38",
+    "4.01",
+    "3.00"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "a = ȳ − b·x̄ = 6.38 − (−0.79 × 3) = 6.38 + 2.37 = 8.75."
+  },
+  {
+   "id": "q05",
+   "topic": "Linear regression",
+   "type": "mcq",
+   "q": "SSE = 0.067 and SST = 6.308. What is R²?",
+   "options": [
+    "About 0.011",
+    "About 0.989",
+    "About 0.067",
+    "About 94.1"
+   ],
+   "answer": 1,
+   "fixed": true,
+   "explain": "R² = 1 − SSE/SST = 1 − 0.067/6.308 = 0.989."
+  },
+  {
+   "id": "q06",
+   "topic": "Linear regression",
+   "type": "mcq",
+   "q": "Least squares chooses the line that minimises:",
+   "options": [
+    "The sum of squared residuals Σ(y − ŷ)²",
+    "The number of points above the line",
+    "The slope",
+    "The largest single error"
+   ],
+   "answer": 0,
+   "explain": "That is the definition of ordinary least squares."
+  },
+  {
+   "id": "q07",
+   "topic": "Multiple regression",
+   "type": "mcq",
+   "q": "In the car model, tier_Premium = +11.43 with Budget as the baseline. This means:",
+   "options": [
+    "A Premium car is predicted ₹11.43 lakh more than an otherwise identical Budget car",
+    "Every Premium car costs ₹11.43 lakh",
+    "Premium cars lose ₹11.43 lakh per year",
+    "There are 11.43 times more Premium cars"
+   ],
+   "answer": 0,
+   "explain": "A dummy coefficient compares that category with the baseline, holding all other features fixed."
+  },
+  {
+   "id": "q08",
+   "topic": "Multiple regression",
+   "type": "mcq",
+   "q": "Price = 5.993 − 0.462×age − 0.0074×km_thousand − 0.310×owners + 3.125×tier_Mid. A 5-year-old Mid petrol manual with 60,000 km and 1 owner is predicted at about:",
+   "options": [
+    "₹6.05 lakh",
+    "₹3.79 lakh",
+    "₹8.56 lakh",
+    "₹9.12 lakh"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "5.993 − 2.310 − 0.447 − 0.310 + 3.125 = 6.05."
+  },
+  {
+   "id": "q09",
+   "topic": "Multiple regression",
+   "type": "mcq",
+   "q": "Why use adjusted R² rather than R² to compare models with different numbers of features?",
+   "options": [
+    "R² never decreases when a feature is added, even a useless one; adjusted R² penalises extra features",
+    "Adjusted R² is always larger",
+    "R² cannot be computed for multiple regression",
+    "Adjusted R² ignores the errors"
+   ],
+   "answer": 0,
+   "explain": "Adjusted R² = 1 − (1 − R²)(n − 1)/(n − k − 1) only rises if a new feature improves the fit enough."
+  },
+  {
+   "id": "q10",
+   "topic": "Multiple regression",
+   "type": "mcq",
+   "q": "Test RMSE = 0.885 and MAE = 0.697 (₹ lakh). Which statement is true?",
+   "options": [
+    "RMSE is larger because squaring gives big errors extra weight",
+    "MAE is always larger than RMSE",
+    "They are in different units",
+    "RMSE is the percentage of variation explained"
+   ],
+   "answer": 0,
+   "explain": "RMSE ≥ MAE always; a big gap means some large individual errors."
+  },
+  {
+   "id": "q11",
+   "topic": "Multiple regression",
+   "type": "mcq",
+   "q": "A residual plot shows a clear funnel shape (spread grows with the prediction). Which assumption is violated?",
+   "options": [
+    "Equal variance of residuals",
+    "Independence of features",
+    "The target is categorical",
+    "The intercept is positive"
+   ],
+   "answer": 0,
+   "explain": "A funnel means non-constant variance (heteroscedasticity). A log of the target often helps."
+  },
+  {
+   "id": "q12",
+   "topic": "Logistic regression",
+   "type": "mcq",
+   "q": "The logistic coefficient for support_calls is b = 0.3986. Its odds ratio e^b ≈ 1.49 means:",
+   "options": [
+    "Each extra support call multiplies the odds of churning by about 1.49",
+    "Each call increases the churn probability by 49 percentage points",
+    "49% of callers churn",
+    "Calls have no effect"
+   ],
+   "answer": 0,
+   "explain": "e^b is an odds ratio. The change in probability depends on where you start on the S-curve."
+  },
+  {
+   "id": "q13",
+   "topic": "Logistic regression",
+   "type": "mcq",
+   "q": "Autopay has b = −0.584 (odds ratio 0.558). Interpretation:",
+   "options": [
+    "Autopay customers have about 44% lower odds of churning, other things equal",
+    "Autopay customers always stay",
+    "Autopay raises churn by 0.558",
+    "Autopay customers are 55.8% of the data"
+   ],
+   "answer": 0,
+   "explain": "1 − 0.558 ≈ 0.44, so the odds are 44% lower."
+  },
+  {
+   "id": "q14",
+   "topic": "Logistic regression",
+   "type": "mcq",
+   "q": "If the linear part of a logistic model is z = 0, the predicted probability is:",
+   "options": [
+    "0.5",
+    "0",
+    "1",
+    "e"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "p = 1/(1 + e⁰) = 1/2."
+  },
+  {
+   "id": "q15",
+   "topic": "Logistic regression",
+   "type": "mcq",
+   "q": "Why not fit an ordinary straight line to a 0/1 churn target?",
+   "options": [
+    "A straight line can predict values below 0 or above 1, which are impossible probabilities",
+    "Straight lines need categorical inputs",
+    "Least squares cannot handle 0 and 1",
+    "It would be too accurate"
+   ],
+   "answer": 0,
+   "explain": "Logistic regression models the log-odds as linear and maps it into (0, 1) with the sigmoid."
+  },
+  {
+   "id": "q16",
+   "topic": "Decision tree",
+   "type": "mcq",
+   "q": "A node has 238 churners out of 1,050 customers (p = 0.227). Its Gini impurity is about:",
+   "options": [
+    "0.351",
+    "0.227",
+    "0.500",
+    "0.773"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Gini = 1 − (0.227² + 0.773²) = 1 − (0.0515 + 0.5975) ≈ 0.351."
+  },
+  {
+   "id": "q17",
+   "topic": "Decision tree",
+   "type": "mcq",
+   "q": "A pure node (all customers in one class) has Gini impurity:",
+   "options": [
+    "0",
+    "0.5",
+    "1",
+    "Undefined"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "1 − (1² + 0²) = 0."
+  },
+  {
+   "id": "q18",
+   "topic": "Decision tree",
+   "type": "mcq",
+   "q": "Children: 907 customers with Gini 0.313 and 143 with Gini 0.491. The weighted Gini after the split is about:",
+   "options": [
+    "0.337",
+    "0.402",
+    "0.313",
+    "0.804"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "(907 × 0.313 + 143 × 0.491) / 1050 = (283.9 + 70.2) / 1050 ≈ 0.337."
+  },
+  {
+   "id": "q19",
+   "topic": "Decision tree",
+   "type": "mcq",
+   "q": "Which setting helps stop a decision tree from overfitting?",
+   "options": [
+    "Limiting max_depth or requiring a minimum number of samples per leaf",
+    "Removing the test set",
+    "Scaling the features",
+    "Using more decimal places"
+   ],
+   "answer": 0,
+   "explain": "Shallower trees and larger leaves cannot memorise individual customers."
+  },
+  {
+   "id": "q20",
+   "topic": "Decision tree",
+   "type": "mcq",
+   "q": "Which tree algorithm uses the chi-square test to choose splits and is SPSS’s default?",
+   "options": [
+    "CHAID",
+    "CART",
+    "ID3",
+    "KNN"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "CHAID = Chi-squared Automatic Interaction Detection. CART uses Gini; ID3 uses entropy."
+  },
+  {
+   "id": "q21",
+   "topic": "KNN",
+   "type": "mcq",
+   "q": "What is the Euclidean distance between (6, 3) and (8, 2)?",
+   "options": [
+    "√5 ≈ 2.24",
+    "3",
+    "5",
+    "1"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "√((8 − 6)² + (2 − 3)²) = √(4 + 1) = √5 ≈ 2.24."
+  },
+  {
+   "id": "q22",
+   "topic": "KNN",
+   "type": "mcq",
+   "q": "KNN with k = 1 scored 98.4% on training data but 69.8% on test data. This is:",
+   "options": [
+    "Overfitting: the model memorised individual training points",
+    "Underfitting",
+    "Perfect generalisation",
+    "Data cleaning"
+   ],
+   "answer": 0,
+   "explain": "A huge train–test gap is the signature of overfitting."
+  },
+  {
+   "id": "q23",
+   "topic": "KNN",
+   "type": "mcq",
+   "q": "Why must features be scaled before KNN?",
+   "options": [
+    "Distances are dominated by features with large numeric ranges, such as monthly charge in rupees",
+    "KNN only accepts values between 0 and 1",
+    "Scaling removes outliers",
+    "Scaling makes KNN train faster"
+   ],
+   "answer": 0,
+   "explain": "Without scaling, a ₹100 difference outweighs a 10-month or 5-call difference. Unscaled KNN recall fell to 4.9%."
+  },
+  {
+   "id": "q24",
+   "topic": "Naive Bayes",
+   "type": "mcq",
+   "q": "What does the ‘naïve’ in Naïve Bayes refer to?",
+   "options": [
+    "It assumes features are independent of each other given the class",
+    "It ignores the prior probability",
+    "It can only use two features",
+    "It does not use probabilities"
+   ],
+   "answer": 0,
+   "explain": "That assumption lets the per-feature probabilities be multiplied."
+  },
+  {
+   "id": "q25",
+   "topic": "Naive Bayes",
+   "type": "mcq",
+   "q": "Naïve Bayes scores: churn = 0.01514, stay = 0.00922. What is P(churn | evidence)?",
+   "options": [
+    "About 0.62",
+    "About 0.38",
+    "About 0.015",
+    "About 1.64"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "0.01514 / (0.01514 + 0.00922) = 0.01514 / 0.02436 ≈ 0.621."
+  },
+  {
+   "id": "q26",
+   "topic": "Naive Bayes",
+   "type": "mcq",
+   "q": "Gaussian Naïve Bayes gave a new customer P(churn) = 0.936, while the other models gave 0.60–0.73. A likely reason:",
+   "options": [
+    "Correlated features are treated as independent, so evidence is counted twice and probabilities become over-confident",
+    "Naïve Bayes always predicts 0.936",
+    "The customer was in the training set",
+    "Naïve Bayes cannot handle numbers"
+   ],
+   "answer": 0,
+   "explain": "Support calls and satisfaction are correlated (r = −0.31); NB multiplies both as if independent."
+  },
+  {
+   "id": "q27",
+   "topic": "Process & train/test",
+   "type": "order",
+   "q": "Arrange the model-building steps in order.",
+   "options": [
+    "Define the target",
+    "Split into train and test sets",
+    "Fit preprocessing on the training data",
+    "Train the models",
+    "Evaluate once on the test set"
+   ],
+   "answer": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "marks": 2,
+   "explain": "Split before learning anything from the data; evaluate on the test set only at the end."
+  },
+  {
+   "id": "q28",
+   "topic": "Process & train/test",
+   "type": "mcq",
+   "q": "Why use stratify=y when splitting the churn data?",
+   "options": [
+    "To keep the same churn rate (22.7%) in both the training and test sets",
+    "To sort the data by churn",
+    "To remove churners from the test set",
+    "To make the split random every time"
+   ],
+   "answer": 0,
+   "explain": "With an imbalanced target, a plain random split could leave very different churn rates in each part."
+  },
+  {
+   "id": "q29",
+   "topic": "Process & train/test",
+   "type": "mcq",
+   "q": "Which of these is DATA LEAKAGE?",
+   "options": [
+    "Scaling features with the mean and sd of the whole dataset before splitting",
+    "Using random_state=42",
+    "Using 30% of rows for testing",
+    "Training a decision tree with max_depth = 3"
+   ],
+   "answer": 0,
+   "explain": "Statistics from the test rows have shaped the training data, so test scores look better than reality."
+  },
+  {
+   "id": "q30",
+   "topic": "Process & train/test",
+   "type": "mcq",
+   "q": "At a 0.5 cut-off, all four churn models had about 76–78% accuracy but caught only 9–28% of churners. Why?",
+   "options": [
+    "Only 22.7% of customers churn, so few reach a 50% predicted probability; accuracy is dominated by the many stayers",
+    "The models were trained on the test set",
+    "Churners cannot be predicted",
+    "Recall and accuracy are the same thing"
+   ],
+   "answer": 0,
+   "explain": "Imbalanced targets make accuracy misleading; Unit 4 adjusts the threshold and uses precision, recall and ROC."
+  }
+ ]
+}

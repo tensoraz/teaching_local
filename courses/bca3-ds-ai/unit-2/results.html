@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 2 Quiz Results</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
+  .hb { display: grid; grid-template-columns: minmax(0, 1fr) 160px 52px; gap: 10px; align-items: center; font-size: 14px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .hb:last-child { border-bottom: 0; }
+  .hb .b { height: 10px; background: var(--surface-2); border-radius: 5px; overflow: hidden; }
+  .hb .b div { height: 100%; border-radius: 5px; }
+  .hb .q { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hist { display: flex; align-items: flex-end; gap: 6px; height: 170px; padding-top: 10px; }
+  .hist div { flex: 1; background: var(--brand); border-radius: 6px 6px 0 0; position: relative; min-height: 2px; }
+  .hist span { position: absolute; top: -20px; left: 0; right: 0; text-align: center; font-size: 12px; color: var(--ink-2); font-weight: 700; }
+  .hx { display: flex; gap: 6px; font-size: 11.5px; color: var(--ink-3); margin-top: 4px; }
+  .hx span { flex: 1; text-align: center; }
+  th[data-k] { cursor: pointer; }
+  .live { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: var(--good); font-weight: 700; }
+  .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--good); animation: pulse 1.6s infinite; }
+  @keyframes pulse { 50% { opacity: .25; } }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Predictive Analytics</a> › <a href="./">Unit 2</a> › <b>Quiz results</b></div>
+  <span class="live">live</span>
+  <button class="icon-btn" onclick="exportCsv()">⬇ CSV</button>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+</div></header>
+
+<main class="wrap" style="padding-top:24px;padding-bottom:50px">
+  <h1 style="font-size:32px" id="title">Quiz results</h1>
+  <p class="muted" style="margin-top:-6px">Updates every 5 seconds. Use the weakest questions to guide the 10-minute review after the quiz.</p>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="row">
+    <div class="card"><h3>Score distribution</h3><div class="hist" id="hist"></div><div class="hx" id="hx"></div></div>
+    <div class="card"><h3>Class average by topic</h3><div id="topics"></div></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Weakest questions first <span class="muted" style="font-weight:400;font-size:14px">· re-teach these</span></h3>
+    <div id="qs"></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Students</h3>
+    <div class="tbl-wrap" style="margin:0" id="tbl"></div>
+  </div>
+</main>
+
+<script>
+var UNIT = 'bca3-ds-ai/unit-2', DATA = null, sortKey = 'score', sortDir = -1;
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function colorFor(p) { return p >= 70 ? 'var(--good)' : p >= 50 ? 'var(--accent)' : 'var(--bad)'; }
+function mmss(s) { return Math.floor(s / 60) + 'm ' + ('0' + s % 60).slice(-2) + 's'; }
+
+function refresh() {
+  fetch('/api/unitquiz/results?unit=' + encodeURIComponent(UNIT), { cache: 'no-store' })
+    .then(function (r) { return r.json(); }).then(function (d) { if (d.ok) { DATA = d; render(); } }).catch(function () {});
+}
+
+function render() {
+  var rows = DATA.results, n = rows.length, Q = DATA.questions;
+  document.getElementById('title').textContent = DATA.title + ' · results';
+  var pcts = rows.map(function (r) { return 100 * r.score / r.total; });
+  var avg = n ? pcts.reduce(function (a, b) { return a + b; }, 0) / n : 0;
+  var sorted = pcts.slice().sort(function (a, b) { return a - b; });
+  var median = n ? (n % 2 ? sorted[(n - 1) / 2] : (sorted[n / 2 - 1] + sorted[n / 2]) / 2) : 0;
+  var pass = pcts.filter(function (p) { return p >= 40; }).length;
+  document.getElementById('kpis').innerHTML =
+    '<div class="kpi"><div class="v">' + n + '</div><div class="l">submissions</div></div>' +
+    '<div class="kpi"><div class="v">' + avg.toFixed(0) + '%</div><div class="l">class average</div></div>' +
+    '<div class="kpi"><div class="v">' + median.toFixed(0) + '%</div><div class="l">median</div></div>' +
+    '<div class="kpi"><div class="v">' + (n ? Math.max.apply(null, pcts).toFixed(0) : 0) + '%</div><div class="l">highest</div></div>' +
+    '<div class="kpi"><div class="v">' + (n ? Math.round(100 * pass / n) : 0) + '%</div><div class="l">scored 40% or more</div></div>';
+
+  var bins = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  pcts.forEach(function (p) { bins[Math.min(9, Math.floor(p / 10))]++; });
+  var mx = Math.max.apply(null, bins) || 1;
+  document.getElementById('hist').innerHTML = bins.map(function (b, i) {
+    return '<div style="height:' + (100 * b / mx) + '%;background:' + colorFor(i * 10 + 5) + '"><span>' + (b || '') + '</span></div>';
+  }).join('');
+  document.getElementById('hx').innerHTML = bins.map(function (b, i) { return '<span>' + i * 10 + '–' + (i * 10 + 10) + '</span>'; }).join('');
+
+  var qAvg = Q.map(function (q) {
+    var v = n ? rows.reduce(function (s, r) { return s + ((r.per_q || {})[q.id] || 0); }, 0) / n : 0;
+    return { q: q, p: 100 * v };
+  });
+  var topics = {};
+  qAvg.forEach(function (x) { var t = topics[x.q.topic] || (topics[x.q.topic] = { s: 0, m: 0 }); t.s += x.p * x.q.marks; t.m += x.q.marks; });
+  document.getElementById('topics').innerHTML = Object.keys(topics).map(function (k) {
+    var p = n ? topics[k].s / topics[k].m : 0;
+    return '<div class="hb"><span>' + esc(k) + '</span><div class="b"><div style="width:' + p + '%;background:' + colorFor(p) + '"></div></div><b style="text-align:right">' + p.toFixed(0) + '%</b></div>';
+  }).join('');
+
+  document.getElementById('qs').innerHTML = n ? qAvg.slice().sort(function (a, b) { return a.p - b.p; }).map(function (x) {
+    return '<div class="hb" title="' + esc(x.q.q) + '"><span class="q"><b>' + esc(x.q.topic) + '</b> · ' + esc(x.q.q) + '</span><div class="b"><div style="width:' + x.p + '%;background:' + colorFor(x.p) + '"></div></div><b style="text-align:right">' + x.p.toFixed(0) + '%</b></div>';
+  }).join('') : '<p class="muted">No submissions yet.</p>';
+
+  var counts = {};
+  rows.forEach(function (r) { var k = (r.name + '|' + r.roll).toLowerCase(); counts[k] = (counts[k] || 0) + 1; });
+  var list = rows.map(function (r) { return { name: r.name, roll: r.roll, score: r.score, total: r.total, pct: 100 * r.score / r.total, seconds: r.seconds, left: r.left_page || 0, away: r.away_seconds || 0, time: r.time, tries: counts[(r.name + '|' + r.roll).toLowerCase()] }; });
+  list.sort(function (a, b) { var x = a[sortKey], y = b[sortKey]; if (sortKey === 'score') { x = a.pct; y = b.pct; } return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
+  var arrow = function (k) { return sortKey === k ? (sortDir > 0 ? ' ▲' : ' ▼') : ''; };
+  document.getElementById('tbl').innerHTML = '<table><tr><th>#</th><th data-k="name">Name' + arrow('name') + '</th><th data-k="roll">Roll' + arrow('roll') + '</th><th data-k="score" class="num">Score' + arrow('score') + '</th><th class="num">%</th><th data-k="seconds" class="num">Time' + arrow('seconds') + '</th><th data-k="left" class="num">Left page' + arrow('left') + '</th><th data-k="time">Submitted' + arrow('time') + '</th></tr>' +
+    (list.length ? list.map(function (r, i) {
+      return '<tr><td>' + (i + 1) + '</td><td>' + esc(r.name) + (r.tries > 1 ? ' <span class="pill" style="background:var(--accent-soft);color:var(--accent)">' + r.tries + ' attempts</span>' : '') + '</td><td>' + esc(r.roll) + '</td><td class="num">' + r.score + ' / ' + r.total + '</td><td class="num" style="color:' + colorFor(r.pct) + ';font-weight:700">' + r.pct.toFixed(0) + '%</td><td class="num">' + mmss(r.seconds) + '</td><td class="num"' + (r.left ? ' style="color:var(--bad);font-weight:700" title="Away for ' + mmss(r.away) + '">⚠️ ' + r.left + '×' : '>0') + '</td><td>' + esc(r.time.slice(11)) + '</td></tr>';
+    }).join('') : '<tr><td colspan="8" class="muted">Waiting for the first submission…</td></tr>') + '</table>';
+  document.querySelectorAll('th[data-k]').forEach(function (th) {
+    th.onclick = function () { var k = th.dataset.k; sortDir = sortKey === k ? -sortDir : (k === 'name' || k === 'roll' ? 1 : -1); sortKey = k; render(); };
+  });
+}
+
+function exportCsv() {
+  if (!DATA) return;
+  var Q = DATA.questions, cell = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  var lines = [['name', 'roll', 'score', 'total', 'percent', 'seconds', 'left_page', 'away_seconds', 'submitted'].concat(Q.map(function (q) { return q.id; })).join(',')];
+  DATA.results.forEach(function (r) {
+    lines.push([r.name, r.roll, r.score, r.total, (100 * r.score / r.total).toFixed(1), r.seconds, r.left_page || 0, r.away_seconds || 0, r.time].concat(Q.map(function (q) { return (r.per_q || {})[q.id]; })).map(cell).join(','));
+  });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + lines.join('\n')], { type: 'text/csv' }));
+  a.download = 'unit2_quiz_results.csv'; a.click();
+}
+
+refresh(); setInterval(refresh, 5000);
+</script>
+</body>
+</html>

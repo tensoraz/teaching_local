@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 · Predictive Analytics</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  .timeline { display: flex; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); margin: 18px 0 6px; font-size: 13.5px; font-weight: 600; }
+  .timeline > div { padding: 12px 10px; min-width: 0; }
+  .timeline small { display: block; font-weight: 500; opacity: .8; }
+  .legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); }
+  .who { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); margin: 30px 0 10px; }
+  @media (max-width: 640px) { .timeline { flex-direction: column; } .timeline > div { flex: none !important; } .legend { display: none; } }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Predictive Analytics</a> › <b>Unit 1</b></div>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 1 · 10 hours in syllabus · today's 2-hour session</span>
+    <h1>Introduction to Predictive Analytics</h1>
+    <p class="lead">What predictive analytics is, how it differs from descriptive and prescriptive analytics, where businesses use it, what kinds of data it works on, the lifecycle of a predictive project, and the tools for it: Python, R, Excel and IBM SPSS.</p>
+
+    <div class="timeline">
+      <div class="c-brand" style="flex:30">Concepts on smart board<small>30 min</small></div>
+      <div class="c-teal" style="flex:5">Break<small>5</small></div>
+      <div class="c-good" style="flex:35">Study + hands-on<small>35 min</small></div>
+      <div class="c-teal" style="flex:10">Rest<small>10</small></div>
+      <div class="c-violet" style="flex:40">Quiz + review<small>40 min</small></div>
+    </div>
+    <div class="legend"><span>0:00</span><span>0:30</span><span>0:35</span><span>1:10</span><span>1:20</span><span>2:00</span></div>
+  </div>
+
+  <div class="who">For students</div>
+  <div class="grid g3">
+    <a class="card tile" href="study.html">
+      <div class="ic c-good">📖</div>
+      <h3>Study guide</h3>
+      <p>Diagrams, real data, Python output, worked maths and interactive checks. Work through it in 35 minutes.</p>
+    </a>
+    <a class="card tile" href="study.html#lab">
+      <div class="ic c-accent">🧪</div>
+      <h3>Hands-on lab</h3>
+      <p>Explore 1,500 telecom customers, predict who will leave, and decide who gets a retention offer.</p>
+    </a>
+    <a class="card tile" href="quiz.html">
+      <div class="ic c-violet">📝</div>
+      <h3>Unit 1 quiz</h3>
+      <p>33 questions, 30 minutes, auto-graded, with explanations after you submit.</p>
+    </a>
+  </div>
+
+  <div class="who">Downloads</div>
+  <div class="grid g3">
+    <a class="card tile" href="lab/swifttel_customers.csv" download>
+      <div class="ic c-brand">🗂️</div><h3>Customers (CSV)</h3><p>swifttel_customers.csv · 1,500 rows · 13 columns</p>
+    </a>
+    <a class="card tile" href="lab/swifttel_monthly.csv" download>
+      <div class="ic c-teal">📈</div><h3>Monthly revenue (CSV)</h3><p>swifttel_monthly.csv · 24 months · Excel forecast</p>
+    </a>
+    <a class="card tile" href="lab/unit1_lab.ipynb" download>
+      <div class="ic c-accent">📓</div><h3>Jupyter notebook</h3><p>unit1_lab.ipynb · the 7-stage lab, step by step</p>
+    </a>
+    <a class="card tile" href="lab/unit1_lab.py" download>
+      <div class="ic c-accent">🐍</div><h3>Python script</h3><p>unit1_lab.py · same lab as a plain script</p>
+    </a>
+    <a class="card tile" href="lab/unit1_lab.R" download>
+      <div class="ic c-violet">📊</div><h3>R script</h3><p>unit1_lab.R · base R, no packages needed</p>
+    </a>
+    <a class="card tile" href="study.html#tools">
+      <div class="ic c-good">🧮</div><h3>Excel and SPSS steps</h3><p>Formulas, and SPSS Lab Experiment 1</p>
+    </a>
+  </div>
+
+  <div id="teacherZone" hidden>
+  <div class="who">For the teacher</div>
+  <div class="grid g3">
+    <a class="card tile" href="board.html">
+      <div class="ic c-brand">🖥️</div>
+      <h3>Smart-board slides</h3>
+      <p>Theory and maths for the first 30 minutes. Arrow keys to move, <b>D</b> to draw, <b>N</b> for notes.</p>
+    </a>
+    <a class="card tile" href="session.html">
+      <div class="ic c-teal">⏱️</div>
+      <h3>Session timer</h3>
+      <p>Full-screen countdown for all five phases, with a chime at each change.</p>
+    </a>
+    <a class="card tile" href="results.html">
+      <div class="ic c-violet">📈</div>
+      <h3>Quiz results</h3>
+      <p>Live scores, weakest questions and topics, CSV export.</p>
+    </a>
+  </div>
+  </div>
+</main>
+<script>
+// teacher links are shown only to the teacher (the pages themselves are also locked on the server)
+fetch('/api/whoami?course=' + encodeURIComponent(location.pathname.split('/')[2]), { cache: 'no-store' }).then(function (r) { return r.json(); })
+  .then(function (d) { if (d.teacher) document.getElementById('teacherZone').hidden = false; }).catch(function () {});
+</script>
+<footer class="foot">Unit 1 of 5 · Predictive Analytics Modeler · BCA DS &amp; AI Semester 3</footer>
+</body>
+</html>

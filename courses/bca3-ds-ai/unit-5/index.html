@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 5 · Predictive Analytics</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  .timeline { display: flex; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); margin: 18px 0 6px; font-size: 13.5px; font-weight: 600; }
+  .timeline > div { padding: 12px 10px; min-width: 0; }
+  .timeline small { display: block; font-weight: 500; opacity: .8; }
+  .legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); }
+  .who { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); margin: 30px 0 10px; }
+  @media (max-width: 640px) { .timeline { flex-direction: column; } .timeline > div { flex: none !important; } .legend { display: none; } }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Predictive Analytics</a> › <b>Unit 5</b></div>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 5 · 8 hours in syllabus · today's 2-hour session</span>
+    <h1>Model Deployment &amp; Applications</h1>
+    <p class="lead">Explain what a model has learned, deploy it for batch and real-time scoring, monitor it for drift, apply predictive analytics to finance, healthcare and marketing, handle ethical issues such as bias and privacy, and see how predictive models fit into wider AI systems.</p>
+
+    <div class="timeline">
+      <div class="c-brand" style="flex:30">Concepts on smart board<small>30 min</small></div>
+      <div class="c-teal" style="flex:5">Break<small>5</small></div>
+      <div class="c-good" style="flex:35">Study + hands-on<small>35 min</small></div>
+      <div class="c-teal" style="flex:10">Rest<small>10</small></div>
+      <div class="c-violet" style="flex:40">Quiz + review<small>40 min</small></div>
+    </div>
+    <div class="legend"><span>0:00</span><span>0:30</span><span>0:35</span><span>1:10</span><span>1:20</span><span>2:00</span></div>
+  </div>
+
+  <div class="who">For students</div>
+  <div class="grid g3">
+    <a class="card tile" href="study.html">
+      <div class="ic c-good">📖</div>
+      <h3>Study guide</h3>
+      <p>Diagrams, real data, Python output, worked maths and interactive checks. Work through it in 35 minutes.</p>
+    </a>
+    <a class="card tile" href="study.html#lab">
+      <div class="ic c-accent">🧪</div>
+      <h3>Hands-on lab</h3>
+      <p>Explain a loan decision with reason codes, monitor a model for drift, segment customers with K-means, and test a model for fairness.</p>
+    </a>
+    <a class="card tile" href="quiz.html">
+      <div class="ic c-violet">📝</div>
+      <h3>Unit 5 quiz</h3>
+      <p>30 questions, 30 minutes, auto-graded, with explanations after you submit.</p>
+    </a>
+  </div>
+
+  <div class="who">Downloads</div>
+  <div class="grid g3">
+    <a class="card tile" href="lab/credit_applications.csv" download>
+      <div class="ic c-brand">🏦</div><h3>Credit applications (CSV)</h3><p>credit_applications.csv · 2,000 rows</p>
+    </a>
+    <a class="card tile" href="lab/clinic_screening.csv" download>
+      <div class="ic c-good">🏥</div><h3>Clinic screening (CSV)</h3><p>clinic_screening.csv · 1,500 patients</p>
+    </a>
+    <a class="card tile" href="lab/swifttel_prepared.csv" download>
+      <div class="ic c-teal">📱</div><h3>SwiftTel prepared (CSV)</h3><p>for K-means segmentation</p>
+    </a>
+    <a class="card tile" href="lab/unit5_lab.ipynb" download>
+      <div class="ic c-accent">📓</div><h3>Jupyter notebook</h3><p>unit5_lab.ipynb · interpret → segment</p>
+    </a>
+    <a class="card tile" href="lab/score_api.py" download>
+      <div class="ic c-good">⚡</div><h3>Real-time API</h3><p>score_api.py · python score_api.py</p>
+    </a>
+    <a class="card tile" href="lab/unit5_lab.R" download>
+      <div class="ic c-violet">📊</div><h3>R script</h3><p>unit5_lab.R · base R</p>
+    </a>
+  </div>
+
+  <div id="teacherZone" hidden>
+  <div class="who">For the teacher</div>
+  <div class="grid g3">
+    <a class="card tile" href="board.html">
+      <div class="ic c-brand">🖥️</div>
+      <h3>Smart-board slides</h3>
+      <p>Theory and maths for the first 30 minutes. Arrow keys to move, <b>D</b> to draw, <b>N</b> for notes.</p>
+    </a>
+    <a class="card tile" href="session.html">
+      <div class="ic c-teal">⏱️</div>
+      <h3>Session timer</h3>
+      <p>Full-screen countdown for all five phases, with a chime at each change.</p>
+    </a>
+    <a class="card tile" href="results.html">
+      <div class="ic c-violet">📈</div>
+      <h3>Quiz results</h3>
+      <p>Live scores, weakest questions and topics, CSV export.</p>
+    </a>
+  </div>
+  </div>
+</main>
+<script>
+// teacher links are shown only to the teacher (the pages themselves are also locked on the server)
+fetch('/api/whoami?course=' + encodeURIComponent(location.pathname.split('/')[2]), { cache: 'no-store' }).then(function (r) { return r.json(); })
+  .then(function (d) { if (d.teacher) document.getElementById('teacherZone').hidden = false; }).catch(function () {});
+</script>
+<footer class="foot">Unit 5 of 5 · Predictive Analytics Modeler · BCA DS &amp; AI Semester 3</footer>
+</body>
+</html>

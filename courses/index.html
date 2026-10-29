@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course Library</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><b>Course Library</b></div>
+  <a class="icon-btn" href="/">Live classroom</a>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Offline course library</span>
+    <h1>Pick a course</h1>
+    <p class="lead">All material runs from this laptop. Students open this page on the lab network; no internet is needed.</p>
+  </div>
+
+  <div class="grid g3">
+    <a class="card tile" href="/courses/bca5-data-science/">
+      <div class="ic c-brand">📊</div>
+      <h3>Data Science</h3>
+      <p>BCA Semester 5 · GNSU · 5 units</p>
+      <p style="margin-top:10px"><span class="pill live">Unit 1 ready</span></p>
+    </a>
+    <a class="card tile" href="/courses/bca1-ai-ml/">
+      <div class="ic c-good">🧩</div>
+      <h3>Problem Solving Techniques Using C</h3>
+      <p>BCA (AI &amp; ML) Semester 1 · 4 units</p>
+      <p style="margin-top:10px"><span class="pill live">Unit 1 ready</span></p>
+    </a>
+    <a class="card tile" href="/courses/bca3-ds-ai/">
+      <div class="ic c-violet">🔮</div>
+      <h3>Predictive Analytics Modeler</h3>
+      <p>BCA DS &amp; AI (IBM) Semester 3 · 5 units</p>
+      <p style="margin-top:10px"><span class="pill live">All 5 units ready</span></p>
+    </a>
+  </div>
+</main>
+<footer class="foot">Add a new course by creating a folder inside <code>courses/</code> and linking it here.</footer>
+</body>
+</html>

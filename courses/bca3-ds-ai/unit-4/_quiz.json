@@ -1,0 +1,474 @@
+{
+ "title": "Unit 4 Quiz · Advanced Modeling & Validation",
+ "minutes": 30,
+ "shuffle_questions": true,
+ "instructions": [
+  "32 questions, 32 marks. You have 30 minutes; the quiz submits itself when time runs out.",
+  "Questions and options are shuffled, so your neighbour's screen will not match yours.",
+  "Multi-select questions need ALL correct options for the marks. Ordering questions give part marks for each item in the right place.",
+  "After submitting you will see your score and an explanation for every question."
+ ],
+ "questions": [
+  {
+   "id": "q01",
+   "topic": "Over/underfitting",
+   "type": "mcq",
+   "q": "A tree scores training AUC 1.000 but test AUC 0.584. This is:",
+   "options": [
+    "Overfitting (high variance)",
+    "Underfitting (high bias)",
+    "A perfect model",
+    "Data cleaning"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "A big gap between training and test performance is the signature of overfitting."
+  },
+  {
+   "id": "q02",
+   "topic": "Over/underfitting",
+   "type": "mcq",
+   "q": "A depth-1 tree scores AUC 0.58 on training and 0.55 on test. The best description is:",
+   "options": [
+    "Underfitting: too simple to capture the pattern",
+    "Overfitting",
+    "Data leakage",
+    "Good generalisation"
+   ],
+   "answer": 0,
+   "explain": "Both scores are low, so the model is too simple (high bias)."
+  },
+  {
+   "id": "q03",
+   "topic": "Over/underfitting",
+   "type": "mcq",
+   "q": "Which action is most likely to REDUCE overfitting?",
+   "options": [
+    "Increase min_samples_leaf / limit max_depth",
+    "Grow the tree with no depth limit",
+    "Train and test on the same data",
+    "Remove the test set"
+   ],
+   "answer": 0,
+   "explain": "Simpler trees with larger leaves cannot memorise individual customers."
+  },
+  {
+   "id": "q04",
+   "topic": "Over/underfitting",
+   "type": "mcq",
+   "q": "In the bias–variance trade-off, making a model more complex usually:",
+   "options": [
+    "Lowers bias but raises variance",
+    "Raises bias and lowers variance",
+    "Lowers both",
+    "Raises both"
+   ],
+   "answer": 0,
+   "explain": "Flexible models fit training data closely (less bias) but change more with the sample (more variance)."
+  },
+  {
+   "id": "q05",
+   "topic": "Cross-validation",
+   "type": "mcq",
+   "q": "In 5-fold cross-validation on 1,050 training customers, each round trains on how many customers?",
+   "options": [
+    "840",
+    "210",
+    "1,050",
+    "525"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Each fold has 1,050 / 5 = 210; training uses the other 4 folds = 840."
+  },
+  {
+   "id": "q06",
+   "topic": "Cross-validation",
+   "type": "mcq",
+   "q": "The five fold AUCs are 0.726, 0.715, 0.778, 0.673 and 0.681. What is the mean?",
+   "options": [
+    "0.715",
+    "0.673",
+    "0.778",
+    "0.705"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Sum = 3.573; 3.573 / 5 = 0.7146 ≈ 0.715."
+  },
+  {
+   "id": "q07",
+   "topic": "Cross-validation",
+   "type": "mcq",
+   "q": "Why is stratified k-fold preferred for the churn data?",
+   "options": [
+    "It keeps about 22.7% churners in every fold",
+    "It is faster",
+    "It removes outliers",
+    "It uses the test set for training"
+   ],
+   "answer": 0,
+   "explain": "With an imbalanced target, plain folds could have very different churn rates, making scores unstable."
+  },
+  {
+   "id": "q08",
+   "topic": "Cross-validation",
+   "type": "mcq",
+   "q": "For predicting next month’s sales from past months, which validation is correct?",
+   "options": [
+    "Time-series split: train on earlier months, validate on later months",
+    "Shuffled k-fold",
+    "Leave-one-out on shuffled rows",
+    "No validation"
+   ],
+   "answer": 0,
+   "explain": "Shuffling would let the model learn from the future, which is leakage for time-ordered data."
+  },
+  {
+   "id": "q09",
+   "topic": "Cross-validation",
+   "type": "mcq",
+   "q": "Why should scaling and imputation be placed inside a Pipeline during cross-validation?",
+   "options": [
+    "So they are refit on each training fold, preventing the validation fold from leaking into preprocessing",
+    "To make the code shorter",
+    "Because cross_val_score needs a Pipeline",
+    "To improve the training score"
+   ],
+   "answer": 0,
+   "explain": "Fitting preprocessing on all rows first lets the validation folds influence the training data."
+  },
+  {
+   "id": "q10",
+   "topic": "Hyperparameter tuning",
+   "type": "mcq",
+   "q": "Which of these is a HYPERPARAMETER (set before training)?",
+   "options": [
+    "max_depth of a decision tree",
+    "A logistic regression coefficient",
+    "A split threshold chosen by the tree",
+    "The predicted probability"
+   ],
+   "answer": 0,
+   "explain": "Hyperparameters are chosen by you; parameters (coefficients, thresholds) are learned from data."
+  },
+  {
+   "id": "q11",
+   "topic": "Hyperparameter tuning",
+   "type": "mcq",
+   "q": "A grid has n_estimators {100, 300}, max_depth {3, 5, 8, None}, min_samples_leaf {1, 5, 20}, with 5-fold CV. How many models are trained?",
+   "options": [
+    "120",
+    "24",
+    "9",
+    "60"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "2 × 4 × 3 = 24 combinations × 5 folds = 120 fits."
+  },
+  {
+   "id": "q12",
+   "topic": "Hyperparameter tuning",
+   "type": "mcq",
+   "q": "Why must you NOT choose hyperparameters by looking at the test-set score?",
+   "options": [
+    "The test score would no longer be an honest estimate of performance on new data",
+    "It is slower",
+    "The test set is too small to compute AUC",
+    "Grid search cannot use the test set"
+   ],
+   "answer": 0,
+   "explain": "Tuning on the test set turns it into a training signal; use cross-validation on the training data instead."
+  },
+  {
+   "id": "q13",
+   "topic": "Ensembles",
+   "type": "mcq",
+   "q": "Five independent models are each 70% accurate. A majority vote (≥ 3 of 5 correct) is right with probability about:",
+   "options": [
+    "0.84",
+    "0.70",
+    "0.35",
+    "1.00"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "0.309 + 0.360 + 0.168 = 0.837. Ensembles help when errors are independent."
+  },
+  {
+   "id": "q14",
+   "topic": "Ensembles",
+   "type": "mcq",
+   "q": "Bagging mainly reduces ______, while boosting mainly reduces ______.",
+   "options": [
+    "variance; bias",
+    "bias; variance",
+    "accuracy; recall",
+    "data size; features"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Averaging many deep trees smooths their instability (variance); boosting adds models that fix systematic errors (bias)."
+  },
+  {
+   "id": "q15",
+   "topic": "Ensembles",
+   "type": "mcq",
+   "q": "Why would 25 identical decision trees voting together be no better than one tree?",
+   "options": [
+    "Their errors are not independent: they all make the same mistakes",
+    "Voting needs an odd number of models",
+    "Decision trees cannot vote",
+    "25 is too many"
+   ],
+   "answer": 0,
+   "explain": "Ensembles need diversity; random forests create it with random rows and random features."
+  },
+  {
+   "id": "q16",
+   "topic": "Random forest",
+   "type": "mcq",
+   "q": "A bootstrap sample draws n rows with replacement. About what share of distinct rows does it contain for large n?",
+   "options": [
+    "63.2%",
+    "50%",
+    "36.8%",
+    "100%"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "1 − (1 − 1/n)ⁿ → 1 − 1/e ≈ 0.632. The other 36.8% are out-of-bag."
+  },
+  {
+   "id": "q17",
+   "topic": "Random forest",
+   "type": "mcq",
+   "q": "What are out-of-bag (OOB) rows used for in a random forest?",
+   "options": [
+    "A built-in validation estimate, using rows each tree did not see",
+    "Training the first tree",
+    "Replacing missing values",
+    "Choosing the learning rate"
+   ],
+   "answer": 0,
+   "explain": "Each tree is scored on its own OOB rows; our forest’s OOB accuracy was 0.779."
+  },
+  {
+   "id": "q18",
+   "topic": "Random forest",
+   "type": "mcq",
+   "q": "With 9 features, a random forest classifier typically considers how many candidate features at each split?",
+   "options": [
+    "3 (√9)",
+    "9",
+    "1",
+    "81"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "max_features = √p is the usual default for classification, which decorrelates the trees."
+  },
+  {
+   "id": "q19",
+   "topic": "Random forest",
+   "type": "mcq",
+   "q": "The forest ranked data_gb and age above autopay, although autopay is strongly related to churn. A likely reason:",
+   "options": [
+    "Impurity-based importance favours numeric features with many distinct values",
+    "autopay was not in the data",
+    "The forest was underfitting",
+    "data_gb causes churn"
+   ],
+   "answer": 0,
+   "explain": "More possible split points let such features win splits by chance; permutation importance avoids this bias."
+  },
+  {
+   "id": "q20",
+   "topic": "Boosting",
+   "type": "mcq",
+   "q": "An AdaBoost weak learner has weighted error ε = 0.30. Its vote weight α = ½ ln((1 − ε)/ε) is about:",
+   "options": [
+    "0.42",
+    "0.30",
+    "0.85",
+    "1.53"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "½ ln(0.7/0.3) = ½ ln(2.333) = ½ × 0.847 = 0.424."
+  },
+  {
+   "id": "q21",
+   "topic": "Boosting",
+   "type": "mcq",
+   "q": "In AdaBoost, after a round the weights of MISCLASSIFIED rows are:",
+   "options": [
+    "Increased, so the next learner focuses on them",
+    "Set to zero",
+    "Unchanged",
+    "Decreased"
+   ],
+   "answer": 0,
+   "explain": "They are multiplied by e^α (1.53 here) before normalising."
+  },
+  {
+   "id": "q22",
+   "topic": "Boosting",
+   "type": "mcq",
+   "q": "In gradient boosting, each new tree is fitted to:",
+   "options": [
+    "The residual errors of the current ensemble",
+    "A bootstrap sample of the original target",
+    "Only the test set",
+    "Random noise"
+   ],
+   "answer": 0,
+   "explain": "It then gets added with a learning rate: F_m = F_(m−1) + η·tree."
+  },
+  {
+   "id": "q23",
+   "topic": "Boosting",
+   "type": "mcq",
+   "q": "Gradient boosting test AUC: 0.673 (1 tree), 0.738 (50), 0.728 (150). What should you use?",
+   "options": [
+    "Early stopping around the point where validation performance stops improving",
+    "As many trees as possible",
+    "Only 1 tree",
+    "A larger learning rate with 150 trees"
+   ],
+   "answer": 0,
+   "explain": "Too many boosting rounds start to fit noise."
+  },
+  {
+   "id": "q24",
+   "topic": "Metrics",
+   "type": "mcq",
+   "q": "At threshold 0.25: TP 71, FP 100, FN 31, TN 248. What is the precision?",
+   "options": [
+    "0.415",
+    "0.696",
+    "0.713",
+    "0.709"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Precision = TP/(TP + FP) = 71/171 = 0.415."
+  },
+  {
+   "id": "q25",
+   "topic": "Metrics",
+   "type": "mcq",
+   "q": "With the same matrix (TP 71, FP 100, FN 31, TN 248), what is the recall?",
+   "options": [
+    "0.696",
+    "0.415",
+    "0.713",
+    "0.520"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "Recall = TP/(TP + FN) = 71/102 = 0.696."
+  },
+  {
+   "id": "q26",
+   "topic": "Metrics",
+   "type": "mcq",
+   "q": "Precision 0.415 and recall 0.696. The F1-score is about:",
+   "options": [
+    "0.520",
+    "0.556",
+    "0.289",
+    "1.111"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "F1 = 2 × 0.415 × 0.696 / (0.415 + 0.696) = 0.578 / 1.111 = 0.520."
+  },
+  {
+   "id": "q27",
+   "topic": "Metrics",
+   "type": "mcq",
+   "q": "For a cancer-screening test, which metric matters most?",
+   "options": [
+    "Recall (catch as many real cases as possible)",
+    "Precision",
+    "Accuracy",
+    "Specificity only"
+   ],
+   "answer": 0,
+   "explain": "Missing a real case is very costly; false alarms can be checked with a follow-up test."
+  },
+  {
+   "id": "q28",
+   "topic": "Metrics",
+   "type": "mcq",
+   "q": "Only 22.7% of customers churn. Why is accuracy a poor main metric here?",
+   "options": [
+    "A model that always predicts “stay” already scores 77.3% while catching no churners",
+    "Accuracy cannot be computed for two classes",
+    "Accuracy is always below 50%",
+    "Accuracy ignores true negatives"
+   ],
+   "answer": 0,
+   "explain": "Imbalanced classes make accuracy reward the majority class."
+  },
+  {
+   "id": "q29",
+   "topic": "ROC & thresholds",
+   "type": "mcq",
+   "q": "Missing a churner costs ₹2,800 and a false alarm ₹300. At threshold 0.5 there are 89 FN and 11 FP. Total cost?",
+   "options": [
+    "₹2,52,500",
+    "₹2,49,200",
+    "₹30,000",
+    "₹1,16,800"
+   ],
+   "answer": 0,
+   "fixed": true,
+   "explain": "2,800 × 89 + 300 × 11 = 2,49,200 + 3,300 = ₹2,52,500."
+  },
+  {
+   "id": "q30",
+   "topic": "ROC & thresholds",
+   "type": "mcq",
+   "q": "If false alarms become much more expensive (₹2,000 each instead of ₹300), the cost-minimising threshold should:",
+   "options": [
+    "Rise, so fewer customers are flagged",
+    "Fall, so more customers are flagged",
+    "Stay at 0.5",
+    "Become 0"
+   ],
+   "answer": 0,
+   "explain": "In the lab the best threshold moves from 0.10 to 0.38."
+  },
+  {
+   "id": "q31",
+   "topic": "ROC & thresholds",
+   "type": "mcq",
+   "q": "An ROC curve plots:",
+   "options": [
+    "True positive rate against false positive rate for every threshold",
+    "Precision against threshold only",
+    "Accuracy against the number of trees",
+    "Training against test score"
+   ],
+   "answer": 0,
+   "explain": "TPR (recall) on the y-axis, FPR = 1 − specificity on the x-axis."
+  },
+  {
+   "id": "q32",
+   "topic": "ROC & thresholds",
+   "type": "mcq",
+   "q": "AUC = 0.747 means:",
+   "options": [
+    "A randomly chosen churner gets a higher score than a randomly chosen stayer 74.7% of the time",
+    "The model is 74.7% accurate",
+    "74.7% of customers churn",
+    "The best threshold is 0.747"
+   ],
+   "answer": 0,
+   "explain": "AUC measures ranking quality across all thresholds; 0.5 is random, 1.0 is perfect."
+  }
+ ]
+}

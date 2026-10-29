@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 Quiz</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  .qwrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+  .start { max-width: 620px; margin: 30px auto; }
+  .start ul { padding-left: 20px; color: var(--ink-2); }
+  .field { margin: 12px 0; }
+  .field label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .quiz { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 22px; align-items: start; }
+  @media (max-width: 860px) { .quiz { grid-template-columns: 1fr; } .side { order: -1; } }
+  .timer { position: sticky; top: 64px; z-index: 5; }
+  .tbar { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; margin-top: 8px; }
+  .tbar div { height: 100%; background: var(--brand); transition: width 1s linear; }
+  .clock { font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .clock.low { color: var(--bad); }
+  .palette { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-top: 14px; }
+  .palette button { aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 600 13px var(--font); cursor: pointer; }
+  .palette button.done { background: var(--good-soft); border-color: var(--good); color: var(--good); }
+  .palette button.flag { box-shadow: inset 0 -4px 0 var(--accent); }
+  .palette button.cur { outline: 3px solid var(--brand); outline-offset: 1px; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--ink-3); margin-top: 10px; }
+  .qhead { display: flex; justify-content: space-between; gap: 10px; align-items: center; font-size: 14px; color: var(--ink-3); margin-bottom: 8px; flex-wrap: wrap; }
+  .qtext { font-size: 21px; font-weight: 600; line-height: 1.45; margin-bottom: 14px; }
+  .opt { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 1.5px solid var(--line); border-radius: 12px; margin: 10px 0; cursor: pointer; background: var(--surface); font-size: 17px; }
+  .opt:hover { border-color: var(--brand); }
+  .opt.sel { border-color: var(--brand); background: var(--brand-soft); }
+  .opt input { margin-top: 4px; width: 18px; height: 18px; flex: none; }
+  .ord { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 12px; margin: 8px 0; background: var(--surface); font-size: 17px; }
+  .ord .pos { width: 30px; height: 30px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; flex: none; }
+  .ord span.t { flex: 1; }
+  .ord button { border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 8px; width: 38px; height: 34px; cursor: pointer; font-size: 16px; }
+  .nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .modal { position: fixed; inset: 0; background: rgba(10, 14, 22, .55); display: none; place-items: center; z-index: 100; padding: 16px; }
+  .modal.on { display: grid; }
+  .modal .card { max-width: 440px; width: 100%; }
+  .score { display: grid; grid-template-columns: 180px 1fr; gap: 26px; align-items: center; }
+  @media (max-width: 640px) { .score { grid-template-columns: 1fr; justify-items: center; text-align: center; } }
+  .ring { width: 170px; height: 170px; }
+  .rv { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 12px 0; background: var(--surface); }
+  .rv.ok { border-left: 5px solid var(--good); } .rv.part { border-left: 5px solid var(--accent); } .rv.no { border-left: 5px solid var(--bad); }
+  .rv .ans { font-size: 15px; margin: 4px 0; }
+  .rv .why { font-size: 14.5px; color: var(--ink-2); background: var(--surface-2); border-radius: 8px; padding: 8px 12px; margin-top: 8px; }
+  .topic-row { display: grid; grid-template-columns: 170px 1fr 60px; gap: 10px; align-items: center; font-size: 14px; margin: 6px 0; }
+  .topic-row .b { height: 10px; background: var(--surface-2); border-radius: 5px; overflow: hidden; }
+  .topic-row .b div { height: 100%; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Data Science</a> › <a href="./">Unit 1</a> › <b>Quiz</b></div>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+</div></header>
+
+<div class="qwrap" id="app"><p class="muted">Loading quiz…</p></div>
+
+<div class="modal" id="confirm"><div class="card">
+  <h3>Submit your quiz?</h3>
+  <p id="confirmText"></p>
+  <div style="display:flex;gap:10px;justify-content:flex-end">
+    <button class="btn ghost" onclick="closeConfirm()">Keep working</button>
+    <button class="btn" onclick="submitQuiz(false)">Submit</button>
+  </div>
+</div></div>
+
+<script>
+var UNIT = 'bca5-data-science/unit-1';
+var KEY = 'quiz:' + UNIT;
+var app = document.getElementById('app');
+var S = null, timerId = null;   // session: {name, roll, quiz, answers, flags, touched, start, cur, result}
+
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+function load() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+/* ---------------- start screen ---------------- */
+function startScreen(info) {
+  app.innerHTML =
+    '<div class="start card">' +
+      '<span class="eyebrow">Unit 1 · Assessment</span>' +
+      '<h2>' + esc(info.title) + '</h2>' +
+      '<ul>' + info.instructions.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>' +
+      '<div class="field"><label for="nm">Your full name</label><input type="text" id="nm" autocomplete="name" placeholder="e.g. Simran Kaur"></div>' +
+      '<div class="field"><label for="rl">Roll number</label><input type="text" id="rl" placeholder="e.g. BCA5-27"></div>' +
+      '<p class="muted" style="font-size:14px">🔒 Once you start, the study guide and other pages stay closed on this device until you submit. Leaving this page is recorded for your teacher.</p>' +
+      '<p id="err" style="color:var(--bad);min-height:1.4em;margin:6px 0"></p>' +
+      '<button class="btn" style="width:100%;justify-content:center;font-size:17px" onclick="begin()">Start quiz · ' + info.minutes + ' minutes</button>' +
+    '</div>';
+  window._info = info;
+}
+
+function begin() {
+  var name = document.getElementById('nm').value.trim(), roll = document.getElementById('rl').value.trim();
+  if (name.length < 2) { document.getElementById('err').textContent = 'Please enter your name.'; return; }
+  S = { name: name, roll: roll, quiz: window._info, answers: {}, flags: {}, start: Date.now(), cur: 0, result: null };
+  S.quiz.questions.forEach(function (q) { if (q.type === 'order') S.answers[q.id] = q.options.map(function (o) { return o.i; }); });
+  S.touched = {}; S.away = 0; S.awaySec = 0;
+  document.getElementById('err').textContent = 'Starting…';
+  lockDevice(function (ok) {
+    if (!ok) { S = null; document.getElementById('err').textContent = 'Could not reach the classroom server. Try again.'; return; }
+    save(); runQuiz();
+  });
+}
+
+// tell the server this device is in a quiz: it then serves only this page until submit
+function lockDevice(done) {
+  fetch('/api/unitquiz/start', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ unit: UNIT, seconds_left: remaining() })
+  }).then(function (r) { return r.json(); }).then(function (res) { if (done) done(res.ok); })
+    .catch(function () { if (done) done(false); });
+}
+
+/* ---------------- leaving the page (other tab / window / app) ---------------- */
+var outside = false, leftAt = 0;
+function inQuiz() { return S && S.quiz && !S.result && !submitting; }
+function leave() { if (!inQuiz() || outside) return; outside = true; leftAt = Date.now(); S.away = (S.away || 0) + 1; save(); }
+function back() {
+  if (!outside) return;
+  outside = false;
+  if (!inQuiz()) return;
+  S.awaySec = (S.awaySec || 0) + Math.round((Date.now() - leftAt) / 1000); save(); warnAway();
+}
+function warnAway() {
+  var w = document.getElementById('awayWarn');
+  if (w && S.away) { w.style.display = 'block'; w.textContent = '⚠️ You left the quiz page ' + S.away + ' time' + (S.away > 1 ? 's' : '') + '. Your teacher will see this.'; }
+}
+document.addEventListener('visibilitychange', function () { if (document.hidden) leave(); else back(); });
+window.addEventListener('blur', leave);
+window.addEventListener('focus', back);
+
+/* ---------------- quiz ---------------- */
+function answered(q) {
+  var a = S.answers[q.id];
+  if (q.type === 'order') return !!S.touched[q.id];
+  if (q.type === 'multi') return Array.isArray(a) && a.length > 0;
+  return a !== undefined && a !== null;
+}
+function remaining() { return Math.max(0, S.quiz.minutes * 60 - Math.floor((Date.now() - S.start) / 1000)); }
+function fmtTime(s) { return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
+
+function runQuiz() {
+  app.innerHTML =
+    '<div class="quiz">' +
+      '<div><div class="card" id="qcard"></div></div>' +
+      '<aside class="side"><div class="card timer">' +
+        '<div class="muted" style="font-size:13px;font-weight:600">' + esc(S.name) + (S.roll ? ' · ' + esc(S.roll) : '') + '</div>' +
+        '<div id="awayWarn" style="display:none;color:var(--bad);font-size:13px;font-weight:600;margin-top:8px"></div>' +
+        '<div class="clock" id="clock"></div><div class="tbar"><div id="tfill"></div></div>' +
+        '<div class="palette" id="pal"></div>' +
+        '<div class="legend"><span>🟩 answered</span><span>🟧 marked</span></div>' +
+        '<button class="btn accent" style="width:100%;justify-content:center;margin-top:14px" onclick="openConfirm()">Submit quiz</button>' +
+      '</div></aside>' +
+    '</div>';
+  renderQ(); tick(); warnAway();
+  clearInterval(timerId); timerId = setInterval(tick, 1000);
+}
+
+function tick() {
+  var r = remaining(), total = S.quiz.minutes * 60;
+  var c = document.getElementById('clock'); if (!c) return;
+  c.textContent = fmtTime(r); c.classList.toggle('low', r <= 120);
+  document.getElementById('tfill').style.width = (100 * r / total) + '%';
+  document.getElementById('tfill').style.background = r <= 120 ? 'var(--bad)' : 'var(--brand)';
+  if (r <= 0) { clearInterval(timerId); submitQuiz(true); }
+}
+
+function renderPalette() {
+  document.getElementById('pal').innerHTML = S.quiz.questions.map(function (q, i) {
+    return '<button class="' + (answered(q) ? 'done ' : '') + (S.flags[q.id] ? 'flag ' : '') + (i === S.cur ? 'cur' : '') + '" onclick="goQ(' + i + ')">' + (i + 1) + '</button>';
+  }).join('');
+}
+
+function renderQ() {
+  var q = S.quiz.questions[S.cur], n = S.quiz.questions.length, h = '';
+  h += '<div class="qhead"><span>Question ' + (S.cur + 1) + ' of ' + n + ' · <span class="pill">' + esc(q.topic) + '</span></span><span>' + q.marks + ' mark' + (q.marks > 1 ? 's' : '') +
+       (q.type === 'multi' ? ' · select all that apply' : q.type === 'order' ? ' · use ▲ ▼ to arrange' : '') + '</span></div>';
+  h += '<div class="qtext">' + esc(q.q) + '</div>';
+  if (q.code) h += '<pre class="code" style="font-size:15px">' + esc(q.code) + '</pre>';
+
+  if (q.type === 'order') {
+    var cur = S.answers[q.id];
+    cur.forEach(function (oi, pos) {
+      var t = q.options.filter(function (o) { return o.i === oi; })[0].t;
+      h += '<div class="ord"><span class="pos">' + (pos + 1) + '</span><span class="t">' + esc(t) + '</span>' +
+           '<button ' + (pos === 0 ? 'disabled' : '') + ' onclick="moveOpt(' + pos + ',-1)" aria-label="Move up">▲</button>' +
+           '<button ' + (pos === cur.length - 1 ? 'disabled' : '') + ' onclick="moveOpt(' + pos + ',1)" aria-label="Move down">▼</button></div>';
+    });
+  } else {
+    var multi = q.type === 'multi', a = S.answers[q.id];
+    q.options.forEach(function (o) {
+      var sel = multi ? (a || []).indexOf(o.i) >= 0 : a === o.i;
+      h += '<label class="opt' + (sel ? ' sel' : '') + '"><input type="' + (multi ? 'checkbox' : 'radio') + '" name="o" ' + (sel ? 'checked' : '') +
+           ' onchange="pick(' + o.i + ', this.checked)"><span>' + esc(o.t) + '</span></label>';
+    });
+  }
+  h += '<div class="nav">' +
+       '<button class="btn ghost" ' + (S.cur === 0 ? 'disabled' : '') + ' onclick="goQ(' + (S.cur - 1) + ')">← Previous</button>' +
+       '<button class="btn ghost" onclick="toggleFlag()">' + (S.flags[q.id] ? '🟧 Unmark' : '🏳️ Mark for review') + '</button>' +
+       (S.cur < n - 1 ? '<button class="btn" onclick="goQ(' + (S.cur + 1) + ')">Next →</button>' : '<button class="btn accent" onclick="openConfirm()">Finish →</button>') +
+       '</div>';
+  document.getElementById('qcard').innerHTML = h;
+  renderPalette();
+}
+
+function goQ(i) { S.cur = Math.max(0, Math.min(S.quiz.questions.length - 1, i)); save(); renderQ(); scrollTo({ top: 0, behavior: 'smooth' }); }
+function toggleFlag() { var q = S.quiz.questions[S.cur]; S.flags[q.id] = !S.flags[q.id]; save(); renderQ(); }
+function pick(i, checked) {
+  var q = S.quiz.questions[S.cur];
+  if (q.type === 'multi') {
+    var a = (S.answers[q.id] || []).filter(function (x) { return x !== i; });
+    if (checked) a.push(i);
+    S.answers[q.id] = a;
+  } else S.answers[q.id] = i;
+  save(); renderQ();
+}
+function moveOpt(pos, d) {
+  var q = S.quiz.questions[S.cur], a = S.answers[q.id], t = a[pos];
+  a[pos] = a[pos + d]; a[pos + d] = t; S.touched[q.id] = true; save(); renderQ();
+}
+
+function openConfirm() {
+  var left = S.quiz.questions.filter(function (q) { return !answered(q); }).length;
+  var flagged = Object.keys(S.flags).filter(function (k) { return S.flags[k]; }).length;
+  var msg = left ? '<b style="color:var(--bad)">' + left + ' question' + (left > 1 ? 's are' : ' is') + ' unanswered.</b> ' : 'All questions answered. ';
+  if (flagged) msg += flagged + ' marked for review. ';
+  document.getElementById('confirmText').innerHTML = msg + 'You cannot change answers after submitting.';
+  document.getElementById('confirm').classList.add('on');
+}
+function closeConfirm() { document.getElementById('confirm').classList.remove('on'); }
+
+// an ordering question left in its random starting order counts as unanswered
+function submittedAnswers() {
+  var out = {};
+  S.quiz.questions.forEach(function (q) { if (answered(q)) out[q.id] = S.answers[q.id]; });
+  return out;
+}
+
+var submitting = false;
+function submitQuiz(auto) {
+  if (submitting || S.result) return;
+  submitting = true; closeConfirm(); clearInterval(timerId);
+  app.innerHTML = '<div class="card start"><h3>' + (auto ? '⏰ Time is up! ' : '') + 'Submitting…</h3></div>';
+  fetch('/api/unitquiz/submit', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ unit: UNIT, name: S.name, roll: S.roll, answers: submittedAnswers(), left_page: S.away || 0, away_seconds: S.awaySec || 0, seconds: Math.min(S.quiz.minutes * 60, Math.floor((Date.now() - S.start) / 1000)) })
+  }).then(function (r) { return r.json(); }).then(function (res) {
+    submitting = false;
+    if (!res.ok) throw new Error(res.error || 'failed');
+    S.result = res; save(); showResult();
+  }).catch(function () {
+    submitting = false;
+    app.innerHTML = '<div class="card start"><h3>Could not reach the classroom server</h3><p>Your answers are saved on this computer. Check the network, then try again.</p><button class="btn" onclick="submitQuiz(true)">Try again</button></div>';
+  });
+}
+
+/* ---------------- result ---------------- */
+function showResult() {
+  var R = S.result, pct = Math.round(100 * R.score / R.total), byId = {};
+  R.review.forEach(function (r) { byId[r.id] = r; });
+  var grade = pct >= 85 ? ['Outstanding! 🏆', 'var(--good)'] : pct >= 70 ? ['Very good 👏', 'var(--good)'] : pct >= 50 ? ['Good effort, revise the red ones 📘', 'var(--accent)'] : ['Revise the study guide and try the lab again 💪', 'var(--bad)'];
+  var C = 2 * Math.PI * 70;
+
+  var topics = {};
+  S.quiz.questions.forEach(function (q) { var r = byId[q.id], t = topics[q.topic] || (topics[q.topic] = { e: 0, m: 0 }); t.e += r.earned; t.m += r.marks; });
+
+  var h = '<div class="card"><div class="score">' +
+    '<svg class="ring" viewBox="0 0 170 170"><circle cx="85" cy="85" r="70" style="fill:none;stroke:var(--surface-2);stroke-width:14"/>' +
+    '<circle cx="85" cy="85" r="70" transform="rotate(-90 85 85)" style="fill:none;stroke:' + grade[1] + ';stroke-width:14;stroke-linecap:round;stroke-dasharray:' + (C * pct / 100) + ' ' + C + '"/>' +
+    '<text x="85" y="86" text-anchor="middle" style="font-size:34px;font-weight:800;fill:var(--ink)">' + pct + '%</text>' +
+    '<text x="85" y="110" text-anchor="middle" style="font-size:14px;fill:var(--ink-3)">' + R.score + ' / ' + R.total + '</text></svg>' +
+    '<div><h2 style="color:' + grade[1] + '">' + grade[0] + '</h2><p class="muted">' + esc(S.name) + (S.roll ? ' · ' + esc(S.roll) : '') + ' · your result has been sent to the teacher.</p>' +
+    Object.keys(topics).map(function (k) {
+      var t = topics[k], p = Math.round(100 * t.e / t.m), col = p >= 70 ? 'var(--good)' : p >= 50 ? 'var(--accent)' : 'var(--bad)';
+      return '<div class="topic-row"><span>' + esc(k) + '</span><div class="b"><div style="width:' + p + '%;background:' + col + '"></div></div><b style="text-align:right">' + p + '%</b></div>';
+    }).join('') + '</div></div></div>';
+
+  h += '<h2 style="margin-top:30px">Review your answers</h2>';
+  S.quiz.questions.forEach(function (q, i) {
+    var r = byId[q.id], cls = r.earned >= r.marks ? 'ok' : r.earned > 0 ? 'part' : 'no';
+    var txt = function (idx) { var o = q.options.filter(function (o) { return o.i === idx; })[0]; return o ? o.t : '—'; };
+    var yours, right;
+    if (q.type === 'order') {
+      yours = S.touched[q.id] ? (S.answers[q.id] || []).map(txt).join(' → ') : '(not arranged)';
+      right = r.answer.map(txt).join(' → ');
+    } else if (q.type === 'multi') {
+      yours = (S.answers[q.id] || []).length ? S.answers[q.id].map(txt).join(' · ') : '(no answer)';
+      right = r.answer.map(txt).join(' · ');
+    } else {
+      yours = S.answers[q.id] === undefined ? '(no answer)' : txt(S.answers[q.id]);
+      right = txt(r.answer);
+    }
+    h += '<div class="rv ' + cls + '"><div class="qhead" style="margin:0"><span>Q' + (i + 1) + ' · ' + esc(q.topic) + '</span><b>' + r.earned + ' / ' + r.marks + '</b></div>' +
+      '<div style="font-weight:600;margin:4px 0 6px">' + esc(q.q) + '</div>' + (q.code ? '<pre class="code" style="font-size:13.5px;margin:6px 0">' + esc(q.code) + '</pre>' : '') +
+      '<div class="ans">Your answer: <b style="color:' + (cls === 'ok' ? 'var(--good)' : cls === 'part' ? 'var(--accent)' : 'var(--bad)') + '">' + esc(yours) + '</b></div>' +
+      (cls !== 'ok' ? '<div class="ans">Correct answer: <b style="color:var(--good)">' + esc(right) + '</b></div>' : '') +
+      '<div class="why">💡 ' + esc(r.explain) + '</div></div>';
+  });
+  h += '<p style="text-align:center;margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn ghost" href="study.html">Back to the study guide</a>' +
+       '<button class="btn ghost" onclick="newStudent()">New student on this computer</button></p>';
+  app.innerHTML = h;
+  scrollTo(0, 0);
+}
+
+function newStudent() { try { localStorage.removeItem(KEY); } catch (e) {} location.reload(); }
+
+/* ---------------- boot ---------------- */
+S = load();
+if (S && S.result) showResult();
+else if (S && S.quiz && remaining() > 0) { lockDevice(); runQuiz(); }
+else if (S && S.quiz && !S.result) submitQuiz(true);
+else {
+  fetch('/api/unitquiz?unit=' + encodeURIComponent(UNIT), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (info) {
+    if (!info.ok) throw new Error();
+    startScreen(info);
+  }).catch(function () { app.innerHTML = '<div class="card start"><h3>Quiz unavailable</h3><p>Open this page through the classroom server address given by your teacher.</p></div>'; });
+}
+</script>
+</body>
+</html>

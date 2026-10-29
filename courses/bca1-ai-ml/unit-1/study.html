@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 Study Guide</title>
+<meta name="description" content="Problems and instances, types of problems, analysis, specification, input validation, pre and post conditions, algorithms, efficiency, correctness and data structures, with hands-on algorithm experiments.">
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<script src="/courses/shared/diagrams.js"></script>
+<style>
+  .pace { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 18px 0 4px; }
+  .pace a { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; color: var(--ink); font-size: 14px; }
+  .pace a:hover { border-color: var(--brand); text-decoration: none; }
+  .pace b { display: block; font-size: 12px; color: var(--accent); }
+  .diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .step-head { display: flex; gap: 12px; align-items: center; margin: 28px 0 8px; }
+  .step-head .n { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--brand); color: #fff; font-size: 15px; }
+  .step-head h3 { margin: 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .phase { border-left: 4px solid var(--brand); background: var(--surface); border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 12px 0; border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .phase h4 { margin: 0 0 6px; font-size: 17px; }
+  .phase p, .phase ul { margin: 0 0 6px; font-size: 15.5px; }
+  .phase ul { padding-left: 20px; }
+  .algo { font-family: var(--mono); font-size: 14.5px; background: var(--surface-2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 12px 16px; line-height: 1.65; white-space: pre-wrap; margin: 12px 0; }
+  .lab-ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: end; }
+  .lab-ctrl label { font-size: 13px; font-weight: 600; color: var(--ink-3); display: block; margin-bottom: 4px; }
+  .race svg { width: 100%; height: auto; }
+  .task { display: grid; grid-template-columns: 28px 1fr; gap: 8px; margin: 10px 0; font-size: 15.5px; }
+  .task input { width: 18px; height: 18px; margin-top: 4px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  .ok { color: var(--good); font-weight: 700; } .bad { color: var(--bad); font-weight: 700; }
+  .guess-log { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .guess-log span { font-family: var(--mono); font-size: 13.5px; padding: 4px 8px; border-radius: 8px; background: var(--surface-2); }
+  .range-bar { position: relative; height: 26px; border-radius: 8px; background: var(--surface-2); margin-top: 12px; overflow: hidden; }
+  .range-bar div { position: absolute; top: 0; bottom: 0; background: var(--brand); opacity: .55; transition: left .3s, width .3s; }
+  .versions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .versions { grid-template-columns: 1fr; } }
+  .versions pre.code { font-size: 12.5px; margin: 8px 0 0; }
+  .versions .card { padding: 14px; }
+  .vout { font-family: var(--mono); font-size: 14px; padding: 8px 10px; border-radius: 8px; background: var(--surface-2); min-height: 38px; margin-top: 8px; }
+  .classes { display: flex; height: 40px; border-radius: 10px; overflow: hidden; margin: 10px 0 4px; font-size: 12.5px; font-weight: 700; }
+  .verdict { padding: 12px 14px; border-radius: 10px; }
+  .classes div { display: grid; place-items: center; color: #fff; white-space: nowrap; overflow: hidden; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Problem Solving with C</a> › <a href="./">Unit 1</a> › <b>Study guide</b></div>
+  <a class="icon-btn" href="quiz.html">Quiz →</a>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+  <div class="progress"></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 1 · Study guide · 35 minutes</span>
+    <h1>Problems, Algorithms and Problem Solving</h1>
+    <p class="lead">Good programmers spend more time <b>thinking</b> than typing. This guide follows one ordinary task, <b>“find the average marks of a class”</b>, from a vague request to a specified, validated, tested C program. Along the way you will race algorithms against each other and try to break three programs.</p>
+    <div class="pace">
+      <a href="#problems"><b>0–4 min</b>Problems and instances</a>
+      <a href="#types"><b>4–8 min</b>Types of problems</a>
+      <a href="#analysis"><b>8–12 min</b>Analysis and questions</a>
+      <a href="#steps"><b>12–16 min</b>Pólya’s four steps</a>
+      <a href="#spec"><b>16–20 min</b>Specification</a>
+      <a href="#algo"><b>20–27 min</b>Algorithms, efficiency</a>
+      <a href="#lab"><b>27–35 min</b>Hands-on lab</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc">
+      <div class="t">On this page</div>
+      <a href="#problems">1. Problems and instances</a>
+      <a href="#types">2. Types and classes</a>
+      <a href="#analysis">3. Analysing a problem</a>
+      <a href="#steps">4. Problem-solving steps</a>
+      <a href="#spec">5. Specification</a>
+      <a href="#algo">6. Algorithms and approaches</a>
+      <a href="#efficiency">7. Analysis and efficiency</a>
+      <a href="#correct">8. Correctness and testing</a>
+      <a href="#ds">9. Data structures</a>
+      <a href="#lab">10. Hands-on lab</a>
+      <a href="#summary">11. Summary and revision</a>
+    </nav>
+
+    <main>
+<!-- ================================================================ 1 -->
+<section class="block" id="problems">
+  <div class="sec-no">Section 1</div>
+  <h2>Problems and problem instances</h2>
+
+  <div class="definition">
+    A <b>computational problem</b> describes a set of possible <b>inputs</b> and the <b>output</b> each input must produce. A <b>problem instance</b> is that problem with one particular input filled in.
+    <small>Think of the problem as a blank form and an instance as one filled-in copy.</small>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Problem (general)</th><th>Instance (specific input)</th><th>Solution of the instance</th></tr>
+    <tr><td>Given n marks, find the largest</td><td>72, 85, 64</td><td>85</td></tr>
+    <tr><td>Given a whole number n ≥ 2, is it prime?</td><td>n = 91</td><td>No (91 = 7 × 13)</td></tr>
+    <tr><td>Convert a temperature from °C to °F</td><td>37 °C</td><td>98.6 °F</td></tr>
+    <tr><td>Sort a list of names alphabetically</td><td>Ravi, Anu, Meera</td><td>Anu, Meera, Ravi</td></tr>
+  </table></div>
+
+  <p>A problem has <b>infinitely many</b> instances. When you write a program you are solving the <b>problem</b>, so the program must give the right answer for every valid instance, including the strange ones you did not think of while typing.</p>
+
+  <h3>Generalization: solve the family, not one member</h3>
+  <p>Young Carl Friedrich Gauss was asked to add 1 to 100. Instead of adding one by one, he paired the numbers:</p>
+  <div class="callout warn"><b>Do the maths</b>
+    <code>(1 + 100) + (2 + 99) + … + (50 + 51)</code> = 50 pairs, each worth 101 = <b>5050</b>.<br>
+    Now <b>generalize</b>: for 1 to n there are n/2 pairs, each worth (n + 1), so <code>1 + 2 + … + n = n(n + 1) / 2</code>.<br>
+    One level higher, an arithmetic progression a, a + d, a + 2d, … with n terms has <code>S = n/2 × [2a + (n − 1)d]</code>. With a = 1, d = 1 you get Gauss’s formula back: a <b>special case</b> of the general one.
+  </div>
+  <p><b>Generalizing</b> makes one solution reusable for many inputs. But the general solution must also survive the <b>special cases</b>, the inputs at the edges:</p>
+  <div class="grid g3">
+    <div class="card"><b>Smallest input</b><p class="muted" style="margin:6px 0 0;font-size:15px">n = 1 → 1 × 2 / 2 = 1 ✔. A list with one mark: that mark is the largest.</p></div>
+    <div class="card"><b>Empty input</b><p class="muted" style="margin:6px 0 0;font-size:15px">n = 0 → 0. But the <i>average</i> of zero marks is 0 / 0: undefined! Must be handled.</p></div>
+    <div class="card"><b>Ties and repeats</b><p class="muted" style="margin:6px 0 0;font-size:15px">Marks 90, 90, 12: two toppers. Does the spec say what to print?</p></div>
+  </div>
+
+  <div class="activity" id="instGame">
+    <span class="tag">Try it · 1 min</span>
+    <h3 style="margin:0 0 6px">Problem or instance?</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 2 -->
+<section class="block" id="types">
+  <div class="sec-no">Section 2</div>
+  <h2>Types and classification of problems</h2>
+  <p>The <b>kind of answer</b> a problem asks for tells you a lot about how to solve it. Look how one class list gives five different problems:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Type</th><th>The answer is…</th><th>Example on a class marks list</th><th>Typical method</th></tr>
+    <tr><td><b>Decision</b></td><td>yes or no</td><td>Did anyone score above 90?</td><td>check until found</td></tr>
+    <tr><td><b>Search</b></td><td>an item, or where it is</td><td>Which student has roll number 47?</td><td>linear or binary search</td></tr>
+    <tr><td><b>Counting</b></td><td>how many</td><td>How many students failed?</td><td>loop with a counter</td></tr>
+    <tr><td><b>Optimization</b></td><td>the best of many valid answers</td><td>Who is the topper? Shortest bus route to drop all students?</td><td>compare candidates, keep the best</td></tr>
+    <tr><td><b>Computation (function)</b></td><td>a calculated or transformed value</td><td>Average marks; the list sorted by marks</td><td>formula, step-by-step calculation</td></tr>
+  </table></div>
+
+  <h3>Classifying problems by difficulty</h3>
+  <div class="grid g3">
+    <div class="card"><b>Well-defined vs ill-defined</b><p class="muted" style="margin:6px 0 0;font-size:15px">“Sort these 60 marks” has clear input, output and rules. “Make the canteen better” does not. An ill-defined problem must be turned into a well-defined one (by asking questions) before a computer can help.</p></div>
+    <div class="card"><b>Solvable vs unsolvable</b><p class="muted" style="margin:6px 0 0;font-size:15px">Some problems have <i>no</i> algorithm at all. Alan Turing proved (1936) that no program can look at <i>every</i> possible program and decide whether it will eventually stop. This is the <b>halting problem</b>.</p></div>
+    <div class="card"><b>Tractable vs intractable</b><p class="muted" style="margin:6px 0 0;font-size:15px">Tractable problems are solved fast even for big inputs. Intractable ones have known solutions whose running time explodes as the input grows, so we settle for good approximate answers.</p></div>
+  </div>
+
+  <div class="callout warn"><b>Do the maths: when “just try everything” explodes</b>
+    A bus must visit n colleges and come back, using the shortest route. Trying every route means checking <code>(n − 1)! / 2</code> routes.<br>
+    5 colleges: 4! / 2 = <b>12</b> routes · 10 colleges: 9! / 2 = <b>1,81,440</b> · 20 colleges: 19! / 2 ≈ <b>6 × 10<sup>16</sup></b>.<br>
+    At a billion routes per second, 20 colleges take about <b>2 years</b>. Adding one more college multiplies the work by about 20.
+  </div>
+
+  <div class="activity" id="typeGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">What type of problem is it?</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 3 -->
+<section class="block" id="analysis">
+  <div class="sec-no">Section 3</div>
+  <h2>Analysing a problem: ask before you code</h2>
+  <p>Requests from real people are almost never precise. Your job (course outcome <b>CO2</b>) is to turn a request into a <b>specification</b> by asking questions that remove every doubt. Here is our running example:</p>
+  <div class="callout story"><b>📋 The request</b>“Write a program to find the average marks of the class.” — your class teacher</div>
+
+  <p>Analyse it under five headings:</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Heading</th><th>Question to ask yourself</th><th>For the average-marks problem</th></tr>
+    <tr><td><b>Given</b></td><td>What are the inputs?</td><td>The number of students n, then n marks</td></tr>
+    <tr><td><b>Find</b></td><td>What exactly is the output?</td><td>The average, shown with 2 decimal places</td></tr>
+    <tr><td><b>Constraints</b></td><td>What values are allowed?</td><td>1 ≤ n ≤ 200; each mark is a whole number 0 to 100</td></tr>
+    <tr><td><b>Size</b></td><td>How big can the input get?</td><td>At most 200 marks: any method is fast enough</td></tr>
+    <tr><td><b>Special cases</b></td><td>Which inputs are unusual?</td><td>n = 0, n = 1, a mark of 105, a mark typed as “abc”</td></tr>
+  </table></div>
+
+  <div class="activity" id="askGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">Which questions are worth asking the teacher?</h3>
+    <p class="muted" style="font-size:15px">A good question is one whose answer <b>changes the program</b>.</p>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 4 -->
+<section class="block" id="steps">
+  <div class="sec-no">Section 4</div>
+  <h2>Problem-solving steps: Understand, Plan, Execute, Review</h2>
+  <p>The mathematician George Pólya described four steps in his book <i>How to Solve It</i> (1945). They work for maths homework, for programs and for most of life.</p>
+
+  <div class="two" style="grid-template-columns:1fr 1.2fr">
+    <figure class="diagram">
+      <svg id="polyaSvg" viewBox="0 0 520 420" role="img" aria-label="Pólya's four-step cycle: understand, plan, execute, review"></svg>
+      <figcaption>A cycle: reviewing often sends you back to understand the problem better.</figcaption>
+    </figure>
+    <div>
+      <div class="phase" style="border-left-color:var(--brand)"><h4>1 · Understand the problem</h4><p>What is given? What is asked? What are the conditions? Can you restate it in your own words? Solve one small instance by hand.</p></div>
+      <div class="phase" style="border-left-color:var(--teal)"><h4>2 · Plan (devise a solution)</h4><p>Have you seen a similar problem? Break it into subproblems. Write the algorithm in steps or pseudocode.</p></div>
+      <div class="phase" style="border-left-color:var(--accent)"><h4>3 · Execute (carry out the plan)</h4><p>Follow the plan step by step. Translate it to C, compile, run. Check each step as you go.</p></div>
+      <div class="phase" style="border-left-color:var(--good)"><h4>4 · Review (look back)</h4><p>Test with normal and special cases. Is the answer sensible? Is there a faster or simpler way? Can you reuse the method?</p></div>
+    </div>
+  </div>
+
+  <h3>Worked example: the four steps on “average marks”</h3>
+  <div class="step-head"><div class="n">1</div><h3>Understand</h3></div>
+  <p>Solve a tiny instance by hand: marks 72, 85, 64 → sum 221 → 221 ÷ 3 = <b>73.67</b>. Now you know what the program must print.</p>
+
+  <div class="step-head"><div class="n">2</div><h3>Plan: break into subproblems, then write the algorithm</h3></div>
+  <figure class="diagram">
+    <svg id="treeSvg" viewBox="0 0 800 250" role="img" aria-label="Average marks broken into read n, read and validate marks, add, divide, print"></svg>
+    <figcaption>Top-down decomposition: split until each box is easy to solve on its own.</figcaption>
+  </figure>
+<div class="algo">Algorithm ClassAverage
+Input : n, then n marks          Output: average to 2 decimal places
+Step 1: Read n. If n &lt; 1 or n &gt; 200, print an error and stop.
+Step 2: sum ← 0
+Step 3: Repeat for i ← 1 to n
+           Read m. While m is not a whole number from 0 to 100,
+           print "Invalid" and read m again.
+           sum ← sum + m
+Step 4: avg ← sum ÷ n
+Step 5: Print avg with 2 decimals
+Step 6: Stop</div>
+
+  <div class="step-head"><div class="n">3</div><h3>Execute: translate to C</h3></div>
+  <p>You will learn every line of this from Unit 2. For now, notice how each line matches a step of the algorithm.</p>
+<pre class="code">#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int n, m, sum = 0;
+
+    printf("How many students (1 to 200)? ");                 /* Step 1 */
+    if (scanf("%d", &amp;n) != 1 || n &lt; 1 || n &gt; 200) {
+        printf("Error: n must be a whole number from 1 to 200.\n");
+        return 1;
+    }
+    for (int i = 1; i &lt;= n; i++) {                             /* Step 3 */
+        printf("Marks of student %d: ", i);
+        while (scanf("%d", &amp;m) != 1 || m &lt; 0 || m &gt; 100) {   /* validate */
+            int c;
+            while ((c = getchar()) != '\n' &amp;&amp; c != EOF)
+                ;
+            printf("Invalid. Enter marks from 0 to 100: ");
+        }
+        sum = sum + m;
+    }
+    printf("\nAverage = %.2f\n", (float)sum / n);              /* Steps 4, 5 */
+    return 0;
+}</pre>
+<pre class="out">How many students (1 to 200)? 3
+Marks of student 1: 72
+Marks of student 2: 85
+Marks of student 3: 105
+Invalid. Enter marks from 0 to 100: 64
+
+Average = 73.67</pre>
+
+  <div class="step-head"><div class="n">4</div><h3>Review: test it and look back</h3></div>
+  <div class="two">
+    <div>
+      <div class="tbl-wrap" style="margin-top:0"><table>
+        <tr><th>Test input</th><th>Expected</th><th>Got</th></tr>
+        <tr><td>3 · 72 85 64</td><td>73.67</td><td class="ok">73.67 ✔</td></tr>
+        <tr><td>1 · 40</td><td>40.00</td><td class="ok">40.00 ✔</td></tr>
+        <tr><td>0</td><td>error</td><td class="ok">error ✔</td></tr>
+        <tr><td>3 · 72 85 <b>105</b> 64</td><td>reject 105</td><td class="ok">asks again ✔</td></tr>
+      </table></div>
+    </div>
+    <div class="callout warn" style="margin-top:0"><b>A bug the review catches</b>An earlier version printed <code>sum / n</code> without <code>(float)</code>. In C, an <code>int</code> divided by an <code>int</code> throws away the decimals: 221 / 3 gives <b>73</b>, not 73.67. The hand-solved instance from step 1 exposed it immediately. <b>Always compare the program with an answer you worked out by hand.</b></div>
+  </div>
+</section>
+
+<!-- ================================================================ 5 -->
+<section class="block" id="spec">
+  <div class="sec-no">Section 5</div>
+  <h2>Specification: inputs, outputs, validation, conditions</h2>
+
+  <h3>Input/output specification</h3>
+  <p>A specification lists every input and output with its <b>name</b>, <b>type</b>, <b>valid range</b> and <b>unit</b>. Anyone reading it, including a compiler-happy teammate, should be able to write the same program.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Name</th><th>Meaning</th><th>Type</th><th>Valid values</th></tr>
+    <tr><td><b>Input</b></td><td><code>n</code></td><td>number of students</td><td>integer</td><td>1 to 200</td></tr>
+    <tr><td><b>Input</b></td><td><code>m</code> (n times)</td><td>marks of one student, out of 100</td><td>integer</td><td>0 to 100</td></tr>
+    <tr><td><b>Output</b></td><td><code>avg</code></td><td>class average</td><td>real number, 2 decimals</td><td>0.00 to 100.00</td></tr>
+    <tr><td><b>Error</b></td><td>message</td><td>shown for invalid input</td><td>text</td><td>“Invalid. Enter marks from 0 to 100”</td></tr>
+  </table></div>
+
+  <h3>Input validation: never trust the input</h3>
+  <p>Users mistype, press Enter too early, and sometimes try strange values on purpose. <b>Garbage in, garbage out</b>: a program that accepts bad input will produce a wrong answer that looks right. Validation checks input <b>before</b> using it.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Check</th><th>Question it asks</th><th>Example of input it rejects</th></tr>
+    <tr><td><b>Type check</b></td><td>Is it the right kind of data?</td><td>Marks entered as <code>abc</code></td></tr>
+    <tr><td><b>Range check</b></td><td>Is the value inside the allowed limits?</td><td>Marks = 105 or −5</td></tr>
+    <tr><td><b>Presence check</b></td><td>Was anything entered at all?</td><td>An empty name field</td></tr>
+    <tr><td><b>Format check</b></td><td>Does it follow the required pattern?</td><td>Date typed as 2025/31/12 instead of DD-MM-YYYY</td></tr>
+    <tr><td><b>Length check</b></td><td>Is it the right number of characters?</td><td>A 9-digit mobile number</td></tr>
+    <tr><td><b>Consistency check</b></td><td>Does it agree with other inputs?</td><td>Date of leaving earlier than date of joining</td></tr>
+  </table></div>
+  <div class="callout tip"><b>Two ways to react to bad input</b> <b>Reject and stop</b> with a clear message (used for <code>n</code> above), or <b>ask again</b> in a loop until the input is valid (used for each mark). Choose the one that suits the user, and write the choice in the specification.</div>
+
+  <div class="activity" id="valGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">Which check catches it?</h3>
+    <div class="rg"></div>
+  </div>
+
+  <h3>Pre-conditions and post-conditions</h3>
+  <p>Specifications are often written as a <b>contract</b> between an algorithm and whoever uses it:</p>
+  <div class="two">
+    <div class="card" style="border-left:5px solid var(--accent)"><b>Pre-condition</b><p style="margin:6px 0 0;font-size:15.5px">What must be true <b>before</b> the algorithm runs. It is the caller’s promise. If it is broken, the algorithm promises nothing.</p></div>
+    <div class="card" style="border-left:5px solid var(--good)"><b>Post-condition</b><p style="margin:6px 0 0;font-size:15.5px">What will be true <b>after</b> the algorithm finishes, provided the pre-condition held. It is the algorithm’s promise.</p></div>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Algorithm</th><th>Pre-condition</th><th>Post-condition</th></tr>
+    <tr><td>ClassAverage</td><td>1 ≤ n ≤ 200 and every 0 ≤ m<sub>i</sub> ≤ 100</td><td>avg = (m<sub>1</sub> + … + m<sub>n</sub>) ÷ n, and 0 ≤ avg ≤ 100</td></tr>
+    <tr><td>Square root of x</td><td>x ≥ 0</td><td>result r ≥ 0 and r × r ≈ x</td></tr>
+    <tr><td>Binary search for key</td><td>the list is <b>sorted</b></td><td>returns i with a[i] = key, or “not found” if key is absent</td></tr>
+    <tr><td>Grade from marks</td><td>0 ≤ marks ≤ 100</td><td>exactly one of A, B, C, D, F</td></tr>
+  </table></div>
+  <div class="callout idea"><b>Validation and pre-conditions work together</b>Validation code at the start of a program is what <b>makes</b> the pre-condition true. After the checks pass, the rest of the code may safely assume it. In <code>grade_check.c</code> you will see the comment <code>/* pre-condition now holds: 0 &lt;= marks &lt;= 100 */</code> right after the checks.</div>
+</section>
+
+<!-- ================================================================ 6 -->
+<section class="block" id="algo">
+  <div class="sec-no">Section 6</div>
+  <h2>Algorithms and solution approaches</h2>
+  <div class="definition">An <b>algorithm</b> is a finite sequence of precise, unambiguous steps that solves every instance of a problem. The word comes from the 9th-century mathematician <b>al-Khwarizmi</b>.</div>
+
+  <h3>Five properties of an algorithm (Knuth)</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Property</th><th>Meaning</th><th>Breaks it</th></tr>
+    <tr><td><b>Finiteness</b></td><td>Stops after a finite number of steps</td><td>“Keep adding 1 to x” with no stopping rule</td></tr>
+    <tr><td><b>Definiteness</b></td><td>Every step is exact and unambiguous</td><td>“Add salt to taste”, “pick a big number”</td></tr>
+    <tr><td><b>Input</b></td><td>Zero or more well-defined inputs</td><td>—</td></tr>
+    <tr><td><b>Output</b></td><td>At least one output related to the input</td><td>Steps that compute but never report anything</td></tr>
+    <tr><td><b>Effectiveness</b></td><td>Each step is basic enough to do with pen and paper</td><td>“Find the largest prime number”</td></tr>
+  </table></div>
+
+  <h3>Algorithm development: stepwise refinement</h3>
+  <p>Start with one rough sentence, then refine each line into more detailed steps until every step is something a computer can do directly. Standard format: a name, input, output, then numbered steps ending in <i>Stop</i>.</p>
+  <div class="two">
+<div class="algo" style="margin:0">Algorithm FindMax          (rough)
+1. Look at all the marks
+2. Remember the biggest
+3. Print it</div>
+<div class="algo" style="margin:0">Algorithm FindMax          (refined)
+Input: n ≥ 1, marks m[1..n]  Output: max
+Step 1: max ← m[1]
+Step 2: For i ← 2 to n
+          If m[i] &gt; max then max ← m[i]
+Step 3: Print max
+Step 4: Stop</div>
+  </div>
+
+  <h3>Solution approaches</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Approach</th><th>Idea</th><th>Example</th><th>Watch out</th></tr>
+    <tr><td><b>Brute force</b></td><td>Try every possibility</td><td>Check every number 2 … n − 1 as a divisor</td><td>Can be very slow</td></tr>
+    <tr><td><b>Divide and conquer</b></td><td>Split into smaller parts, solve, combine</td><td>Binary search halves the list each step</td><td>Parts must be independent</td></tr>
+    <tr><td><b>Greedy</b></td><td>Take the best-looking choice at each step</td><td>Giving change with the largest note first</td><td>Not always the best overall</td></tr>
+    <tr><td><b>Incremental</b></td><td>Build the answer one item at a time</td><td>Running sum; FindMax above</td><td>Needs a correct starting value</td></tr>
+    <tr><td><b>Reduction</b></td><td>Turn it into a problem you already solved</td><td>Median: sort first, then take the middle</td><td>The known solution must fit</td></tr>
+  </table></div>
+  <div class="callout warn"><b>Do the maths: greedy change</b>
+    Pay ₹289 using notes/coins of 200, 50, 20, 10, 5, 2, 1, always taking the largest that fits:<br>
+    <code>200 → 89 left · 50 → 39 · 20 → 19 · 10 → 9 · 5 → 4 · 2 → 2 · 2 → 0</code>, so <b>7 pieces</b>, which is the minimum here.<br>
+    But with coins {1, 3, 4} and amount 6, greedy picks 4 + 1 + 1 (3 coins) while 3 + 3 needs only 2. Greedy is fast but not always optimal.
+  </div>
+
+  <div class="activity" id="appGame">
+    <span class="tag">Try it · 1 min</span>
+    <h3 style="margin:0 0 6px">Name the approach</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 7 -->
+<section class="block" id="efficiency">
+  <div class="sec-no">Section 7</div>
+  <h2>Analysis of algorithms and efficiency</h2>
+  <p>Two correct algorithms can differ enormously in speed. We compare them by <b>counting basic steps</b> (additions, comparisons) as a function of the input size <b>n</b>, not by measuring seconds, because seconds depend on the computer.</p>
+
+  <div class="two">
+    <div class="card">
+      <b>Sum 1 + 2 + … + n</b>
+      <p style="font-size:15.5px;margin:6px 0">Loop: <b>n additions</b>. Gauss formula: <b>1 calculation</b>, whatever n is.</p>
+<pre class="out" style="margin:8px 0 0">Enter n (1 to 1000000): 1000000
+
+Algorithm A (loop)    : S = 500000500000   using 1000000 additions
+Algorithm B (formula) : S = 500000500000   using 1 calculation
+Post-condition check  : OK, both answers match</pre>
+      <p class="muted" style="font-size:13px;margin:6px 0 0">Real output of <code>sum_steps.c</code></p>
+    </div>
+    <div class="card">
+      <b>Is n prime?</b>
+      <p style="font-size:15.5px;margin:6px 0">Brute force tries divisors 2 … n − 1. But if n = a × b, one of a, b must be ≤ √n, so trying 2 … √n is enough.</p>
+      <div class="kpis" style="margin:10px 0 0">
+        <div class="kpi"><div class="v">10,00,001</div><div class="l">divisions up to n − 1, for n = 10,00,003</div></div>
+        <div class="kpi"><div class="v">≈ 1,000</div><div class="l">divisions up to √n</div></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Best, worst and average case</h3>
+  <p>The step count can depend on the particular instance, not just its size. For <b>linear search</b> in a list of n items:</p>
+  <div class="kpis">
+    <div class="kpi"><div class="v">1</div><div class="l">best case: key is first</div></div>
+    <div class="kpi"><div class="v">n</div><div class="l">worst case: key is last or absent</div></div>
+    <div class="kpi"><div class="v">(n + 1) / 2</div><div class="l">average case: key equally likely anywhere</div></div>
+  </div>
+  <p><b>Binary search</b> (list must be sorted) checks the middle item and throws away half the list each time. Starting from 10,00,000 items: 5,00,000 → 2,50,000 → … → 1 after about 20 halvings, because 2<sup>20</sup> = 10,48,576. So it needs about <b>log<sub>2</sub> n</b> comparisons.</p>
+<pre class="out">How many students n (1 to 1000000): 1000000
+Roll number to find (1 to 2000000): 999999
+
+Found at position 999999
+Linear search : 999999 comparisons
+Binary search : 19 comparisons
+Both methods agree: yes</pre>
+
+  <h3>How fast does the work grow?</h3>
+  <div class="activity">
+    <span class="tag">Slide · grow the input</span>
+    <label style="font-weight:600">Input size n = <span id="gN">10<sup>6</sup></span></label>
+    <input type="range" id="gSlide" min="1" max="9" value="6" style="width:100%">
+    <div class="tbl-wrap" id="gTable" style="margin-bottom:0"></div>
+    <p class="muted" style="font-size:13px;margin:6px 0 0">Time assumes a computer doing 10<sup>9</sup> basic steps per second.</p>
+  </div>
+  <div class="callout idea"><b>The insight</b>Moving from n² to n log n, or from n to log n, helps more than buying a computer that is 100 times faster. <b>Efficiency comes from the algorithm.</b> Efficiency also includes <b>space</b>: how much memory an algorithm needs (see <a href="#ds">Section 9</a>).</div>
+</section>
+
+<!-- ================================================================ 8 -->
+<section class="block" id="correct">
+  <div class="sec-no">Section 8</div>
+  <h2>Correctness and testing</h2>
+  <p>An algorithm is <b>correct</b> if, for every input that satisfies the pre-condition, it stops and the post-condition is true. That has two parts:</p>
+  <div class="grid g3">
+    <div class="card"><b>Partial correctness</b><p class="muted" style="margin:6px 0 0;font-size:15px"><i>If</i> it stops, the answer is right.</p></div>
+    <div class="card"><b>Termination</b><p class="muted" style="margin:6px 0 0;font-size:15px">It always stops: no infinite loop.</p></div>
+    <div class="card"><b>Total correctness</b><p class="muted" style="margin:6px 0 0;font-size:15px">Both together.</p></div>
+  </div>
+
+  <h3>Reasoning with a trace table and a loop invariant</h3>
+  <div class="two">
+    <div class="tbl-wrap" style="margin-top:0"><table>
+      <tr><th class="num">After pass i</th><th class="num">sum</th><th>Invariant: sum = 1 + … + i</th></tr>
+      <tr><td class="num">0 (start)</td><td class="num">0</td><td>empty sum = 0 ✔</td></tr>
+      <tr><td class="num">1</td><td class="num">1</td><td>1 ✔</td></tr>
+      <tr><td class="num">2</td><td class="num">3</td><td>1 + 2 ✔</td></tr>
+      <tr><td class="num">3</td><td class="num">6</td><td>1 + 2 + 3 ✔</td></tr>
+      <tr><td class="num">4</td><td class="num">10</td><td>1 + 2 + 3 + 4 = 4 × 5 / 2 ✔</td></tr>
+    </table></div>
+    <div>
+      <p>A <b>loop invariant</b> is a statement that is true before the loop and stays true after every pass. Here: <i>“after pass i, sum = 1 + 2 + … + i”</i>.</p>
+      <p>When the loop ends, i = n, so sum = 1 + … + n: exactly the post-condition. And the loop ends because i grows by 1 each pass and stops at n.</p>
+    </div>
+  </div>
+
+  <h3>Designing test cases</h3>
+  <p>Testing cannot prove a program correct (“testing shows the presence, not the absence, of bugs”, Edsger Dijkstra), but well-chosen tests find most bugs. Two classic ideas, shown for the grade problem <i>80–100 A · 60–79 B · 50–59 C · 40–49 D · 0–39 F</i>:</p>
+  <div class="classes">
+    <div style="flex:8;background:var(--bad)">&lt; 0 invalid</div>
+    <div style="flex:40;background:#7b8597">F 0–39</div>
+    <div style="flex:10;background:#e8833a">D</div>
+    <div style="flex:10;background:#7a5af5">C</div>
+    <div style="flex:20;background:#149c9c">B 60–79</div>
+    <div style="flex:21;background:#1f9d6b">A 80–100</div>
+    <div style="flex:8;background:var(--bad)">&gt; 100</div>
+  </div>
+  <ul>
+    <li><b>Equivalence classes</b>: inputs in the same class should behave the same, so test one from each: −5, 20, 45, 55, 70, 90, 150, “abc”.</li>
+    <li><b>Boundary values</b>: bugs hide at the edges (<code>&gt;</code> written instead of <code>&gt;=</code>), so test both sides of every boundary: −1, 0, 39, 40, 49, 50, 59, 60, 79, 80, 100, 101.</li>
+  </ul>
+  <p>You will use exactly these tests to break programs in <a href="#lab">Lab Part C</a>.</p>
+</section>
+
+<!-- ================================================================ 9 -->
+<section class="block" id="ds">
+  <div class="sec-no">Section 9</div>
+  <h2>The role of data structures in problem solving</h2>
+  <p>A <b>data structure</b> is a way of organising data in memory. The structure you choose decides which algorithms are possible and how efficient they are. Niklaus Wirth summed it up in a book title: <b><i>Algorithms + Data Structures = Programs</i></b> (1976).</p>
+
+  <div class="two">
+    <div class="card"><b>Average of 60 marks</b><p style="margin:6px 0 0;font-size:15.5px">Keep a running <code>sum</code> and a <code>count</code>. Each mark is added and forgotten. <b>2 variables</b>, whatever the class size.</p></div>
+    <div class="card"><b>Median of 60 marks</b><p style="margin:6px 0 0;font-size:15.5px">The middle value can only be found if <b>all 60 marks are stored</b> (an array) and <b>sorted</b>. Memory grows with n.</p></div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Structure</th><th>Everyday picture</th><th>Good for</th></tr>
+    <tr><td><b>Array</b></td><td>Numbered lockers in a row</td><td>Marks of 60 students; jump straight to locker 47</td></tr>
+    <tr><td><b>Stack</b></td><td>A pile of plates: last in, first out</td><td>The Undo button; going back in a browser</td></tr>
+    <tr><td><b>Queue</b></td><td>The canteen line: first in, first out</td><td>Print jobs; ticket booking requests</td></tr>
+    <tr><td><b>Tree</b></td><td>Folders inside folders</td><td>File systems; a family tree</td></tr>
+    <tr><td><b>Graph</b></td><td>A metro map: stations joined by lines</td><td>Shortest routes; social networks</td></tr>
+  </table></div>
+  <div class="callout idea"><b>Same data, different structure, different speed</b>Your phone keeps contacts <b>sorted by name</b>. That one decision makes binary search possible, so finding one name among 2,000 takes about 11 comparisons instead of up to 2,000.</div>
+
+  <div class="activity" id="dsGame">
+    <span class="tag">Try it · 1 min</span>
+    <h3 style="margin:0 0 6px">Pick the structure</h3>
+    <div class="rg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 10 -->
+<section class="block" id="lab">
+  <div class="sec-no">Section 10</div>
+  <h2>Hands-on lab</h2>
+  <p><b>Parts A–C</b> run in this page; no installation needed. <b>Part D</b> gives you three small C programs to compile and run in the computer lab.</p>
+
+  <h3>Part A · Algorithm race</h3>
+  <div class="card race">
+    <div class="lab-ctrl">
+      <div><label for="rProb">Problem</label>
+        <select id="rProb">
+          <option value="sum">Sum 1 + 2 + … + n</option>
+          <option value="search">Search for a roll number in 1 … n</option>
+          <option value="prime">Is n prime?</option>
+        </select></div>
+      <div><label for="rN" id="rNLabel">n</label><input type="number" id="rN" value="1000" min="1"></div>
+      <div id="rKeyBox"><label for="rKey">Roll number to find</label><input type="number" id="rKey" value="999" min="1"></div>
+      <button class="btn" onclick="race()">Run both ▶</button>
+    </div>
+    <div class="kpis" id="rKpi"></div>
+    <div id="rChart"></div>
+    <p class="muted" id="rNote" style="font-size:14px;margin:0"></p>
+  </div>
+
+  <h3>Part B · Guess my number (1 to 1000)</h3>
+  <div class="card">
+    <p style="margin:0 0 10px;font-size:15.5px">I have picked a secret whole number from 1 to 1000. Each guess, I tell you <b>higher</b> or <b>lower</b>. Can you find it in <b>10 guesses or fewer</b>?</p>
+    <div class="lab-ctrl" style="grid-template-columns:minmax(0,220px) auto auto">
+      <div><label for="gIn">Your guess</label><input type="number" id="gIn" min="1" max="1000"></div>
+      <button class="btn" onclick="guess()">Guess</button>
+      <button class="btn ghost" onclick="newGame()">New game</button>
+    </div>
+    <div class="range-bar"><div id="gBar"></div></div>
+    <p class="muted" style="font-size:13px;margin:4px 0 0" id="gRange"></p>
+    <div class="verdict" id="gMsg" style="margin-top:10px;font-weight:600"></div>
+    <div class="guess-log" id="gLog"></div>
+  </div>
+
+  <h3>Part C · Break the program</h3>
+  <p>Three students wrote the grade program from the spec <i>“0–100 only; 80–100 A, 60–79 B, 50–59 C, 40–49 D, 0–39 F; any other input is an error”</i>. Type an input and run all three. Two versions have bugs. Find an input that exposes each bug.</p>
+  <div class="card">
+    <div class="lab-ctrl" style="grid-template-columns:minmax(0,220px) auto auto">
+      <div><label for="bIn">Input marks</label><input type="text" id="bIn" value="75"></div>
+      <button class="btn" onclick="runVersions()">Run all three</button>
+      <button class="btn ghost" onclick="runSuite()">Run the boundary test set</button>
+    </div>
+    <div class="versions" style="margin-top:14px">
+      <div class="card"><b>Version 1 · Asha</b>
+<pre class="code">scanf("%d", &amp;marks);
+if (marks &gt;= 80)      g = 'A';
+else if (marks &gt;= 60) g = 'B';
+else if (marks &gt;= 50) g = 'C';
+else if (marks &gt;= 40) g = 'D';
+else                  g = 'F';
+printf("Grade %c", g);</pre>
+        <div class="vout" id="v1"></div></div>
+      <div class="card"><b>Version 2 · Kabir</b>
+<pre class="code">if (scanf("%d", &amp;marks) != 1)
+    { printf("Error"); return 1; }
+if (marks &gt; 100)
+    { printf("Error"); return 1; }
+if (marks &gt; 80)       g = 'A';
+else if (marks &gt;= 60) g = 'B';
+else if (marks &gt;= 50) g = 'C';
+else if (marks &gt;= 40) g = 'D';
+else                  g = 'F';
+printf("Grade %c", g);</pre>
+        <div class="vout" id="v2"></div></div>
+      <div class="card"><b>Version 3 · grade_check.c</b>
+<pre class="code">if (scanf("%d", &amp;marks) != 1)
+    { printf("Error"); return 1; }
+if (marks &lt; 0 || marks &gt; 100)
+    { printf("Error"); return 1; }
+if (marks &gt;= 80)      g = 'A';
+else if (marks &gt;= 60) g = 'B';
+else if (marks &gt;= 50) g = 'C';
+else if (marks &gt;= 40) g = 'D';
+else                  g = 'F';
+printf("Grade %c", g);</pre>
+        <div class="vout" id="v3"></div></div>
+    </div>
+    <div class="tbl-wrap" id="suite" style="margin-bottom:0"></div>
+  </div>
+
+  <h3>Your tasks</h3>
+  <div class="card">
+    <label class="task"><input type="checkbox"><span><b>Task 1.</b> In Part A, choose <b>Sum</b> and try n = 10, 1,000 and 10,00,000. How do the two step counts change as n grows?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 2.</b> Choose <b>Search</b> with n = 10,00,000. Find a roll number where linear search wins, and one where binary search needs the most comparisons. What are the best and worst cases?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 3.</b> Choose <b>Is n prime?</b> and test 97, 1,000,003 and 1,000,000. Why is the √n method fast even when the number is prime?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 4.</b> Win Part B. Then explain in one sentence the strategy that <b>always</b> wins in 10 guesses, and which solution approach it is.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 5.</b> In Part C, find one input that breaks Version 1 and one that breaks Version 2 <b>without</b> breaking Version 1. Name the kind of check or test that would have caught each bug.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 6.</b> Write the I/O specification and the pre- and post-conditions for this lab problem: <i>“convert a temperature from Celsius to Fahrenheit”</i>. What is a sensible valid range?</span></label>
+    <details><summary>Check your answers</summary>
+      <p>1. The loop needs exactly n additions; the formula always needs 1. The gap grows with n. 2. Linear wins for small roll numbers (1 needs 1 comparison). Binary search finds the middle one (5,00,000) in 1 comparison and needs at most 20 for any other, because 2<sup>20</sup> &gt; 10,00,000. Linear: best 1, worst n. 3. √1,000,003 ≈ 1000, so at most about 1,000 divisions even for a prime; 1,000,000 is even, so both methods stop at the first divisor, 2. 4. Always guess the middle of the range that is still possible; each answer halves the range, and 2<sup>10</sup> = 1024 ≥ 1000. That is divide and conquer (binary search). 5. Version 1: <code>101</code> gives A and <code>-5</code> gives F (no range check), <code>abc</code> gives garbage (no type check). Version 2: <code>-1</code> gives F (lower range check missing) and <code>80</code> gives B (<code>&gt;</code> instead of <code>&gt;=</code>); boundary-value tests catch both. 6. Input c (real, °C, e.g. −273.15 ≤ c ≤ 1000); output f (real, °F, 2 decimals). Pre: c ≥ −273.15 (absolute zero). Post: f = c × 9 / 5 + 32.</p>
+    </details>
+  </div>
+
+  <h3>Part D · Run the C programs</h3>
+  <div class="grid g3">
+    <a class="card tile" href="lab/sum_steps.c" download><div class="ic c-accent">➕</div><h3>sum_steps.c</h3><p>Loop vs formula, with input validation</p></a>
+    <a class="card tile" href="lab/search_steps.c" download><div class="ic c-teal">🔍</div><h3>search_steps.c</h3><p>Linear vs binary search, counting comparisons</p></a>
+    <a class="card tile" href="lab/grade_check.c" download><div class="ic c-violet">✅</div><h3>grade_check.c</h3><p>A specified, validated grade program</p></a>
+  </div>
+  <ol style="margin-top:16px">
+    <li>Save the three files in one folder.</li>
+    <li>Compile one: <code>gcc sum_steps.c -o sum_steps</code> (or press Build in Code::Blocks / Dev-C++).</li>
+    <li>Run it: <code>sum_steps</code> on Windows, <code>./sum_steps</code> on Linux. Try the inputs from the tasks above.</li>
+    <li>Read the comment block at the top of each file: it is the program’s <b>specification</b>, with pre- and post-conditions.</li>
+  </ol>
+  <div class="callout tip"><b>Challenge (assignment)</b> Pick one Unit 2 lab problem (for example <i>display three numbers in non-decreasing order</i>). Before writing any code, hand in: (1) three questions you would ask to remove ambiguity, (2) the I/O specification, (3) pre- and post-conditions, (4) the algorithm in standard step format, and (5) six test cases including special cases. Then complete the <a href="worksheet.html">worksheet</a>.</div>
+</section>
+
+<!-- ================================================================ 11 -->
+<section class="block" id="summary">
+  <div class="sec-no">Section 11</div>
+  <h2>Summary and revision</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Topic</th><th>Remember this</th></tr>
+    <tr><td>Problem vs instance</td><td>A problem is a general question over all inputs; an instance fixes one input. Programs must solve the problem</td></tr>
+    <tr><td>Generalization, special cases</td><td>Solve the whole family (1 + … + n = n(n+1)/2), then check edge inputs: n = 0, n = 1, empty, ties, out of range</td></tr>
+    <tr><td>Types of problems</td><td>Decision (yes/no), search, counting, optimization (best), computation (calculate/transform)</td></tr>
+    <tr><td>Classification</td><td>Well- vs ill-defined; solvable vs unsolvable (halting problem); tractable vs intractable</td></tr>
+    <tr><td>Analysis of a problem</td><td>Given, Find, Constraints, Size, Special cases; ask questions whose answers change the program</td></tr>
+    <tr><td>Problem-solving steps</td><td>Pólya: Understand → Plan → Execute → Review; break big problems into subproblems (top-down)</td></tr>
+    <tr><td>Specification</td><td>Each input/output: name, type, range, unit. Validate: type, range, presence, format, length, consistency</td></tr>
+    <tr><td>Pre/post conditions</td><td>Pre = must be true before (caller’s promise); post = guaranteed after (algorithm’s promise)</td></tr>
+    <tr><td>Algorithm</td><td>Finite, definite, input, output, effective; developed by stepwise refinement</td></tr>
+    <tr><td>Approaches</td><td>Brute force, divide and conquer, greedy, incremental, reduction</td></tr>
+    <tr><td>Efficiency</td><td>Count steps vs n: 1 &lt; log n &lt; n &lt; n log n &lt; n² &lt; 2ⁿ; best/worst/average case; time and space</td></tr>
+    <tr><td>Correctness</td><td>Partial correctness + termination = total correctness; invariants; equivalence classes and boundary tests</td></tr>
+    <tr><td>Data structures</td><td>The structure decides what is possible and how fast: average needs 2 variables, median needs a sorted array</td></tr>
+  </table></div>
+
+  <h3>Key terms (click a card to flip)</h3>
+  <div class="grid g4">
+    <div class="flip"><div class="inner"><div class="face"><b>Problem instance</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">A problem with one particular input filled in, e.g. “largest of 72, 85, 64”.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Optimization problem</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Find the best answer among many valid ones, e.g. the shortest route.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Intractable</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Solvable in principle, but the running time explodes as the input grows (e.g. 2ⁿ or n!).</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Specification</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">A precise description of inputs, outputs, valid ranges and behaviour, written before coding.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Pre-condition</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">What must be true before an algorithm runs, e.g. “the list is sorted” for binary search.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Definiteness</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Every step of an algorithm is exact and unambiguous; “add salt to taste” fails it.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Loop invariant</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">A statement true before a loop and after every pass; used to prove the loop is correct.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Boundary value</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">An input at the edge of a valid range (39, 40, 100, 101). Bugs hide here.</div></div></div>
+  </div>
+
+  <div class="callout tip" style="margin-top:22px"><b>Ready for the quiz?</b> You should be able to: tell a problem from an instance · name the type of a problem · list questions that remove ambiguity · write an I/O specification with ranges · name the validation checks · give pre- and post-conditions · list the 5 properties of an algorithm · order the four Pólya steps · count steps for linear and binary search · rank growth rates · explain partial vs total correctness · choose boundary test cases · explain why median needs an array.</div>
+  <p style="text-align:center;margin-top:20px"><a class="btn accent" href="quiz.html">Go to the Unit 1 quiz →</a></p>
+</section>
+    </main>
+  </div>
+</div>
+<footer class="foot">Unit 1 · Problems, Algorithms and Problem Solving · BCA (AI &amp; ML) Semester 1</footer>
+
+<script>
+/* ---------- diagrams ---------- */
+drawCycle(document.getElementById('polyaSvg'), {
+  cx: 260, cy: 210, rx: 175, ry: 150, w: 170, h: 60, center: ['Pólya', 'repeat ↺'],
+  items: [
+    { t: 'Understand', s: 'given? asked?', fill: 'var(--brand-soft)', ink: 'var(--brand-ink)' },
+    { t: 'Plan', s: 'design steps', fill: 'var(--teal-soft)', ink: 'var(--teal)' },
+    { t: 'Execute', s: 'code + run', fill: 'var(--accent-soft)', ink: 'var(--accent)' },
+    { t: 'Review', s: 'test, improve', fill: 'var(--good-soft)', ink: 'var(--good)' }
+  ]
+});
+
+(function () {
+  var svg = document.getElementById('treeSvg');
+  var box = function (x, y, w, h, t, fill, ink, fs, s) {
+    svgEl('rect', { x: x - w / 2, y: y, width: w, height: h, rx: 10, style: 'fill:' + fill + ';stroke:' + ink + ';stroke-width:1.5' }, svg);
+    svgText(svg, x, y + (s ? h / 2 - 2 : h / 2 + fs * 0.36), t, 'font-size:' + fs + 'px;font-weight:700;fill:' + ink);
+    if (s) svgText(svg, x, y + h / 2 + 15, s, 'font-size:12px;fill:var(--ink-2)');
+  };
+  var line = function (x1, y1, x2, y2) { svgEl('path', { d: 'M' + x1 + ',' + y1 + ' C' + x1 + ',' + (y1 + y2) / 2 + ' ' + x2 + ',' + (y1 + y2) / 2 + ' ' + x2 + ',' + y2, style: 'fill:none;stroke:var(--ink-3);stroke-width:1.5' }, svg); };
+  var kids = [
+    { x: 85, t: 'Read n', s: 'check 1 ≤ n ≤ 200', c: 'teal' },
+    { x: 245, t: 'Read a mark', s: 'n times', c: 'teal' },
+    { x: 405, t: 'Validate it', s: 'type + range', c: 'accent' },
+    { x: 565, t: 'Add to sum', s: 'sum ← sum + m', c: 'violet' },
+    { x: 720, t: 'Divide, print', s: 'sum ÷ n, 2 dp', c: 'good' }
+  ];
+  kids.forEach(function (k) { line(400, 66, k.x, 140); });
+  box(400, 14, 300, 52, 'Find the class average', 'var(--brand)', '#fff', 18);
+  kids.forEach(function (k) { box(k.x, 140, 148, 62, k.t, 'var(--' + k.c + '-soft)', 'var(--' + k.c + ')', 15, k.s); });
+  svgText(svg, 400, 236, 'Steps 2–4 repeat for each student (a loop)', 'font-size:13px;fill:var(--ink-3)');
+})();
+
+/* ---------- generic multiple-choice rows ---------- */
+function choiceRows(container, rows, labels) {
+  rows.forEach(function (r, idx) {
+    var d = document.createElement('div'); d.style.margin = '14px 0';
+    d.innerHTML = '<div style="font-weight:600;font-size:15.5px">' + (idx + 1) + '. ' + r.q + '</div>';
+    var fb = document.createElement('div'); fb.className = 'feedback';
+    labels.forEach(function (l, i) {
+      var b = document.createElement('button'); b.className = 'choice'; b.textContent = l;
+      b.onclick = function () {
+        d.querySelectorAll('.choice').forEach(function (x) { x.classList.remove('right', 'wrong'); });
+        if (i === r.a) { b.classList.add('right'); fb.innerHTML = '✅ ' + r.why; }
+        else { b.classList.add('wrong'); fb.innerHTML = '<span style="color:var(--bad)">Not quite. Try again.</span>'; }
+      };
+      d.appendChild(b);
+    });
+    d.appendChild(fb); container.appendChild(d);
+  });
+}
+
+choiceRows(document.querySelector('#instGame .rg'), [
+  { q: 'Find the largest of any n marks.', a: 0, why: 'No actual values are given: it describes every possible input. That is a problem.' },
+  { q: 'Is 221 a prime number?', a: 1, why: 'The input is fixed (221). It is one instance of “is n prime?”. (No: 221 = 13 × 17.)' },
+  { q: 'Convert any amount in rupees to dollars at a given exchange rate.', a: 0, why: 'General inputs (any amount, any rate): a problem.' },
+  { q: 'Sort the marks 64, 85, 72.', a: 1, why: 'A specific list: one instance of the sorting problem.' }
+], ['Problem', 'Instance']);
+
+choiceRows(document.querySelector('#typeGame .rg'), [
+  { q: 'Is the year 2028 a leap year?', a: 0, why: 'The answer is yes or no: a decision problem.' },
+  { q: 'Find the page number on which the word “algorithm” first appears in the textbook.', a: 1, why: 'You must locate an item: a search problem.' },
+  { q: 'How many students in the class were born in March?', a: 2, why: 'The answer is “how many”: a counting problem.' },
+  { q: 'Choose which items to put in a 10 kg bag so the total value is as high as possible.', a: 3, why: 'Many choices are valid; you want the best one: optimization.' },
+  { q: 'Convert 37 °C into °F.', a: 4, why: 'Calculate a value from the input with a formula: computation.' },
+  { q: 'Find the cheapest way to connect all 8 labs with network cable.', a: 3, why: '“Cheapest” among many possible layouts: optimization.' }
+], ['Decision', 'Search', 'Counting', 'Optimization', 'Computation']);
+
+choiceRows(document.querySelector('#askGame .rg'), [
+  { q: 'Do absent students count as 0, or are they left out?', a: 0, why: 'It changes both the sum and n, so the answer changes.' },
+  { q: 'Should the program be written in a blue or a black font?', a: 1, why: 'Font colour has nothing to do with computing the average.' },
+  { q: 'Can marks have decimals, like 72.5?', a: 0, why: 'It decides whether marks are stored as int or float in C.' },
+  { q: 'Do we know n in advance, or do we stop when −1 is entered?', a: 0, why: 'It changes the loop: counter-controlled vs sentinel-controlled (Unit 2).' },
+  { q: 'What is the teacher’s favourite subject?', a: 1, why: 'Interesting, but it does not change the program.' },
+  { q: 'What should happen if there are no students?', a: 0, why: 'Average of nothing is 0 ÷ 0. The spec must say what to print instead.' }
+], ['Must ask', 'Not needed']);
+
+choiceRows(document.querySelector('#valGame .rg'), [
+  { q: 'Age entered as “twenty”.', a: 0, why: 'Text where a number is expected: type check.' },
+  { q: 'Attendance entered as 112%.', a: 1, why: 'A number, but outside 0–100: range check.' },
+  { q: 'The roll-number box was left blank.', a: 2, why: 'Nothing was entered: presence check.' },
+  { q: 'Date of birth typed as 31/31/2006.', a: 3, why: 'The value does not fit the required date pattern: format check.' },
+  { q: 'Exam end time is earlier than its start time.', a: 4, why: 'Each value is fine alone, but they disagree: consistency check.' }
+], ['Type', 'Range', 'Presence', 'Format', 'Consistency']);
+
+choiceRows(document.querySelector('#appGame .rg'), [
+  { q: 'Find a lost word in a dictionary by opening it in the middle, then the correct half, and so on.', a: 1, why: 'Halve the problem each time: divide and conquer.' },
+  { q: 'Crack a 3-digit lock by trying 000, 001, 002, … 999.', a: 0, why: 'Trying every possibility: brute force.' },
+  { q: 'Fill your plate at a buffet by always taking the dish you like most that still fits.', a: 2, why: 'Best-looking choice at each step: greedy.' },
+  { q: 'Keep a running total as each bill is scanned at a shop counter.', a: 3, why: 'Build the answer one item at a time: incremental.' }
+], ['Brute force', 'Divide & conquer', 'Greedy', 'Incremental']);
+
+choiceRows(document.querySelector('#dsGame .rg'), [
+  { q: 'Requests for the single college printer: first come, first served.', a: 1, why: 'First in, first out: a queue.' },
+  { q: 'The Undo button in a text editor: undo the most recent change first.', a: 0, why: 'Last in, first out: a stack.' },
+  { q: 'Marks of 60 students, where you often need “marks of roll number 23”.', a: 2, why: 'Numbered positions with direct access: an array.' },
+  { q: 'Metro stations and the lines between them, to find a route.', a: 3, why: 'Items joined by connections: a graph.' }
+], ['Stack', 'Queue', 'Array', 'Graph']);
+
+/* ---------- growth explorer ---------- */
+function fmtBig(x) {
+  if (x < 1e5) return Math.round(x).toLocaleString('en-IN');
+  var e = Math.floor(Math.log10(x)), m = x / Math.pow(10, e);
+  return m.toFixed(m < 9.95 ? 1 : 0).replace(/\.0$/, '') + ' × 10<sup>' + e + '</sup>';
+}
+function fmtTime(steps) {
+  var s = steps / 1e9;
+  if (!isFinite(s) || s > 4.35e17) return '<span class="bad">longer than the age of the universe</span>';
+  if (s < 1e-6) return 'instant';
+  if (s < 1e-3) return (s * 1e6).toFixed(0) + ' µs';
+  if (s < 1) return (s * 1e3).toFixed(s < 0.01 ? 1 : 0) + ' ms';
+  if (s < 60) return s.toFixed(1) + ' s';
+  if (s < 3600) return (s / 60).toFixed(0) + ' min';
+  if (s < 86400) return (s / 3600).toFixed(1) + ' hours';
+  if (s < 3.156e7) return (s / 86400).toFixed(0) + ' days';
+  var y = s / 3.156e7;
+  return '<span class="bad">' + (y < 1e5 ? Math.round(y).toLocaleString('en-IN') : fmtBig(y)) + ' years</span>';
+}
+function growth() {
+  var k = +document.getElementById('gSlide').value, n = Math.pow(10, k), lg = Math.log2(n);
+  document.getElementById('gN').innerHTML = k <= 4 ? n.toLocaleString('en-IN') : '10<sup>' + k + '</sup>';
+  var rows = [
+    ['1', 'constant', 'Gauss formula', 1],
+    ['log n', 'logarithmic', 'binary search', Math.ceil(lg)],
+    ['√n', 'square root', 'prime check up to √n', Math.sqrt(n)],
+    ['n', 'linear', 'linear search, sum loop', n],
+    ['n log n', 'linearithmic', 'good sorting methods', n * lg],
+    ['n²', 'quadratic', 'compare every pair', n * n],
+    ['2ⁿ', 'exponential', 'try every subset', Math.pow(2, n)]
+  ];
+  document.getElementById('gTable').innerHTML = '<table><tr><th>Growth</th><th>Name</th><th>Example</th><th class="num">Steps</th><th class="num">Time</th></tr>' +
+    rows.map(function (r) {
+      var big = !isFinite(r[3]);
+      return '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td><td>' + r[2] + '</td><td class="num">' + (big ? '2<sup>' + n.toLocaleString('en-IN') + '</sup>' : fmtBig(r[3])) + '</td><td class="num">' + fmtTime(r[3]) + '</td></tr>';
+    }).join('') + '</table>';
+}
+document.getElementById('gSlide').addEventListener('input', growth);
+growth();
+
+/* ---------- Lab A: algorithm race ---------- */
+var inr = function (v) { return Math.round(v).toLocaleString('en-IN'); };
+function ratio(a, b) { var r = Math.max(a, b) / Math.max(1, Math.min(a, b)); return r >= 10 ? inr(r) : r.toFixed(1); }
+function syncRace() {
+  var p = document.getElementById('rProb').value;
+  document.getElementById('rKeyBox').style.visibility = p === 'search' ? 'visible' : 'hidden';
+  document.getElementById('rNLabel').textContent = p === 'prime' ? 'n (2 to 10,00,00,000)' : 'n (1 to 10,00,00,000)';
+}
+function race() {
+  var p = document.getElementById('rProb').value, n = Math.floor(+document.getElementById('rN').value);
+  var note = document.getElementById('rNote'), MAX = 1e8;
+  if (!(n >= (p === 'prime' ? 2 : 1) && n <= MAX)) {   // the same input validation the C programs do
+    note.innerHTML = '<span class="bad">Invalid n.</span> It must be a whole number from ' + (p === 'prime' ? 2 : 1) + ' to 10,00,00,000.';
+    document.getElementById('rKpi').innerHTML = ''; document.getElementById('rChart').innerHTML = '';
+    return;
+  }
+  var A, B, names, answer, i;
+  if (p === 'sum') {
+    var s = 0; A = 0;
+    for (i = 1; i <= n; i++) { s += i; A++; }
+    B = 1; names = ['Loop (add one by one)', 'Gauss formula n(n+1)/2'];
+    answer = 'S = ' + inr(n * (n + 1) / 2) + (s === n * (n + 1) / 2 ? ' (both agree)' : '');
+  } else if (p === 'search') {
+    var key = Math.floor(+document.getElementById('rKey').value);
+    if (!(key >= 1)) { note.innerHTML = '<span class="bad">Invalid roll number.</span> Enter a whole number ≥ 1.'; return; }
+    A = 0; var found = -1;
+    for (i = 1; i <= n; i++) { A++; if (i === key) { found = i; break; } }   // list[i] = i (sorted roll numbers)
+    var lo = 1, hi = n, mid; B = 0;
+    while (lo <= hi) { mid = Math.floor((lo + hi) / 2); B++; if (mid === key) break; if (mid < key) lo = mid + 1; else hi = mid - 1; }
+    names = ['Linear search', 'Binary search'];
+    answer = found > 0 ? 'Roll number ' + inr(key) + ' found at position ' + inr(found) : 'Roll number ' + inr(key) + ' is not in the list';
+  } else {
+    var prime = true; A = 0;
+    for (i = 2; i < n; i++) { A++; if (n % i === 0) { prime = false; break; } }
+    B = 0;
+    for (i = 2; i * i <= n; i++) { B++; if (n % i === 0) break; }
+    names = ['Divisors 2 … n − 1', 'Divisors 2 … √n'];
+    answer = inr(n) + (prime ? ' is prime' : ' is not prime (divisible by ' + i + ')');
+  }
+  var unit = p === 'sum' ? ['additions', 'calculation'] : p === 'search' ? ['comparisons', 'comparisons'] : ['divisions', 'divisions'];
+  document.getElementById('rKpi').innerHTML =
+    '<div class="kpi"><div class="v">' + inr(A) + '</div><div class="l">' + names[0] + ': ' + unit[0] + '</div></div>' +
+    '<div class="kpi"><div class="v">' + inr(B) + '</div><div class="l">' + names[1] + ': ' + unit[1] + '</div></div>' +
+    '<div class="kpi"><div class="v">' + (A === B ? 'tie' : ratio(A, B) + '×') + '</div><div class="l">' + (A > B ? 'fewer steps with the second method' : A < B ? 'fewer steps with the first method, for this instance' : 'same number of steps') + '</div></div>';
+  // log-scale bars so 1 and 10 crore both stay visible
+  var W = 760, max = Math.log10(Math.max(A, B, 10)) + 0.3, w = function (v) { return Math.max(4, (W - 330) * (Math.log10(Math.max(v, 1)) + 0.3) / max); };
+  var bar = function (y, label, v, col) {
+    return '<text x="200" y="' + (y + 24) + '" text-anchor="end" style="font-size:14px;fill:var(--ink)">' + label + '</text>' +
+      '<rect x="210" y="' + (y + 6) + '" width="' + w(v) + '" height="28" rx="6" style="fill:' + col + '"/>' +
+      '<text x="' + (218 + w(v)) + '" y="' + (y + 25) + '" style="font-size:14px;font-weight:700;fill:var(--ink-2)">' + inr(v) + '</text>';
+  };
+  document.getElementById('rChart').innerHTML = '<svg viewBox="0 0 ' + W + ' 96" role="img" aria-label="Steps compared">' +
+    bar(4, names[0], A, 'var(--accent)') + bar(48, names[1], B, 'var(--brand)') + '</svg>';
+  note.innerHTML = answer + '. Bars use a log scale, so each extra bar-length step means 10 times more work.';
+}
+document.getElementById('rProb').addEventListener('change', function () {
+  var p = this.value;
+  document.getElementById('rN').value = p === 'prime' ? 1000003 : p === 'search' ? 1000000 : 1000;
+  document.getElementById('rKey').value = 999999;
+  syncRace(); race();
+});
+syncRace(); race();
+
+/* ---------- Lab B: guess my number ---------- */
+var G;
+function newGame() {
+  G = { secret: 1 + Math.floor(Math.random() * 1000), lo: 1, hi: 1000, tries: 0, done: false };
+  document.getElementById('gLog').innerHTML = ''; document.getElementById('gIn').value = '';
+  var m = document.getElementById('gMsg'); m.textContent = 'Start guessing. Hint: which first guess removes the most numbers?'; m.style.background = 'var(--surface-2)'; m.style.color = 'var(--ink)';
+  drawRange();
+}
+function drawRange() {
+  var b = document.getElementById('gBar');
+  b.style.left = (100 * (G.lo - 1) / 1000) + '%'; b.style.width = (100 * (G.hi - G.lo + 1) / 1000) + '%';
+  document.getElementById('gRange').textContent = 'Still possible: ' + G.lo + ' to ' + G.hi + ' (' + (G.hi - G.lo + 1) + ' numbers)';
+}
+function guess() {
+  if (G.done) return;
+  var raw = document.getElementById('gIn').value.trim(), g = Number(raw), m = document.getElementById('gMsg');
+  if (raw === '' || !Number.isInteger(g) || g < 1 || g > 1000) { m.textContent = 'Invalid guess: enter a whole number from 1 to 1000. (Input validation!)'; m.style.color = 'var(--bad)'; return; }
+  G.tries++;
+  var tag = document.createElement('span');
+  if (g === G.secret) {
+    G.done = true; tag.textContent = g + ' ✔'; G.lo = G.hi = g;
+    var good = G.tries <= 10;
+    m.style.background = good ? 'var(--good-soft)' : 'var(--accent-soft)'; m.style.color = good ? 'var(--good)' : 'var(--accent)';
+    m.textContent = (good ? '🎉 Found it in ' : 'Found it, but it took ') + G.tries + ' guesses. Always guessing the middle never needs more than 10, because 2¹⁰ = 1024 ≥ 1000.';
+  } else {
+    if (g < G.secret) { G.lo = Math.max(G.lo, g + 1); tag.textContent = g + ' ↑'; m.textContent = 'Higher!'; }
+    else { G.hi = Math.min(G.hi, g - 1); tag.textContent = g + ' ↓'; m.textContent = 'Lower!'; }
+    m.style.color = 'var(--ink)';
+    var mid = Math.floor((G.lo + G.hi) / 2);
+    m.textContent += ' Guess ' + G.tries + ' used. A binary-search player would now try ' + mid + '.';
+  }
+  document.getElementById('gLog').appendChild(tag);
+  drawRange();
+  document.getElementById('gIn').select();
+}
+document.getElementById('gIn').addEventListener('keydown', function (e) { if (e.key === 'Enter') guess(); });
+newGame();
+
+/* ---------- Lab C: break the program ---------- */
+// scanf("%d") reads a leading whole number and stops at the first non-digit; it fails if there is none
+function scanInt(s) { var m = /^\s*([+-]?\d+)/.exec(s); return m ? parseInt(m[1], 10) : null; }
+function letter(m, aCut) { return m >= aCut ? 'A' : m >= 60 ? 'B' : m >= 50 ? 'C' : m >= 40 ? 'D' : 'F'; }
+var VERSIONS = [
+  function (s) { var m = scanInt(s); return m === null ? 'Grade ? (marks holds garbage)' : 'Grade ' + letter(m, 80); },
+  function (s) { var m = scanInt(s); if (m === null || m > 100) return 'Error'; return 'Grade ' + letter(m, 81); },
+  function (s) { var m = scanInt(s); if (m === null || m < 0 || m > 100) return 'Error'; return 'Grade ' + letter(m, 80); }
+];
+function expected(s) { var m = scanInt(s); return m === null || m < 0 || m > 100 ? 'Error' : 'Grade ' + letter(m, 80); }
+function runVersions() {
+  var s = document.getElementById('bIn').value, exp = expected(s);
+  VERSIONS.forEach(function (f, i) {
+    var out = f(s), ok = out === exp, el = document.getElementById('v' + (i + 1));
+    el.innerHTML = out.replace(/&/g, '&amp;').replace(/</g, '&lt;') + ' <span class="' + (ok ? 'ok' : 'bad') + '">' + (ok ? '✔' : '✘ spec says: ' + exp) + '</span>';
+  });
+}
+function runSuite() {
+  var tests = ['-1', '0', '39', '40', '49', '50', '59', '60', '79', '80', '100', '101', 'abc'], pass = [0, 0, 0];
+  var rows = tests.map(function (t) {
+    var exp = expected(t);
+    return '<tr><td><code>' + t + '</code></td><td>' + exp + '</td>' + VERSIONS.map(function (f, i) {
+      var out = f(t), ok = out === exp; if (ok) pass[i]++;
+      return '<td class="' + (ok ? 'ok' : 'bad') + '">' + (ok ? '✔' : '✘ ' + out) + '</td>';
+    }).join('') + '</tr>';
+  }).join('');
+  document.getElementById('suite').innerHTML = '<table><tr><th>Input</th><th>Spec says</th><th>Version 1</th><th>Version 2</th><th>Version 3</th></tr>' + rows +
+    '<tr><td colspan="2"><b>Tests passed</b></td>' + pass.map(function (p) { return '<td><b>' + p + ' / ' + tests.length + '</b></td>'; }).join('') + '</tr></table>';
+}
+document.getElementById('bIn').addEventListener('keydown', function (e) { if (e.key === 'Enter') runVersions(); });
+runVersions();
+</script>
+</body>
+</html>

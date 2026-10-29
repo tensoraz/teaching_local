@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 Session Timer</title>
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  body { min-height: 100vh; display: flex; flex-direction: column; }
+  .stage { flex: 1; display: grid; place-items: center; text-align: center; padding: 20px 16px; }
+  .phase-name { font-size: clamp(30px, 5vw, 60px); font-weight: 800; letter-spacing: -.02em; margin: 6px 0; }
+  .phase-tip { font-size: clamp(16px, 2vw, 22px); color: var(--ink-2); max-width: 760px; margin: 0 auto; }
+  .big { font-size: clamp(90px, 20vw, 230px); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.04em; line-height: 1; margin: 14px 0; }
+  .ctrl { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .track { display: flex; gap: 4px; max-width: 1100px; width: 100%; margin: 0 auto 26px; padding: 0 16px; }
+  .track div { position: relative; height: 46px; border-radius: 8px; overflow: hidden; background: var(--surface-2); cursor: pointer; font-size: 12.5px; font-weight: 700; }
+  .track .fill { position: absolute; inset: 0 auto 0 0; width: 0; opacity: .9; }
+  .track span { position: relative; display: grid; place-items: center; height: 100%; color: var(--ink); padding: 0 4px; text-align: center; line-height: 1.15; }
+  .track div.cur { outline: 3px solid var(--ink); outline-offset: 1px; }
+  .next { color: var(--ink-3); font-size: 16px; margin-top: 16px; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Problem Solving with C</a> › <a href="./">Unit 1</a> › <b>Session timer</b></div>
+  <button class="icon-btn" onclick="fs()">⛶ Full screen</button>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+</div></header>
+
+<div class="stage"><div>
+  <span class="eyebrow" id="step"></span>
+  <div class="phase-name" id="name"></div>
+  <div class="phase-tip" id="tip"></div>
+  <div class="big" id="clock">00:00</div>
+  <div class="ctrl">
+    <button class="btn ghost" onclick="jump(-1)">⏮ Back</button>
+    <button class="btn" id="play" onclick="toggle()" style="min-width:140px;justify-content:center">▶ Start</button>
+    <button class="btn ghost" onclick="addMin(1)">+1 min</button>
+    <button class="btn ghost" onclick="jump(1)">Skip ⏭</button>
+    <a class="btn accent" id="open" target="_blank"></a>
+  </div>
+  <div class="next" id="next"></div>
+</div></div>
+<div class="track" id="track"></div>
+
+<script>
+var PHASES = [
+  { n: 'Concepts on the smart board', m: 30, c: 'var(--brand)', tip: 'Theory and maths: problems and instances, types, analysis, Pólya steps, specification, algorithms, efficiency, correctness.', link: ['Open slides', 'board.html'] },
+  { n: 'Break', m: 5, c: 'var(--teal)', tip: 'Stretch, drink water. Next: open the Study guide on your screen.', link: null },
+  { n: 'Study guide + hands-on lab', m: 35, c: 'var(--good)', tip: 'Work through the study guide, then the algorithm race, guessing game and Break-the-program lab.', link: ['Open study guide', 'study.html'] },
+  { n: 'Rest', m: 10, c: 'var(--teal)', tip: 'Relax. Next: the Unit 1 quiz, so revise Section 11 if you like.', link: null },
+  { n: 'Quiz', m: 30, c: 'var(--violet)', tip: 'Open the quiz, enter your name and roll number. It submits itself when time runs out.', link: ['Open quiz', 'quiz.html'] },
+  { n: 'Review the answers', m: 10, c: 'var(--accent)', tip: 'Discuss the weakest questions from the live results.', link: ['Open results', 'results.html'] }
+];
+var KEY = 'session:bca1-unit1';
+var st = { i: 0, left: PHASES[0].m * 60, running: false, at: 0 };
+try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved) st = saved; } catch (e) {}
+if (st.running) {   // page was reloaded mid-session: catch up on the time that passed
+  st.left -= Math.floor((Date.now() - st.at) / 1000);
+  while (st.left <= 0 && st.i < PHASES.length - 1) { st.i++; st.left += PHASES[st.i].m * 60; }
+  if (st.left <= 0) { st.left = 0; st.running = false; }
+}
+
+function persist() { st.at = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+function mmss(s) { s = Math.max(0, s); return ('0' + Math.floor(s / 60)).slice(-2) + ':' + ('0' + s % 60).slice(-2); }
+
+function chime() {
+  try {
+    var ac = new (window.AudioContext || window.webkitAudioContext)();
+    [660, 880, 990].forEach(function (f, k) {
+      var o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.connect(g); g.connect(ac.destination);
+      var t = ac.currentTime + k * 0.22; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.3, t + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
+      o.start(t); o.stop(t + 0.55);
+    });
+  } catch (e) {}
+}
+
+function render() {
+  var p = PHASES[st.i];
+  document.getElementById('step').textContent = 'Phase ' + (st.i + 1) + ' of ' + PHASES.length + ' · ' + p.m + ' min';
+  document.getElementById('name').textContent = p.n;
+  document.getElementById('name').style.color = p.c;
+  document.getElementById('tip').textContent = p.tip;
+  var clock = document.getElementById('clock');
+  clock.textContent = mmss(st.left);
+  clock.style.color = st.left <= 60 ? 'var(--bad)' : 'var(--ink)';
+  document.getElementById('play').textContent = st.running ? '⏸ Pause' : '▶ ' + (st.left < p.m * 60 ? 'Resume' : 'Start');
+  var o = document.getElementById('open');
+  if (p.link) { o.style.display = ''; o.textContent = p.link[0] + ' ↗'; o.href = p.link[1]; } else o.style.display = 'none';
+  var nx = PHASES[st.i + 1];
+  document.getElementById('next').textContent = nx ? 'Next: ' + nx.n + ' (' + nx.m + ' min)' : 'Last phase. Well done today!';
+  document.getElementById('track').innerHTML = PHASES.map(function (q, k) {
+    var done = k < st.i ? 100 : k > st.i ? 0 : 100 * (1 - st.left / (q.m * 60));
+    return '<div style="flex:' + q.m + '" class="' + (k === st.i ? 'cur' : '') + '" onclick="goto(' + k + ')"><div class="fill" style="width:' + done + '%;background:' + q.c + '"></div><span>' + (q.m < 8 ? '' : q.n.split(' ')[0] + ' ') + q.m + '′</span></div>';
+  }).join('');
+}
+
+function toggle() { st.running = !st.running; persist(); render(); }
+function goto(k) { st.i = Math.max(0, Math.min(PHASES.length - 1, k)); st.left = PHASES[st.i].m * 60; persist(); render(); }
+function jump(d) { goto(st.i + d); }
+function addMin(m) { st.left += m * 60; persist(); render(); }
+function fs() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+
+setInterval(function () {
+  if (!st.running) return;
+  st.left--;
+  if (st.left <= 0) {
+    chime();
+    if (st.i < PHASES.length - 1) { st.i++; st.left = PHASES[st.i].m * 60; }
+    else { st.left = 0; st.running = false; }
+  }
+  persist(); render();
+}, 1000);
+addEventListener('keydown', function (e) { if (e.key === ' ') { e.preventDefault(); toggle(); } });
+render();
+</script>
+</body>
+</html>

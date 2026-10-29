@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 2 Study Guide</title>
+<meta name="description" content="Statistics for Data Science: descriptive statistics, the normal distribution, probability and sampling, hypothesis testing, Z, T, Chi-square and ANOVA tests in Python, with a hands-on delivery-trial dataset.">
+<link rel="stylesheet" href="/courses/shared/theme.css">
+<script src="/courses/shared/site.js"></script>
+<style>
+  .pace { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 18px 0 4px; }
+  .pace a { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; color: var(--ink); font-size: 14px; }
+  .pace a:hover { border-color: var(--brand); text-decoration: none; }
+  .pace b { display: block; font-size: 12px; color: var(--accent); }
+  .diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .step-head { display: flex; gap: 12px; align-items: center; margin: 28px 0 8px; }
+  .step-head .n { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--brand); color: #fff; font-size: 15px; }
+  .step-head h3 { margin: 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .calc { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .calc label, .lab-ctrl label { font-size: 13px; color: var(--ink-3); font-weight: 600; display: block; margin-bottom: 4px; }
+  .verdict { margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-weight: 600; }
+  .lab-ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; align-items: end; }
+  .lab-ctrl [hidden] { display: none; }
+  #labChart svg, #cltChart svg, #normSvg { width: 100%; height: auto; display: block; }
+  .task { display: grid; grid-template-columns: 28px 1fr; gap: 8px; margin: 10px 0; font-size: 15.5px; }
+  .task input { width: 18px; height: 18px; margin-top: 4px; }
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; }
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 14px 0; }
+  .steps li { counter-increment: s; position: relative; padding: 10px 14px 10px 52px; margin: 8px 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; font-size: 15.5px; }
+  .steps li::before { content: counter(s); position: absolute; left: 12px; top: 9px; width: 28px; height: 28px; border-radius: 50%; background: var(--violet); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 14px; }
+  .test { border-left: 4px solid var(--brand); background: var(--surface); border-radius: 0 12px 12px 0; padding: 16px 18px; margin: 18px 0; border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .test h3 { margin-top: 0; }
+  .formula { font-family: var(--mono); background: var(--surface-2); border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 15px; line-height: 1.7; overflow-x: auto; }
+  .ok { color: var(--good); font-weight: 700; } .no { color: var(--bad); font-weight: 700; }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <div class="crumbs"><a href="/courses/">Courses</a> › <a href="../">Data Science</a> › <a href="./">Unit 2</a> › <b>Study guide</b></div>
+  <a class="icon-btn" href="quiz.html">Quiz →</a>
+  <button class="icon-btn" onclick="toggleTheme()" title="Light / dark">◐</button>
+  <div class="progress"></div>
+</div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">Unit 2 · Study guide · 35 minutes</span>
+    <h1>Statistics for Data Science</h1>
+    <p class="lead">In March 2026 KiranaMart ran a 4-week <b>delivery trial</b>: <b>600 orders</b>, three delivery partners, an old and a new route app. The manager wants answers, not guesses. In this guide you will describe the data, model it with the normal curve, and settle four business arguments with <b>Z, T, Chi-square and ANOVA</b> tests in Python.</p>
+    <div class="pace">
+      <a href="#intro"><b>0–3 min</b>Introduction</a>
+      <a href="#desc"><b>3–9 min</b>Descriptive statistics</a>
+      <a href="#normal"><b>9–14 min</b>Normal distribution</a>
+      <a href="#prob"><b>14–19 min</b>Probability · sampling</a>
+      <a href="#hyp"><b>19–23 min</b>Hypothesis testing</a>
+      <a href="#tests"><b>23–29 min</b>Z · T · χ² · ANOVA</a>
+      <a href="#lab"><b>29–35 min</b>Hands-on lab</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc">
+      <div class="t">On this page</div>
+      <a href="#intro">1. Introduction to statistics</a>
+      <a href="#desc">2. Descriptive statistics</a>
+      <a href="#normal">3. Distributions and the normal curve</a>
+      <a href="#prob">4. Probability and sampling</a>
+      <a href="#hyp">5. Hypothesis testing</a>
+      <a href="#tests">6. Statistical tests</a>
+      <a href="#python">7. Python implementation</a>
+      <a href="#interpret">8. Interpreting results</a>
+      <a href="#lab">9. Hands-on lab</a>
+      <a href="#summary">10. Summary and revision</a>
+    </nav>
+
+    <main>
+<!-- ================================================================ 1 -->
+<section class="block" id="intro">
+  <div class="sec-no">Section 1</div>
+  <h2>Introduction to statistics</h2>
+  <div class="definition">
+    Statistics is the science of <b>collecting</b>, <b>summarising</b> and <b>drawing conclusions</b> from data, while honestly measuring how <b>uncertain</b> those conclusions are.
+    <small>In Unit 1 the lifecycle had “Explore” and “Evaluate” stages. Statistics is the toolkit for both.</small>
+  </div>
+
+  <div class="two">
+    <div class="card"><b>📋 Descriptive statistics</b><p class="muted" style="margin:6px 0 0;font-size:15px">Summarise the data you <b>have</b>: averages, spread, charts.<br>“The 600 trial orders took 31.4 minutes on average.”</p></div>
+    <div class="card"><b>🔭 Inferential statistics</b><p class="muted" style="margin:6px 0 0;font-size:15px">Use a <b>sample</b> to conclude about the whole <b>population</b>, with a measured risk of being wrong.<br>“The machine under-fills <i>all</i> its packets, not just these 40.”</p></div>
+  </div>
+
+  <h3>Population, sample, parameter, statistic</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Population</th><th>Sample</th></tr>
+    <tr><td><b>Meaning</b></td><td>Every item you care about</td><td>The part you actually measure</td></tr>
+    <tr><td><b>KiranaMart example</b></td><td>Every atta packet the machine will ever fill</td><td>The 40 packets weighed on Monday</td></tr>
+    <tr><td><b>A number describing it is a…</b></td><td><b>parameter</b> (usually unknown)</td><td><b>statistic</b> (we compute it)</td></tr>
+    <tr><td><b>Symbols</b></td><td>N, μ (mean), σ (SD), p (proportion)</td><td>n, x̄ (mean), s (SD), p̂ (proportion)</td></tr>
+  </table></div>
+
+  <h3>Types of data (NOIR)</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Level</th><th>What it means</th><th>In the trial dataset</th><th>Meaningful statistics</th></tr>
+    <tr><td><b>Nominal</b></td><td>Labels with no order</td><td><code>city</code>, <code>partner</code>, <code>payment_mode</code></td><td>Counts, %, mode</td></tr>
+    <tr><td><b>Ordinal</b></td><td>Ordered, gaps not equal</td><td><code>rating</code> (1★–5★)</td><td>+ median, percentiles</td></tr>
+    <tr><td><b>Interval</b></td><td>Equal gaps, no true zero</td><td>(temperature in °C)</td><td>+ mean, SD</td></tr>
+    <tr><td><b>Ratio</b></td><td>Equal gaps and a true zero</td><td><code>delivery_min</code>, <code>order_value</code>, <code>items</code></td><td>+ “twice as much”</td></tr>
+  </table></div>
+  <div class="callout idea"><b>Why it matters</b>The type of data decides the test. Numbers (delivery minutes) → compare <b>means</b> with Z, T or ANOVA. Categories (payment mode) → compare <b>counts</b> with Chi-square.</div>
+</section>
+
+<!-- ================================================================ 2 -->
+<section class="block" id="desc">
+  <div class="sec-no">Section 2</div>
+  <h2>Descriptive statistics</h2>
+  <p>Two questions describe any numeric column: <b>where is the centre?</b> and <b>how spread out is it?</b></p>
+
+  <h3>Measures of centre</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Measure</th><th>How</th><th>Strength</th><th>Weakness</th></tr>
+    <tr><td><b>Mean</b> x̄</td><td>Σx / n</td><td>Uses every value</td><td>Pulled by outliers and skew</td></tr>
+    <tr><td><b>Median</b></td><td>Middle value after sorting (average of the two middle ones if n is even)</td><td>Resistant to outliers</td><td>Ignores how extreme the extremes are</td></tr>
+    <tr><td><b>Mode</b></td><td>Most frequent value</td><td>Works for categories</td><td>There may be none, or several</td></tr>
+  </table></div>
+
+  <h3>Measures of spread</h3>
+  <div class="formula">Range = max − min<br>
+    Population variance σ² = Σ(x − μ)² / N &nbsp;&nbsp;&nbsp; Sample variance s² = Σ(x − x̄)² / (n − 1)<br>
+    Standard deviation = √variance &nbsp;(same units as the data)<br>
+    IQR = Q3 − Q1 &nbsp;(spread of the middle 50%)</div>
+  <div class="callout warn"><b>Worked example: by hand</b>
+    Values 2, 4, 4, 4, 5, 5, 7, 9. Mean = 40 / 8 = <b>5</b>.<br>
+    Deviations −3, −1, −1, −1, 0, 0, 2, 4 → squares 9, 1, 1, 1, 0, 0, 4, 16 → sum <b>32</b>.<br>
+    Population: σ² = 32 / 8 = 4, <b>σ = 2</b>. Sample: s² = 32 / 7 = 4.57, <b>s = 2.14</b>.<br>
+    Why n − 1? A sample is usually a little less spread out than its population, so dividing by a smaller number corrects the estimate upward (Bessel’s correction).
+  </div>
+
+  <div class="activity">
+    <span class="tag">Calculator · type your own numbers</span>
+    <label for="dsIn" style="font-weight:600;display:block;margin-bottom:6px">Numbers separated by commas or spaces</label>
+    <input type="text" id="dsIn" value="2, 4, 4, 4, 5, 5, 7, 9" style="width:100%">
+    <div class="kpis" id="dsOut"></div>
+    <p class="muted" style="font-size:14px;margin:0">Try adding one huge value such as 250. Which measure jumps, and which hardly moves?</p>
+  </div>
+
+  <h3>On the real data</h3>
+<pre class="code" data-lang="py">import pandas as pd
+df = pd.read_csv("kiranamart_delivery_trial.csv")
+v = df["order_value"]
+print("mean:", round(v.mean(), 2), " median:", v.median(), " mode of items:", df["items"].mode()[0])
+print("range:", v.max() - v.min(), " variance:", round(v.var(), 1), " std:", round(v.std(), 2))
+print("skewness:", round(v.skew(), 2))
+print(df[["order_value", "delivery_min", "items"]].describe().round(2))</pre>
+<pre class="out">mean: 685.33  median: 620.0  mode of items: 3
+range: 3750.0  variance: 124245.3  std: 352.48
+skewness: 2.47
+       order_value  delivery_min   items
+count       600.00        600.00  600.00
+mean        685.33         31.38    3.36
+std         352.48          6.41    1.57
+min         140.00         12.50    1.00
+25%         460.00         26.98    2.00
+50%         620.00         30.90    3.00
+75%         830.00         35.80    4.00
+max        3890.00         53.90    9.00</pre>
+  <div class="callout tip"><b>NumPy vs pandas: a classic exam trap</b> <code>pd.Series.std()</code> divides by <b>n − 1</b> (sample). <code>np.std()</code> divides by <b>n</b> (population) unless you write <code>np.std(x, ddof=1)</code>. On delivery time: 6.402 (NumPy default) vs 6.408 (pandas). Tiny here, big for small samples.</div>
+</section>
+
+<!-- ================================================================ 3 -->
+<section class="block" id="normal">
+  <div class="sec-no">Section 3</div>
+  <h2>Data distribution and the normal distribution</h2>
+  <p>A <b>distribution</b> shows how often each value occurs. Draw it as a histogram and look at its <b>shape</b>.</p>
+  <div class="two">
+    <figure class="shot"><img src="img/order_value_skew.png" alt="Order value histogram, right-skewed, mean 685 above median 620" loading="lazy"><figcaption>Order value: right-skewed (skewness +2.47). Mean ₹685 &gt; median ₹620.</figcaption></figure>
+    <figure class="shot"><img src="img/delivery_normal.png" alt="Delivery time histogram close to a normal curve" loading="lazy"><figcaption>Delivery time: almost symmetric (skewness +0.20), close to normal.</figcaption></figure>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Shape</th><th>Tail</th><th>Mean vs median</th><th>Example</th></tr>
+    <tr><td><b>Symmetric</b></td><td>both sides equal</td><td>mean ≈ median</td><td>delivery time (31.4 vs 30.9 min)</td></tr>
+    <tr><td><b>Right / positive skew</b></td><td>long tail to the right</td><td>mean &gt; median</td><td>order value, incomes, house prices</td></tr>
+    <tr><td><b>Left / negative skew</b></td><td>long tail to the left</td><td>mean &lt; median</td><td>marks in a very easy exam</td></tr>
+  </table></div>
+
+  <h3>The normal distribution</h3>
+  <p>The bell-shaped <b>normal (Gaussian) distribution</b> is described completely by two numbers, its mean μ and standard deviation σ. It is symmetric, mean = median = mode, and the total area under it is 1 (100%). Many measurements are roughly normal, and, thanks to the Central Limit Theorem (Section 4), <b>sample means</b> are almost always normal.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Empirical rule</th><th>Theory</th><th>Delivery time (μ = 31.4, σ = 6.4)</th><th>Real data</th></tr>
+    <tr><td>within μ ± 1σ</td><td>68%</td><td>25.0 to 37.8 min</td><td>68.3%</td></tr>
+    <tr><td>within μ ± 2σ</td><td>95%</td><td>18.6 to 44.2 min</td><td>96.2%</td></tr>
+    <tr><td>within μ ± 3σ</td><td>99.7%</td><td>12.2 to 50.6 min</td><td>99.7%</td></tr>
+  </table></div>
+
+  <h3>z-scores</h3>
+  <div class="formula">z = (x − μ) / σ &nbsp;&nbsp;→ how many standard deviations x is from the mean</div>
+  <p>A 45-minute delivery: z = (45 − 31.4) / 6.4 = <b>2.13</b>. The area to the right of z = 2.13 is about <b>0.017</b>, so the normal model predicts 1.7% of deliveries take longer than 45 minutes. In the real data it was 12 of 600 = <b>2.0%</b>. Close enough to trust the model.</p>
+  <div class="activity">
+    <span class="tag">Explore · drag the cut-off</span>
+    <div class="calc">
+      <div><label for="nMu">Mean μ</label><input type="number" id="nMu" value="31.4" step="0.1"></div>
+      <div><label for="nSd">SD σ</label><input type="number" id="nSd" value="6.4" step="0.1" min="0.1"></div>
+      <div><label for="nX">Cut-off x (minutes)</label><input type="number" id="nX" value="45" step="0.5"></div>
+    </div>
+    <input type="range" id="nXr" min="10" max="55" step="0.5" value="45" style="width:100%;margin-top:10px" aria-label="Cut-off">
+    <svg id="normSvg" viewBox="0 0 760 230" role="img" aria-label="Normal curve with shaded tail"></svg>
+    <div class="kpis" id="nOut"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 4 -->
+<section class="block" id="prob">
+  <div class="sec-no">Section 4</div>
+  <h2>Probability and sampling</h2>
+  <h3>Basic probability</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Idea</th><th>Rule</th><th>Trial example</th></tr>
+    <tr><td><b>Probability</b></td><td>P(A) = favourable / total, between 0 and 1</td><td>Late (&gt; 40 min): 52 / 600 = 0.087</td></tr>
+    <tr><td><b>Complement</b></td><td>P(not A) = 1 − P(A)</td><td>On time: 1 − 0.087 = 0.913</td></tr>
+    <tr><td><b>Addition</b></td><td>P(A or B) = P(A) + P(B) − P(A and B)</td><td>Subtract the overlap so it is not counted twice</td></tr>
+    <tr><td><b>Independence</b></td><td>P(A and B) = P(A) × P(B)</td><td>Two packets, each 20% under-weight: 0.2 × 0.2 = 0.04</td></tr>
+    <tr><td><b>Conditional</b></td><td>P(A | B) = P(A and B) / P(B)</td><td>P(late | ExpressGo) = 30 / 184 = 0.163</td></tr>
+  </table></div>
+<pre class="code" data-lang="py">late = df["delivery_min"] &gt; 40
+print("P(late) =", late.sum(), "/", len(df), "=", round(late.mean(), 3))
+print((df.assign(late=late).groupby("partner")["late"].mean() * 100).round(1))</pre>
+<pre class="out">P(late) = 52 / 600 = 0.087
+partner
+ExpressGo    16.3
+QuickDrop     7.6
+SwiftShip     3.5</pre>
+  <div class="callout idea"><b>Conditional probability changes the story</b>Overall, 8.7% of orders are late. But an ExpressGo order is late 16.3% of the time, almost <b>5×</b> SwiftShip’s 3.5%. Is that real or chance? Section 6 answers with ANOVA.</div>
+
+  <h3>Population vs sample, and how to sample</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Method</th><th>How it works</th><th>Example</th></tr>
+    <tr><td><b>Simple random</b></td><td>Every member has the same chance</td><td>Draw 40 packet numbers by lottery</td></tr>
+    <tr><td><b>Stratified</b></td><td>Split into groups (strata), sample randomly inside each</td><td>50 New + 50 Returning customers</td></tr>
+    <tr><td><b>Systematic</b></td><td>Every k-th member after a random start</td><td>Every 25th packet off the line</td></tr>
+    <tr><td><b>Cluster</b></td><td>Randomly choose whole groups, measure everyone in them</td><td>3 random stores, every order there</td></tr>
+    <tr><td><b>Convenience</b> ⚠️</td><td>Whoever is easiest to reach (biased)</td><td>Only customers who answer on WhatsApp</td></tr>
+  </table></div>
+  <p><b>Sampling error</b> is the natural gap between a sample statistic and the population parameter. It is not a mistake; it is luck, and it gets smaller as the sample grows. <b>Sampling bias</b> is a real mistake: the sample systematically misses part of the population, and a bigger sample does not fix it.</p>
+
+  <h3>The Central Limit Theorem (CLT)</h3>
+  <div class="definition">Take many random samples of size n and compute each sample’s mean. For large enough n (about 30 or more) those means follow a <b>normal distribution</b> centred on μ, with standard deviation <b>σ / √n</b>, called the <b>standard error (SE)</b>, whatever the shape of the original data.</div>
+  <figure class="shot"><img src="img/clt_sample_means.png" alt="Skewed order values on the left, bell-shaped distribution of sample means on the right" loading="lazy"><figcaption>Order values are skewed, but the means of samples of 30 form a bell around ₹685.</figcaption></figure>
+  <p>Order value σ = ₹352, n = 30 → SE = 352 / √30 = <b>₹64.3</b>. In 2,000 simulated samples the sample means had an SD of ₹61–64. This is the bridge to hypothesis testing: because sample means are normal, we can say how surprising a sample mean is.</p>
+  <div class="activity" id="clt">
+    <span class="tag">Simulate · real order values</span>
+    <div class="lab-ctrl">
+      <div><label for="cltN">Sample size n = <span id="cltNv">30</span></label><input type="range" id="cltN" min="2" max="100" value="30" style="width:100%"></div>
+      <button class="btn" onclick="cltRun()">Draw 1,000 samples</button>
+    </div>
+    <div id="cltChart"></div>
+    <div class="kpis" id="cltOut"></div>
+    <p class="muted" style="font-size:14px;margin:0">Try n = 2, then n = 30, then n = 100. What happens to the shape and to the spread?</p>
+  </div>
+</section>
+
+<!-- ================================================================ 5 -->
+<section class="block" id="hyp">
+  <div class="sec-no">Section 5</div>
+  <h2>Hypothesis testing</h2>
+  <div class="callout story"><b>⚖️ The courtroom</b>The accused is presumed innocent: that is <b>H₀</b>, “nothing special is happening”. The prosecutor (you, with data) must show evidence beyond reasonable doubt. If the evidence is strong, the verdict is guilty: <b>reject H₀</b>. If not, the verdict is “not guilty”, which is <b>not</b> the same as “proved innocent”: we <b>fail to reject H₀</b>.</div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Term</th><th>Meaning</th><th>Route-app example</th></tr>
+    <tr><td><b>Null hypothesis H₀</b></td><td>No effect, no difference (contains “=”)</td><td>μ<sub>old</sub> = μ<sub>new</sub></td></tr>
+    <tr><td><b>Alternative H₁</b></td><td>The effect you are looking for</td><td>μ<sub>old</sub> ≠ μ<sub>new</sub> (two-tailed) or μ<sub>old</sub> &gt; μ<sub>new</sub> (one-tailed)</td></tr>
+    <tr><td><b>Significance level α</b></td><td>The false-alarm risk you accept, fixed <b>before</b> looking</td><td>0.05 (5%)</td></tr>
+    <tr><td><b>Test statistic</b></td><td>How far the data is from H₀, in standard-error units</td><td>t = 4.84</td></tr>
+    <tr><td><b>p-value</b></td><td>If H₀ were true, the probability of a result at least this extreme</td><td>0.0000016</td></tr>
+    <tr><td><b>Decision</b></td><td>p &lt; α → reject H₀; p ≥ α → fail to reject H₀</td><td>Reject: the app really is faster</td></tr>
+  </table></div>
+
+  <h3>The five steps</h3>
+  <ol class="steps">
+    <li><b>State H₀ and H₁</b> in symbols and in words.</li>
+    <li><b>Choose α</b> (usually 0.05; 0.01 when a false alarm is expensive).</li>
+    <li><b>Choose the test</b> (Section 6) and compute the test statistic.</li>
+    <li><b>Find the p-value</b> (SciPy does this).</li>
+    <li><b>Decide and explain</b> in business language, with the size of the effect.</li>
+  </ol>
+
+  <h3>Two ways to be wrong</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>H₀ is really true (machine fine)</th><th>H₀ is really false (machine under-fills)</th></tr>
+    <tr><td><b>Reject H₀</b></td><td class="no">Type I error: false alarm. Probability = α</td><td class="ok">Correct. Probability = power = 1 − β</td></tr>
+    <tr><td><b>Fail to reject H₀</b></td><td class="ok">Correct</td><td class="no">Type II error: a miss. Probability = β</td></tr>
+  </table></div>
+  <div class="callout warn"><b>Common p-value mistakes</b>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li>❌ “p = 0.03 means a 3% chance H₀ is true.” ✅ It means: <i>if</i> H₀ were true, data this extreme would appear 3% of the time.</li>
+      <li>❌ “p = 0.40, so the groups are equal.” ✅ There is simply not enough evidence of a difference.</li>
+      <li>❌ Changing α after seeing p. ✅ α is fixed before the test.</li>
+    </ul></div>
+
+  <div class="activity" id="pGame">
+    <span class="tag">Try it · 1 min</span>
+    <h3 style="margin:0 0 6px">Reject or not? (α = 0.05)</h3>
+    <div class="pg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 6 -->
+<section class="block" id="tests">
+  <div class="sec-no">Section 6</div>
+  <h2>Statistical tests for data science</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Your question</th><th>Data</th><th>Test</th></tr>
+    <tr><td>Is one mean equal to a target, σ known?</td><td>numeric, 1 group</td><td><b>Z-test</b></td></tr>
+    <tr><td>Is one mean equal to a target, σ unknown?</td><td>numeric, 1 group</td><td><b>One-sample T-test</b></td></tr>
+    <tr><td>Do two groups have the same mean?</td><td>numeric, 2 independent groups</td><td><b>Independent (two-sample) T-test</b></td></tr>
+    <tr><td>Did the same subjects change?</td><td>numeric, before / after</td><td><b>Paired T-test</b></td></tr>
+    <tr><td>Do three or more groups have the same mean?</td><td>numeric, 3+ groups</td><td><b>One-way ANOVA</b></td></tr>
+    <tr><td>Are two categorical variables related?</td><td>counts in a table</td><td><b>Chi-square test of independence</b></td></tr>
+  </table></div>
+
+  <div class="test" style="border-left-color:var(--accent)">
+    <h3>⚖️ Z-test: is the atta machine under-filling?</h3>
+    <p><b>When:</b> testing a mean when the population SD σ is <b>known</b> (or n is large). The packing-machine maker certifies σ = 12 g.</p>
+    <div class="formula">z = (x̄ − μ₀) / (σ / √n)</div>
+    <div class="two">
+      <div>
+        <p>H₀: μ = 1000 g, H₁: μ ≠ 1000 g, α = 0.05.<br>n = 40, x̄ = 995.38 g.<br>SE = 12 / √40 = 1.897<br>z = (995.38 − 1000) / 1.897 = <b>−2.43</b><br>Critical values ±1.96 → |z| &gt; 1.96. p = <b>0.015</b>.</p>
+        <p class="ok">Reject H₀: the machine under-fills by about 4.6 g per packet.</p>
+      </div>
+      <figure class="shot" style="margin:0"><img src="img/atta_weights.png" alt="40 packet weights scattered around 995 g, below the 1000 g label" loading="lazy"></figure>
+    </div>
+  </div>
+
+  <div class="test">
+    <h3>📱 T-test: does the new route app save time?</h3>
+    <p><b>When:</b> testing means when σ is <b>unknown</b>, so it is estimated by the sample SD s. The t distribution has heavier tails than the normal to allow for that extra uncertainty; with large samples it becomes almost identical to z.</p>
+    <div class="tbl-wrap" style="margin:8px 0"><table>
+      <tr><th>Type</th><th>Question</th><th>SciPy</th></tr>
+      <tr><td>One-sample</td><td>Is mean delivery time 30 min? (t = 5.27, p &lt; 0.001: no, it is longer)</td><td><code>ttest_1samp(x, 30)</code></td></tr>
+      <tr><td>Independent</td><td>Old app vs new app (different orders)</td><td><code>ttest_ind(a, b, equal_var=False)</code></td></tr>
+      <tr><td>Paired</td><td>The same riders before and after training</td><td><code>ttest_rel(before, after)</code></td></tr>
+    </table></div>
+    <div class="formula">Welch t = (x̄₁ − x̄₂) / √( s₁²/n₁ + s₂²/n₂ )</div>
+    <div class="two">
+      <div>
+        <p>Old app: n = 296, x̄ = 32.64, s = 6.26<br>New app: n = 304, x̄ = 30.15, s = 6.32<br>SE = √(6.26²/296 + 6.32²/304) = 0.514<br>t = (32.64 − 30.15) / 0.514 = <b>4.84</b>, p = <b>0.0000016</b></p>
+        <p class="ok">Reject H₀: the app saves about 2.5 minutes per order.</p>
+        <p>Control check: <b>order value</b> by app gives t = −0.49, p = 0.63 → <span class="no" style="color:var(--accent)">fail to reject</span>. The app changes speed, not what people buy. Good.</p>
+      </div>
+      <figure class="shot" style="margin:0"><img src="img/route_app_compare.png" alt="Histogram: new app deliveries shifted about 2.5 minutes faster" loading="lazy"></figure>
+    </div>
+  </div>
+
+  <div class="test" style="border-left-color:var(--violet)">
+    <h3>💳 Chi-square test: do new customers pay differently?</h3>
+    <p><b>When:</b> both variables are <b>categorical</b>. Compare the observed counts with the counts you would <b>expect</b> if the variables were independent.</p>
+    <div class="formula">Expected E = row total × column total / grand total<br>χ² = Σ (O − E)² / E &nbsp;&nbsp;&nbsp; df = (rows − 1)(columns − 1)</div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Observed (expected)</th><th class="num">UPI</th><th class="num">Card</th><th class="num">Cash on Delivery</th><th class="num">Total</th></tr>
+      <tr><td>New</td><td class="num">113 (140.5)</td><td class="num">52 (57.4)</td><td class="num"><b>96 (63.1)</b></td><td class="num">261</td></tr>
+      <tr><td>Returning</td><td class="num">210 (182.5)</td><td class="num">80 (74.6)</td><td class="num"><b>49 (81.9)</b></td><td class="num">339</td></tr>
+      <tr><td>Total</td><td class="num">323</td><td class="num">132</td><td class="num">145</td><td class="num">600</td></tr>
+    </table></div>
+    <div class="two">
+      <p>Biggest cell: (96 − 63.1)² / 63.1 = 17.2. All six cells add up to <b>χ² = 40.85</b>, df = 2. The critical value at α = 0.05 is 5.99, and p ≈ 1.3 × 10⁻⁹.<br><span class="ok">Reject H₀: payment mode depends on customer type.</span> New customers use Cash on Delivery 37% of the time vs 14% for returning ones, so removing COD would hurt first orders most.</p>
+      <figure class="shot" style="margin:0"><img src="img/payment_by_customer.png" alt="Stacked bars: new customers 37% COD, returning 14%" loading="lazy"></figure>
+    </div>
+    <p class="muted" style="font-size:14px">Rule of thumb: every expected count should be at least 5. For a 2 × 2 table SciPy applies Yates’ continuity correction by default.</p>
+  </div>
+
+  <div class="test" style="border-left-color:var(--good)">
+    <h3>🛵 One-way ANOVA: are the three partners equally fast?</h3>
+    <p><b>When:</b> one numeric variable, <b>three or more groups</b>. Why not three T-tests? Each test has a 5% false-alarm risk; three tests push the overall risk to about 1 − 0.95³ ≈ 14%. ANOVA does one test.</p>
+    <div class="formula">F = MS<sub>between</sub> / MS<sub>within</sub> = [SSB / (k − 1)] / [SSW / (N − k)]</div>
+    <div class="two">
+      <div>
+        <p>SwiftShip 29.84 (n = 231) · QuickDrop 30.44 (n = 185) · ExpressGo 34.25 (n = 184)<br>
+        SSB = 2,230.5, df = 2 → MSB = 1,115.3<br>SSW = 22,363.8, df = 597 → MSW = 37.46<br>F = 1,115.3 / 37.46 = <b>29.77</b>, p ≈ 4.7 × 10⁻¹³</p>
+        <p class="ok">Reject H₀: at least one partner’s mean differs.</p>
+        <p>ANOVA does not say <i>which</i> one. The means point to ExpressGo; a post-hoc test such as <b>Tukey’s HSD</b> confirms which pairs differ. Control: by <b>city</b>, F = 1.24, p = 0.29 → no evidence that city matters.</p>
+      </div>
+      <figure class="shot" style="margin:0"><img src="img/partner_boxplot.png" alt="Box plot: ExpressGo slower than SwiftShip and QuickDrop" loading="lazy"></figure>
+    </div>
+  </div>
+
+  <div class="activity" id="testGame">
+    <span class="tag">Try it · 2 min</span>
+    <h3 style="margin:0 0 6px">Which test would you use?</h3>
+    <div class="tg"></div>
+  </div>
+</section>
+
+<!-- ================================================================ 7 -->
+<section class="block" id="python">
+  <div class="sec-no">Section 7</div>
+  <h2>Python implementation: NumPy, pandas and SciPy</h2>
+  <p>Each library has a job: <b>pandas</b> loads and groups the data, <b>NumPy</b> does the fast arithmetic, <b>SciPy</b> (<code>scipy.stats</code>) does the distributions and tests. This is the core of the lab file, with its real output.</p>
+<pre class="code" data-lang="py">import numpy as np
+import pandas as pd
+from scipy import stats
+
+df = pd.read_csv("kiranamart_delivery_trial.csv")
+packs = pd.read_csv("atta_pack_weights.csv")
+
+# Z-test (sigma known = 12 g)
+w = packs["weight_g"]
+z = (w.mean() - 1000) / (12 / np.sqrt(len(w)))
+print("Z-test:", round(z, 3), round(2 * stats.norm.sf(abs(z)), 4))
+
+# Independent T-test (Welch)
+old = df.loc[df["route_app"] == "Old", "delivery_min"]
+new = df.loc[df["route_app"] == "New", "delivery_min"]
+t, p = stats.ttest_ind(old, new, equal_var=False)
+print("T-test:", round(t, 3), p)
+
+# Chi-square test of independence
+table = pd.crosstab(df["customer_type"], df["payment_mode"])
+chi2, p, dof, expected = stats.chi2_contingency(table)
+print("Chi-square:", round(chi2, 2), dof, p)
+
+# One-way ANOVA
+groups = [g["delivery_min"] for _, g in df.groupby("partner")]
+F, p = stats.f_oneway(*groups)
+print("ANOVA:", round(F, 2), p)</pre>
+<pre class="out">Z-test: -2.435 0.0149
+T-test: 4.844 1.6192855734904318e-06
+Chi-square: 40.85 2 1.3445949072110282e-09
+ANOVA: 29.77 4.732185153964879e-13</pre>
+  <div class="callout tip"><b>Useful SciPy calls</b> <code>stats.norm.cdf(z)</code> area left of z · <code>stats.norm.sf(z)</code> area right of z · <code>stats.norm.ppf(0.975)</code> → 1.96 · <code>stats.ttest_1samp</code>, <code>ttest_ind</code>, <code>ttest_rel</code> · <code>stats.chi2_contingency</code> · <code>stats.f_oneway</code>. The lab file wraps the decision in a small function <code>decide(p)</code>.</div>
+</section>
+
+<!-- ================================================================ 8 -->
+<section class="block" id="interpret">
+  <div class="sec-no">Section 8</div>
+  <h2>Interpreting statistical test results</h2>
+  <p>A test result is only useful when a manager can act on it. A good conclusion has five parts:</p>
+  <div class="callout idea"><b>Template</b>“A <b>[test]</b> showed that <b>[groups / variables]</b> <b>[differ / are related]</b> (<b>[statistic]</b> = …, p = …). <b>[Effect size in real units]</b>. So we recommend <b>[action]</b>.”<br><br>
+    <i>Example:</i> “A Welch T-test showed that deliveries with the new route app were faster than with the old app (t = 4.84, p &lt; 0.001). The average saving was 2.5 minutes per order. We recommend rolling out the new app to all riders.”</div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Business question</th><th>Result</th><th>Decision</th><th>Plain-English conclusion</th></tr>
+    <tr><td>Machine under-filling?</td><td>z = −2.43, p = 0.015</td><td class="ok">Reject H₀</td><td>Packets average 995 g. Recalibrate the machine.</td></tr>
+    <tr><td>New app faster?</td><td>t = 4.84, p &lt; 0.001</td><td class="ok">Reject H₀</td><td>Saves 2.5 min per order. Roll it out.</td></tr>
+    <tr><td>App changes order value?</td><td>t = −0.49, p = 0.63</td><td style="color:var(--accent);font-weight:700">Fail to reject</td><td>No evidence it changes what people buy.</td></tr>
+    <tr><td>Payment depends on customer type?</td><td>χ² = 40.85, p &lt; 0.001</td><td class="ok">Reject H₀</td><td>New customers rely on COD (37% vs 14%). Keep it for first orders.</td></tr>
+    <tr><td>Partners equally fast?</td><td>F = 29.77, p &lt; 0.001</td><td class="ok">Reject H₀</td><td>ExpressGo is about 4 min slower. Review its contract.</td></tr>
+    <tr><td>City affects delivery time?</td><td>F = 1.24, p = 0.29</td><td style="color:var(--accent);font-weight:700">Fail to reject</td><td>No evidence; the delay is about the partner, not the city.</td></tr>
+  </table></div>
+  <div class="callout warn"><b>Statistical vs practical significance</b> With 2 lakh orders, a change that adds just 0.2 seconds can give p = 0.001. That is <i>statistically</i> significant but <i>practically</i> meaningless. Always report the <b>effect size</b> (the 2.5 minutes, the 4.6 grams) and ask: <b>is it big enough to matter?</b></div>
+</section>
+
+<!-- ================================================================ 9 -->
+<section class="block" id="lab">
+  <div class="sec-no">Section 9</div>
+  <h2>Hands-on lab: the Hypothesis Test Lab</h2>
+  <p><b>Part A</b> runs every test from this unit on the real trial data, in this page. <b>Part B</b> is the same work in Python.</p>
+
+  <h3>Part A · Hypothesis Test Lab (in the browser)</h3>
+  <div class="card">
+    <div class="lab-ctrl">
+      <div><label for="tt">Test</label>
+        <select id="tt">
+          <option value="z">Z-test (atta packets)</option><option value="t" selected>T-test (2 groups)</option>
+          <option value="anova">One-way ANOVA (3+ groups)</option><option value="chi">Chi-square (2 categories)</option>
+        </select></div>
+      <div id="wNum"><label for="num">Numeric column</label>
+        <select id="num"><option value="delivery_min">delivery_min</option><option value="order_value">order_value</option><option value="items">items</option><option value="rating">rating</option></select></div>
+      <div id="wGrp"><label for="grp">Group by</label>
+        <select id="grp"><option value="route_app">route_app</option><option value="customer_type">customer_type</option><option value="partner">partner</option><option value="city">city</option><option value="payment_mode">payment_mode</option></select></div>
+      <div id="wGrp2" hidden><label for="grp2">…against</label>
+        <select id="grp2"><option value="payment_mode">payment_mode</option><option value="customer_type">customer_type</option><option value="partner">partner</option><option value="city">city</option><option value="route_app">route_app</option></select></div>
+      <div id="wMu" hidden><label for="mu0">H₀ mean μ₀ (g)</label><input type="number" id="mu0" value="1000"></div>
+      <div id="wSig" hidden><label for="sig">Known σ (g)</label><input type="number" id="sig" value="12" min="0.1" step="0.5"></div>
+      <div><label for="alpha">Significance α</label>
+        <select id="alpha"><option value="0.10">0.10</option><option value="0.05" selected>0.05</option><option value="0.01">0.01</option></select></div>
+    </div>
+    <p id="labH" style="margin:16px 0 4px;font-size:15.5px"></p>
+    <div class="kpis" id="labKpi"></div>
+    <div id="labChart"></div>
+    <div class="tbl-wrap" id="labTable"></div>
+    <div class="verdict" id="labVerdict"></div>
+    <p class="muted" id="labNote" style="font-size:14px;margin:8px 0 0"></p>
+  </div>
+
+  <h3>Your tasks</h3>
+  <div class="card">
+    <label class="task"><input type="checkbox"><span><b>Task 1.</b> Run the <b>Z-test</b> with μ₀ = 1000 and σ = 12. Write H₀, H₁, z, p and the decision. Now set α to <b>0.01</b>. Does the decision change? What does that tell you about choosing α in advance?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 2.</b> <b>T-test</b>: <code>delivery_min</code> by <code>route_app</code>. Then <code>order_value</code> by <code>route_app</code>. Explain in one sentence each.</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 3.</b> Try a T-test grouped by <code>partner</code>. What does the lab say, and why?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 4.</b> <b>ANOVA</b>: <code>delivery_min</code> by <code>partner</code>, then by <code>city</code>. Which factor really affects delivery time?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 5.</b> <b>Chi-square</b>: <code>customer_type</code> against <code>payment_mode</code>, then <code>city</code> against <code>payment_mode</code>. Which cell is furthest from its expected count in the first table?</span></label>
+    <label class="task"><input type="checkbox"><span><b>Task 6.</b> Your own question: does the new app improve the customer <code>rating</code>? Run the right test and write a five-part conclusion (Section 8 template).</span></label>
+    <details><summary>Check your answers</summary>
+      <p>1. H₀: μ = 1000 g, H₁: μ ≠ 1000 g. z = −2.43, p = 0.015 → reject at 0.05. At α = 0.01, p = 0.015 &gt; 0.01 → fail to reject. The same data gives a different decision, which is why α must be fixed <i>before</i> testing. 2. Delivery: t = 4.84, p &lt; 0.001, the new app is about 2.5 min faster. Order value: t = −0.49, p = 0.63, no evidence of a difference. 3. A T-test compares exactly two groups; partner has three, so use ANOVA. 4. Partner: F = 29.77, p &lt; 0.001 (real effect). City: F = 1.24, p = 0.29 (no evidence). The partner matters, not the city. 5. χ² = 40.85, p &lt; 0.001 (related); city × payment χ² = 4.61, p = 0.59 (no evidence). The New + Cash on Delivery cell: 96 observed vs 63.1 expected. 6. Ratings: Old 3.71, New 3.83, t = −1.63, p = 0.10 → fail to reject at 0.05. The 0.11-star gap could be chance; the honest conclusion is “no evidence yet”, and a longer trial would be needed. Notice that a real 2.5-minute saving did not (yet) show up as a significant rating change.</p>
+    </details>
+  </div>
+
+  <h3>Part B · The same lab in Python</h3>
+  <div class="grid g4">
+    <a class="card tile" href="lab/kiranamart_delivery_trial.csv" download><div class="ic c-brand">🗂️</div><h3>1. Trial data</h3><p>kiranamart_delivery_trial.csv</p></a>
+    <a class="card tile" href="lab/atta_pack_weights.csv" download><div class="ic c-good">⚖️</div><h3>2. Packets</h3><p>atta_pack_weights.csv</p></a>
+    <a class="card tile" href="lab/unit2_lab.ipynb" download><div class="ic c-accent">📓</div><h3>3. Notebook</h3><p>Open in Jupyter or VS Code</p></a>
+    <a class="card tile" href="lab/unit2_lab.py" download><div class="ic c-teal">🐍</div><h3>or: script</h3><p>python unit2_lab.py</p></a>
+  </div>
+  <ol style="margin-top:16px">
+    <li>Put both CSV files and the notebook in the same folder.</li>
+    <li>Install the libraries once: <code>pip install numpy pandas scipy matplotlib</code></li>
+    <li>Run the cells from top to bottom. There are nine steps, one per business question.</li>
+    <li>The last cell saves <code>unit2_stats_report.png</code> and prints four recommendations for the manager.</li>
+  </ol>
+  <div class="callout tip"><b>Challenge (assignment)</b> Use <code>stats.ttest_1samp</code> to test whether the mean delivery time is 30 minutes, then add a <b>post-hoc</b> comparison of the three partners with three Welch T-tests and a Bonferroni correction (α = 0.05 / 3). Which pairs really differ?</div>
+</section>
+
+<!-- ================================================================ 10 -->
+<section class="block" id="summary">
+  <div class="sec-no">Section 10</div>
+  <h2>Summary and revision</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Topic</th><th>Remember this</th></tr>
+    <tr><td>Introduction</td><td>Descriptive = summarise; inferential = sample → population. Parameter (μ, σ) vs statistic (x̄, s). NOIR data types</td></tr>
+    <tr><td>Centre</td><td>Mean (outlier-sensitive), median (robust, use for skew), mode (categories)</td></tr>
+    <tr><td>Spread</td><td>Variance = mean squared deviation; SD = √variance; sample uses n − 1 (pandas default), NumPy uses n unless ddof=1</td></tr>
+    <tr><td>Distribution</td><td>Right skew: mean &gt; median. Normal: symmetric, 68–95–99.7, z = (x − μ)/σ</td></tr>
+    <tr><td>Probability</td><td>Complement, addition, independence (multiply), conditional P(A|B)</td></tr>
+    <tr><td>Sampling</td><td>Random, stratified, systematic, cluster; avoid convenience. CLT: sample means are normal, SE = σ/√n</td></tr>
+    <tr><td>Hypothesis testing</td><td>H₀ = no effect; α before the test; reject if p &lt; α; Type I = false alarm (α), Type II = miss (β)</td></tr>
+    <tr><td>Tests</td><td>Z (σ known) · T (σ unknown: one-sample, independent, paired) · χ² (two categorical) · ANOVA (3+ group means)</td></tr>
+    <tr><td>Interpretation</td><td>Statistic + p + effect size + business action. Significant ≠ important. Fail to reject ≠ proved equal</td></tr>
+  </table></div>
+
+  <h3>Key terms (click a card to flip)</h3>
+  <div class="grid g4">
+    <div class="flip"><div class="inner"><div class="face"><b>Standard deviation</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Typical distance of values from the mean, in the data’s own units. √variance.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>z-score</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">(x − μ)/σ: how many SDs a value lies above or below the mean.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Standard error</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">σ/√n: how much sample means vary from sample to sample.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Central Limit Theorem</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Means of large samples are approximately normal, whatever the shape of the data.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>p-value</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">If H₀ were true, the chance of a result at least as extreme as the one observed.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>α (alpha)</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Significance level chosen in advance; the accepted risk of a Type I error (false alarm).</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Degrees of freedom</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">Number of values free to vary. χ²: (r − 1)(c − 1). ANOVA: k − 1 and N − k.</div></div></div>
+    <div class="flip"><div class="inner"><div class="face"><b>Effect size</b><span class="muted" style="font-size:13px">click</span></div><div class="face back">How big the difference is in real units (2.5 minutes, 4.6 g). Decides if it matters.</div></div></div>
+  </div>
+
+  <div class="callout tip" style="margin-top:22px"><b>Ready for the quiz?</b> You should be able to: compute mean, median, mode and SD by hand · say when to use the median · use the 68–95–99.7 rule and z-scores · compute a conditional probability and a standard error · name the sampling methods · state H₀ and H₁ · explain p-value, α and Type I / II errors · choose between Z, T, χ² and ANOVA · compute a z statistic, an expected count and χ² degrees of freedom · interpret a result in business words.</div>
+  <p style="text-align:center;margin-top:20px"><a class="btn accent" href="quiz.html">Go to the Unit 2 quiz →</a></p>
+</section>
+    </main>
+  </div>
+</div>
+<footer class="foot">Unit 2 · Statistics for Data Science · BCA Semester 5</footer>
+
+<script>
+/* ---------- maths helpers: normal, t, F and chi-square distributions ---------- */
+function erf(x) { var t = 1 / (1 + 0.3275911 * Math.abs(x)); var y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x); return x >= 0 ? y : -y; }
+function normCdf(z) { return 0.5 * (1 + erf(z / Math.SQRT2)); }
+function lnGamma(x) {
+  var c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+  var y = x, t = x + 5.5; t -= (x + 0.5) * Math.log(t); var s = 1.000000000190015;
+  for (var j = 0; j < 6; j++) s += c[j] / ++y;
+  return -t + Math.log(2.5066282746310005 * s / x);
+}
+function betacf(a, b, x) {   // continued fraction for the incomplete beta function
+  var qab = a + b, qap = a + 1, qam = a - 1, c = 1, d = 1 - qab * x / qap, h;
+  if (Math.abs(d) < 1e-300) d = 1e-300; d = 1 / d; h = d;
+  for (var m = 1; m <= 300; m++) {
+    var m2 = 2 * m, aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+    d = 1 + aa * d; if (Math.abs(d) < 1e-300) d = 1e-300; c = 1 + aa / c; if (Math.abs(c) < 1e-300) c = 1e-300; d = 1 / d; h *= d * c;
+    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+    d = 1 + aa * d; if (Math.abs(d) < 1e-300) d = 1e-300; c = 1 + aa / c; if (Math.abs(c) < 1e-300) c = 1e-300; d = 1 / d;
+    var del = d * c; h *= del; if (Math.abs(del - 1) < 1e-12) break;
+  }
+  return h;
+}
+function ibeta(x, a, b) {    // regularised incomplete beta I_x(a, b)
+  if (x <= 0) return 0; if (x >= 1) return 1;
+  var bt = Math.exp(lnGamma(a + b) - lnGamma(a) - lnGamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+  return x < (a + 1) / (a + b + 2) ? bt * betacf(a, b, x) / a : 1 - bt * betacf(b, a, 1 - x) / b;
+}
+function tP2(t, df) { return ibeta(df / (df + t * t), df / 2, 0.5); }              // two-tailed p for t
+function fP(F, d1, d2) { return F <= 0 ? 1 : ibeta(d2 / (d2 + d1 * F), d2 / 2, d1 / 2); }  // right tail of F
+function chiP(x, k) {        // right tail of chi-square = upper regularised gamma Q(k/2, x/2)
+  var a = k / 2, z = x / 2; if (z <= 0) return 1;
+  var gln = lnGamma(a);
+  if (z < a + 1) { var ap = a, sum = 1 / a, del = sum; for (var n = 0; n < 500; n++) { ap++; del *= z / ap; sum += del; if (Math.abs(del) < Math.abs(sum) * 1e-14) break; } return 1 - sum * Math.exp(-z + a * Math.log(z) - gln); }
+  var b = z + 1 - a, c = 1e300, d = 1 / b, h = d;
+  for (var i = 1; i < 500; i++) { var an = -i * (i - a); b += 2; d = an * d + b; if (Math.abs(d) < 1e-300) d = 1e-300; c = b + an / c; if (Math.abs(c) < 1e-300) c = 1e-300; d = 1 / d; var dl = d * c; h *= dl; if (Math.abs(dl - 1) < 1e-14) break; }
+  return Math.exp(-z + a * Math.log(z) - gln) * h;
+}
+function fmtP(p) { return p < 0.0001 ? p.toExponential(1).replace('e', '×10^') : p.toFixed(4); }
+function mean(a) { return a.reduce(function (s, x) { return s + x; }, 0) / a.length; }
+function variance(a, ddof) { var m = mean(a); return a.reduce(function (s, x) { return s + (x - m) * (x - m); }, 0) / (a.length - ddof); }
+var r2 = function (x) { return Math.round(x * 100) / 100; };
+
+/* ---------- descriptive calculator ---------- */
+function ds() {
+  var a = document.getElementById('dsIn').value.split(/[\s,;]+/).filter(Boolean).map(Number).filter(function (x) { return isFinite(x); });
+  var out = document.getElementById('dsOut');
+  if (a.length < 2) { out.innerHTML = '<div class="kpi"><div class="v">—</div><div class="l">enter at least 2 numbers</div></div>'; return; }
+  var s = a.slice().sort(function (x, y) { return x - y; }), n = s.length;
+  var med = n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2;
+  var cnt = {}, best = 0; s.forEach(function (x) { cnt[x] = (cnt[x] || 0) + 1; best = Math.max(best, cnt[x]); });
+  var modes = Object.keys(cnt).filter(function (k) { return cnt[k] === best; });
+  var k = function (v, l) { return '<div class="kpi"><div class="v">' + v + '</div><div class="l">' + l + '</div></div>'; };
+  out.innerHTML = k(n, 'n') + k(r2(mean(a)), 'mean') + k(r2(med), 'median') + k(best > 1 ? modes.join(', ') : 'none', 'mode') +
+    k(r2(s[n - 1] - s[0]), 'range') + k(r2(variance(a, 0)), 'population variance σ²') + k(r2(Math.sqrt(variance(a, 0))), 'population SD σ') +
+    k(r2(variance(a, 1)), 'sample variance s²') + k(r2(Math.sqrt(variance(a, 1))), 'sample SD s');
+}
+document.getElementById('dsIn').addEventListener('input', ds); ds();
+
+/* ---------- normal curve explorer ---------- */
+function normDraw() {
+  var mu = +document.getElementById('nMu').value, sd = Math.max(0.1, +document.getElementById('nSd').value), x = +document.getElementById('nX').value;
+  var W = 760, H = 230, base = 190, lo = mu - 4 * sd, hi = mu + 4 * sd;
+  var X = function (v) { return 20 + (v - lo) / (hi - lo) * (W - 40); }, Y = function (v) { return base - 160 * Math.exp(-0.5 * Math.pow((v - mu) / sd, 2)); };
+  var pts = [], tail = [[X(Math.max(x, lo)), base]];
+  for (var i = 0; i <= 200; i++) { var v = lo + (hi - lo) * i / 200; pts.push(X(v).toFixed(1) + ',' + Y(v).toFixed(1)); if (v >= x) tail.push([X(v), Y(v)]); }
+  tail.push([X(hi), base]);
+  var s = '<polygon points="' + tail.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') + '" style="fill:var(--accent);fill-opacity:.35"/>' +
+    '<polyline points="' + pts.join(' ') + '" style="fill:none;stroke:var(--brand);stroke-width:2.5"/>' +
+    '<line x1="20" y1="' + base + '" x2="' + (W - 20) + '" y2="' + base + '" style="stroke:var(--ink-3)"/>';
+  for (var k = -3; k <= 3; k++) s += '<text x="' + X(mu + k * sd).toFixed(1) + '" y="' + (base + 20) + '" text-anchor="middle" style="font-size:12px;fill:var(--ink-3)">' + (k ? (k > 0 ? '+' : '−') + Math.abs(k) + 'σ' : 'μ') + ' · ' + r2(mu + k * sd) + '</text>';
+  if (x > lo && x < hi) s += '<line x1="' + X(x).toFixed(1) + '" y1="' + base + '" x2="' + X(x).toFixed(1) + '" y2="20" style="stroke:var(--accent);stroke-width:2;stroke-dasharray:5 4"/>' +
+    '<text x="' + X(x).toFixed(1) + '" y="14" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--accent)">x = ' + x + '</text>';
+  document.getElementById('normSvg').innerHTML = s;
+  var z = (x - mu) / sd, right = 1 - normCdf(z);
+  document.getElementById('nOut').innerHTML =
+    '<div class="kpi"><div class="v">' + z.toFixed(2) + '</div><div class="l">z = (x − μ) / σ</div></div>' +
+    '<div class="kpi"><div class="v">' + (100 * (1 - right)).toFixed(1) + '%</div><div class="l">P(X &lt; x), left of the line</div></div>' +
+    '<div class="kpi"><div class="v" style="color:var(--accent)">' + (100 * right).toFixed(1) + '%</div><div class="l">P(X &gt; x), shaded tail</div></div>';
+}
+['nMu', 'nSd', 'nX'].forEach(function (id) { document.getElementById(id).addEventListener('input', function () { if (id === 'nX') document.getElementById('nXr').value = this.value; normDraw(); }); });
+document.getElementById('nXr').addEventListener('input', function () { document.getElementById('nX').value = this.value; normDraw(); });
+normDraw();
+
+/* ---------- activities ---------- */
+function choiceRows(container, rows, labels) {
+  rows.forEach(function (r, idx) {
+    var d = document.createElement('div'); d.style.margin = '14px 0';
+    d.innerHTML = '<div style="font-weight:600;font-size:15.5px">' + (idx + 1) + '. ' + r.q + '</div>';
+    var fb = document.createElement('div'); fb.className = 'feedback';
+    labels.forEach(function (l, i) {
+      var b = document.createElement('button'); b.className = 'choice'; b.textContent = l;
+      b.onclick = function () {
+        d.querySelectorAll('.choice').forEach(function (x) { x.classList.remove('right', 'wrong'); });
+        if (i === r.a) { b.classList.add('right'); fb.innerHTML = '✅ ' + r.why; }
+        else { b.classList.add('wrong'); fb.innerHTML = '<span style="color:var(--bad)">Not quite. Try again.</span>'; }
+      };
+      d.appendChild(b);
+    });
+    d.appendChild(fb); container.appendChild(d);
+  });
+}
+choiceRows(document.querySelector('#pGame .pg'), [
+  { q: 'Atta Z-test: p = 0.015', a: 0, why: '0.015 < 0.05, so the result is significant: reject H₀.' },
+  { q: 'Order value by app: p = 0.63', a: 1, why: '0.63 ≥ 0.05: not enough evidence. That does NOT prove the apps are equal.' },
+  { q: 'City ANOVA: p = 0.29', a: 1, why: '0.29 ≥ 0.05: no evidence that city affects delivery time.' },
+  { q: 'Partner ANOVA: p = 0.00000000000047', a: 0, why: 'Far below 0.05: reject H₀. At least one partner differs.' },
+  { q: 'A test gives p = 0.05 exactly', a: 1, why: 'The rule is reject only if p < α. At exactly 0.05 we fail to reject, and it is a borderline result worth more data.' }
+], ['Reject H₀', 'Fail to reject H₀']);
+
+choiceRows(document.querySelector('#testGame .tg'), [
+  { q: 'Is the average weight of 50 sugar packets equal to 500 g? The machine’s σ = 8 g is certified.', a: 0, why: 'One mean against a target with σ known: Z-test.' },
+  { q: 'Do Delhi and Mumbai customers give different average ratings?', a: 1, why: 'A numeric outcome, two independent groups: two-sample T-test.' },
+  { q: '25 riders’ average times before and after a new helmet-mounted GPS.', a: 2, why: 'The same riders measured twice: paired T-test.' },
+  { q: 'Is the average order value the same on weekdays, Saturdays and Sundays?', a: 3, why: 'A numeric outcome across 3 groups: one-way ANOVA.' },
+  { q: 'Is the product category bought related to the city?', a: 4, why: 'Two categorical variables: chi-square test of independence.' },
+  { q: 'Does the share of UPI payments depend on the delivery partner?', a: 4, why: 'Payment mode and partner are both categories: chi-square.' }
+], ['Z-test', 'Two-sample T', 'Paired T', 'ANOVA', 'Chi-square']);
+
+/* ---------- data for CLT and the lab ---------- */
+var TRIAL = [], PACKS = [];
+function parseCsv(txt) {
+  var lines = txt.trim().split(/\r?\n/), head = lines[0].split(',');
+  return lines.slice(1).map(function (l) { var v = l.split(','), o = {}; head.forEach(function (h, i) { o[h] = v[i]; }); return o; });
+}
+Promise.all([fetch('lab/kiranamart_delivery_trial.csv').then(function (r) { return r.text(); }), fetch('lab/atta_pack_weights.csv').then(function (r) { return r.text(); })])
+  .then(function (t) { TRIAL = parseCsv(t[0]); PACKS = parseCsv(t[1]); cltRun(); labRun(); })
+  .catch(function () {
+    var m = 'Could not load the dataset. Open this page through the classroom server (not as a file).';
+    document.getElementById('labNote').textContent = m; document.getElementById('cltOut').textContent = m;
+  });
+
+/* ---------- CLT simulator ---------- */
+function histSvg(vals, bins, lo, hi, color, mark) {
+  var W = 760, H = 200, c = new Array(bins).fill(0);
+  vals.forEach(function (v) { var k = Math.min(bins - 1, Math.max(0, Math.floor((v - lo) / (hi - lo) * bins))); c[k]++; });
+  var mx = Math.max.apply(null, c) || 1, bw = (W - 40) / bins, s = '<svg viewBox="0 0 ' + W + ' ' + (H + 26) + '">';
+  c.forEach(function (n, i) { var h = (H - 10) * n / mx; s += '<rect x="' + (20 + i * bw + 1).toFixed(1) + '" y="' + (H - h).toFixed(1) + '" width="' + (bw - 2).toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2" style="fill:' + color + ';fill-opacity:.75"/>'; });
+  s += '<line x1="20" y1="' + H + '" x2="' + (W - 20) + '" y2="' + H + '" style="stroke:var(--ink-3)"/>';
+  for (var t = 0; t <= 4; t++) { var v = lo + (hi - lo) * t / 4; s += '<text x="' + (20 + (W - 40) * t / 4) + '" y="' + (H + 18) + '" text-anchor="middle" style="font-size:12px;fill:var(--ink-3)">₹' + Math.round(v) + '</text>'; }
+  if (mark != null) { var mxp = 20 + (mark - lo) / (hi - lo) * (W - 40); s += '<line x1="' + mxp + '" y1="0" x2="' + mxp + '" y2="' + H + '" style="stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4"/>'; }
+  return s + '</svg>';
+}
+function cltRun() {
+  if (!TRIAL.length) return;
+  var n = +document.getElementById('cltN').value, pop = TRIAL.map(function (r) { return +r.order_value; }), means = [];
+  for (var k = 0; k < 1000; k++) { var s = 0; for (var i = 0; i < n; i++) s += pop[Math.floor(Math.random() * pop.length)]; means.push(s / n); }
+  var mu = mean(pop), sig = Math.sqrt(variance(pop, 0));
+  document.getElementById('cltChart').innerHTML = histSvg(means, 40, 0, 2000, 'var(--violet)', mu);
+  document.getElementById('cltOut').innerHTML =
+    '<div class="kpi"><div class="v">₹' + mu.toFixed(0) + '</div><div class="l">population mean μ (red line)</div></div>' +
+    '<div class="kpi"><div class="v">₹' + mean(means).toFixed(0) + '</div><div class="l">mean of 1,000 sample means</div></div>' +
+    '<div class="kpi"><div class="v">₹' + (sig / Math.sqrt(n)).toFixed(1) + '</div><div class="l">theory: SE = σ / √n</div></div>' +
+    '<div class="kpi"><div class="v">₹' + Math.sqrt(variance(means, 1)).toFixed(1) + '</div><div class="l">observed SD of the means</div></div>';
+}
+document.getElementById('cltN').addEventListener('input', function () { document.getElementById('cltNv').textContent = this.value; cltRun(); });
+
+/* ---------- Hypothesis Test Lab ---------- */
+function groupsOf(col, num) {
+  var g = {}; TRIAL.forEach(function (r) { (g[r[col]] = g[r[col]] || []).push(+r[num]); });
+  var pref = ['Old', 'New', 'SwiftShip', 'QuickDrop', 'ExpressGo'];   // same order as the guide; others alphabetical
+  var rank = function (k) { var i = pref.indexOf(k); return i < 0 ? 99 : i; };
+  return Object.keys(g).sort(function (a, b) { return rank(a) - rank(b) || a.localeCompare(b); }).map(function (k) { return { k: k, v: g[k] }; });
+}
+function meanBars(groups, label) {
+  var W = 760, rowH = 34, padL = 170, padR = 110, H = groups.length * rowH + 10;
+  var mx = Math.max.apply(null, groups.map(function (g) { return mean(g.v); }));
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Group means">';
+  groups.forEach(function (g, i) {
+    var m = mean(g.v), w = (W - padL - padR) * m / mx, y = 6 + i * rowH;
+    s += '<text x="' + (padL - 10) + '" y="' + (y + 20) + '" text-anchor="end" style="font-size:14px;fill:var(--ink)">' + g.k + '</text>' +
+      '<rect x="' + padL + '" y="' + (y + 5) + '" width="' + Math.max(2, w).toFixed(1) + '" height="' + (rowH - 12) + '" rx="5" style="fill:var(--brand);fill-opacity:.75"/>' +
+      '<text x="' + (padL + w + 8).toFixed(1) + '" y="' + (y + 20) + '" style="font-size:13px;fill:var(--ink-2)">mean ' + r2(m) + '</text>';
+  });
+  return s + '</svg>';
+}
+function labRun() {
+  if (!TRIAL.length) return;
+  var tt = document.getElementById('tt').value, num = document.getElementById('num').value, grp = document.getElementById('grp').value,
+      grp2 = document.getElementById('grp2').value, alpha = +document.getElementById('alpha').value;
+  document.getElementById('wNum').hidden = tt === 'z' || tt === 'chi';
+  document.getElementById('wGrp').hidden = tt === 'z';
+  document.getElementById('wGrp2').hidden = tt !== 'chi';
+  document.getElementById('wMu').hidden = document.getElementById('wSig').hidden = tt !== 'z';
+  var H = document.getElementById('labH'), K = document.getElementById('labKpi'), C = document.getElementById('labChart'), T = document.getElementById('labTable'),
+      V = document.getElementById('labVerdict'), N = document.getElementById('labNote');
+  var kpi = function (v, l) { return '<div class="kpi"><div class="v">' + v + '</div><div class="l">' + l + '</div></div>'; };
+  var stat, p, name;
+  C.innerHTML = ''; T.innerHTML = ''; N.textContent = '';
+
+  if (tt === 'z') {
+    var w = PACKS.map(function (r) { return +r.weight_g; }), mu0 = +document.getElementById('mu0').value, sig = Math.max(0.01, +document.getElementById('sig').value);
+    var se = sig / Math.sqrt(w.length); stat = (mean(w) - mu0) / se; p = 2 * (1 - normCdf(Math.abs(stat))); name = 'z';
+    H.innerHTML = '<b>H₀:</b> μ = ' + mu0 + ' g &nbsp; <b>H₁:</b> μ ≠ ' + mu0 + ' g (two-tailed) · 40 atta packets';
+    K.innerHTML = kpi(w.length, 'n') + kpi(r2(mean(w)) + ' g', 'sample mean x̄') + kpi(r2(se), 'SE = σ / √n') + kpi(stat.toFixed(3), 'z statistic') + kpi(fmtP(p), 'p-value');
+    N.textContent = 'z = (x̄ − μ₀) / (σ / √n). Critical values: ±1.645 (α 0.10), ±1.96 (α 0.05), ±2.576 (α 0.01).';
+  } else if (tt === 't' || tt === 'anova') {
+    var G = groupsOf(grp, num);
+    if (tt === 't' && G.length !== 2) {
+      H.innerHTML = ''; K.innerHTML = ''; C.innerHTML = meanBars(G);
+      V.style.background = 'var(--accent-soft)'; V.style.color = 'var(--accent)';
+      V.textContent = '⚠️ A T-test compares exactly two groups, but “' + grp + '” has ' + G.length + '. Use one-way ANOVA instead (running several T-tests inflates the false-alarm risk).';
+      return;
+    }
+    T.innerHTML = '<table><tr><th>' + grp + '</th><th class="num">n</th><th class="num">mean</th><th class="num">SD</th></tr>' +
+      G.map(function (g) { return '<tr><td>' + g.k + '</td><td class="num">' + g.v.length + '</td><td class="num">' + r2(mean(g.v)) + '</td><td class="num">' + r2(Math.sqrt(variance(g.v, 1))) + '</td></tr>'; }).join('') + '</table>';
+    C.innerHTML = meanBars(G);
+    if (tt === 't') {
+      var a = G[0].v, b = G[1].v, va = variance(a, 1) / a.length, vb = variance(b, 1) / b.length;
+      stat = (mean(a) - mean(b)) / Math.sqrt(va + vb);
+      var df = Math.pow(va + vb, 2) / (va * va / (a.length - 1) + vb * vb / (b.length - 1));
+      p = tP2(stat, df); name = 't';
+      H.innerHTML = '<b>H₀:</b> mean ' + num + ' is the same for ' + G[0].k + ' and ' + G[1].k + ' &nbsp; <b>H₁:</b> the means differ (Welch two-sample T-test)';
+      K.innerHTML = kpi(r2(mean(a) - mean(b)), 'difference ' + G[0].k + ' − ' + G[1].k) + kpi(stat.toFixed(3), 't statistic') + kpi(df.toFixed(1), 'degrees of freedom') + kpi(fmtP(p), 'p-value');
+      N.textContent = 'Same as scipy.stats.ttest_ind(a, b, equal_var=False).';
+    } else {
+      var all = [].concat.apply([], G.map(function (g) { return g.v; })), gm = mean(all), k = G.length, n = all.length;
+      var ssb = G.reduce(function (s, g) { return s + g.v.length * Math.pow(mean(g.v) - gm, 2); }, 0);
+      var ssw = G.reduce(function (s, g) { var m = mean(g.v); return s + g.v.reduce(function (t, x) { return t + (x - m) * (x - m); }, 0); }, 0);
+      stat = (ssb / (k - 1)) / (ssw / (n - k)); p = fP(stat, k - 1, n - k); name = 'F';
+      H.innerHTML = '<b>H₀:</b> all ' + k + ' groups of ' + grp + ' have the same mean ' + num + ' &nbsp; <b>H₁:</b> at least one mean differs';
+      K.innerHTML = kpi(r2(ssb / (k - 1)), 'MS between (df ' + (k - 1) + ')') + kpi(r2(ssw / (n - k)), 'MS within (df ' + (n - k) + ')') + kpi(stat.toFixed(2), 'F = MSB / MSW') + kpi(fmtP(p), 'p-value');
+      N.textContent = 'Same as scipy.stats.f_oneway(*groups). If H₀ is rejected, compare the means (or run Tukey’s HSD) to see which groups differ.';
+    }
+  } else {
+    if (grp === grp2) { H.innerHTML = ''; K.innerHTML = ''; V.style.background = 'var(--accent-soft)'; V.style.color = 'var(--accent)'; V.textContent = '⚠️ Choose two different columns.'; return; }
+    var rows = {}, cols = {}, cell = {};
+    TRIAL.forEach(function (r) { rows[r[grp]] = 1; cols[r[grp2]] = 1; var key = r[grp] + '|' + r[grp2]; cell[key] = (cell[key] || 0) + 1; });
+    var R = Object.keys(rows).sort(), Cc = Object.keys(cols).sort(), tot = TRIAL.length;
+    var rt = R.map(function (r) { return Cc.reduce(function (s, c) { return s + (cell[r + '|' + c] || 0); }, 0); });
+    var ct = Cc.map(function (c) { return R.reduce(function (s, r) { return s + (cell[r + '|' + c] || 0); }, 0); });
+    stat = 0; var minE = Infinity, big = { d: 0 };
+    var html = '<table><tr><th>Observed (expected)</th>' + Cc.map(function (c) { return '<th class="num">' + c + '</th>'; }).join('') + '<th class="num">Total</th></tr>';
+    R.forEach(function (r, i) {
+      html += '<tr><td>' + r + '</td>';
+      Cc.forEach(function (c, j) {
+        var o = cell[r + '|' + c] || 0, e = rt[i] * ct[j] / tot, d = (o - e) * (o - e) / e; stat += d; minE = Math.min(minE, e);
+        if (d > big.d) big = { d: d, r: r, c: c };
+        html += '<td class="num">' + o + ' <span class="muted">(' + e.toFixed(1) + ')</span></td>';
+      });
+      html += '<td class="num">' + rt[i] + '</td></tr>';
+    });
+    T.innerHTML = html + '<tr><td>Total</td>' + ct.map(function (x) { return '<td class="num">' + x + '</td>'; }).join('') + '<td class="num">' + tot + '</td></tr></table>';
+    var dof = (R.length - 1) * (Cc.length - 1); p = chiP(stat, dof); name = 'χ²';
+    H.innerHTML = '<b>H₀:</b> ' + grp + ' and ' + grp2 + ' are independent &nbsp; <b>H₁:</b> they are related';
+    K.innerHTML = kpi(stat.toFixed(2), 'χ² = Σ (O − E)² / E') + kpi(dof, 'df = (r − 1)(c − 1)') + kpi(fmtP(p), 'p-value') + kpi(minE.toFixed(1), 'smallest expected count');
+    N.textContent = 'Biggest contribution: ' + big.r + ' × ' + big.c + ' (' + big.d.toFixed(2) + '). ' + (minE < 5 ? 'Warning: an expected count is below 5, so the test is less reliable. ' : '') +
+      (dof === 1 ? 'For 2 × 2 tables SciPy applies Yates’ correction by default, so its χ² is slightly smaller.' : 'Same as scipy.stats.chi2_contingency(table).');
+  }
+  if (p < alpha) { V.style.background = 'var(--good-soft)'; V.style.color = 'var(--good)'; V.textContent = '✅ p = ' + fmtP(p) + ' < α = ' + alpha + ': reject H₀. The ' + (tt === 'chi' ? 'relationship' : 'difference') + ' is statistically significant. Now ask: is the effect big enough to matter?'; }
+  else { V.style.background = 'var(--accent-soft)'; V.style.color = 'var(--accent)'; V.textContent = '⚠️ p = ' + fmtP(p) + ' ≥ α = ' + alpha + ': fail to reject H₀. Not enough evidence of a ' + (tt === 'chi' ? 'relationship' : 'difference') + ' (which is not proof that there is none).'; }
+}
+['num', 'grp', 'grp2', 'alpha', 'mu0', 'sig'].forEach(function (id) { document.getElementById(id).addEventListener(id === 'mu0' || id === 'sig' ? 'input' : 'change', labRun); });
+document.getElementById('tt').addEventListener('change', function () {   // sensible defaults per test
+  var g = document.getElementById('grp');
+  if (this.value === 't') g.value = 'route_app'; else if (this.value === 'anova') g.value = 'partner'; else if (this.value === 'chi') { g.value = 'customer_type'; document.getElementById('grp2').value = 'payment_mode'; }
+  labRun();
+});
+</script>
+</body>
+</html>
